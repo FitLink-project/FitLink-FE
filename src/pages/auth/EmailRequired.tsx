@@ -59,7 +59,8 @@ export default function EmailRequired() {
         throw new Error(errorData.message || "이메일 업데이트 실패");
       }
 
-      const data = await response.json();
+      // 응답 확인 (데이터는 사용하지 않음)
+      await response.json();
       
       // 성공 메시지 표시
       alert("이메일이 성공적으로 업데이트되었습니다!");

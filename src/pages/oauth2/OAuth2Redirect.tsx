@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://www.fitlink1207.store";
-
 export default function OAuth2Redirect() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
