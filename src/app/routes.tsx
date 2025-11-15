@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
+import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import OAuth2Redirect from "../pages/oauth2/OAuth2Redirect";
 import EmailRequired from "../pages/auth/EmailRequired";
@@ -10,7 +11,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div className="p-4">FitLink Home</div>,
+        element: <HomePage />,
       },
       {
         path: "/login",
