@@ -1,36 +1,47 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 
 export default function OAuth2Redirect() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [status, setStatus] = useState("처리 중...");
 
   useEffect(() => {
+    // 디버깅: 현재 URL과 모든 파라미터 출력
+    console.log("현재 URL:", window.location.href);
+    console.log("Location:", location);
+    console.log("모든 URL 파라미터:", Object.fromEntries(searchParams.entries()));
+
     const token = searchParams.get("token");
     const error = searchParams.get("error");
     const errorMessage = searchParams.get("message");
     const needsEmailUpdate = searchParams.get("needsEmailUpdate") === "true";
 
+    console.log("토큰:", token ? "있음" : "없음");
+    console.log("에러:", error);
+    console.log("에러 메시지:", errorMessage);
+
     // 에러 처리
     if (error) {
       console.error("OAuth2 로그인 실패:", error, errorMessage);
-      setStatus("로그인에 실패했습니다.");
+      setStatus(`로그인에 실패했습니다: ${errorMessage || error}`);
       
       setTimeout(() => {
         navigate("/login?error=oauth2_failed");
-      }, 2000);
+      }, 3000);
       return;
     }
 
     // 토큰이 없는 경우
     if (!token) {
-      console.error("토큰이 없습니다.");
-      setStatus("토큰을 받지 못했습니다.");
+      console.error("토큰이 없습니다. URL 파라미터를 확인하세요.");
+      console.log("전체 URL:", window.location.href);
+      setStatus("토큰을 받지 못했습니다. 잠시 후 로그인 페이지로 이동합니다...");
       
       setTimeout(() => {
         navigate("/login?error=no_token");
-      }, 2000);
+      }, 3000);
       return;
     }
 
@@ -64,9 +75,13 @@ export default function OAuth2Redirect() {
     }
   }, [searchParams, navigate]);
 
+  const handleRetry = () => {
+    navigate("/login");
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="text-center">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className="text-center max-w-md">
         <div className="mb-4">
           <svg
             className="animate-spin h-12 w-12 text-blue-600 mx-auto"
@@ -89,7 +104,18 @@ export default function OAuth2Redirect() {
             ></path>
           </svg>
         </div>
-        <p className="text-gray-700 text-lg">{status}</p>
+        <p className="text-gray-700 text-lg mb-4">{status}</p>
+        {status.includes("받지 못했습니다") && (
+          <button
+            onClick={handleRetry}
+            className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            로그인 페이지로 돌아가기
+          </button>
+        )}
+        <p className="text-sm text-gray-500 mt-4">
+          문제가 계속되면 브라우저 개발자 도구(F12)의 콘솔을 확인해주세요.
+        </p>
       </div>
     </div>
   );
