@@ -1,0 +1,43 @@
+/* swiper-custom.css */
+.swiper-container {
+  overflow: visible !important;
+}
+.swiper-wrapper {
+  overflow: visible !important;
+}
+.ticket-swiper .swiper-initialized{
+  height: 400px;
+}
+
+.ticket-swiper .swiper-pagination {
+  bottom: 8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+.ticket-swiper .swiper-pagination-bullet{
+  background-color: black;
+}
+.ticket-swiper .swiper-pagination-bullet-active{
+   background-color: #04C97E;
+}
+
+.childcard-swiper .swiper-pagination-bullet{
+  background-color: black;
+}
+.childcard-swiper .swiper-pagination-bullet-active{
+   background-color: #3C3C3C;
+}
+.shop-image-slider .swiper-pagination-bullet{
+  background-color: black;
+}
+
+.shop-image-slider .swiper-pagination {
+  bottom: 8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+.shop-image-slider .swiper-initialized{
+  height: 300px !important;
+}
+
