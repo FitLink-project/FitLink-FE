@@ -5,9 +5,10 @@ import warningIcon from '../assets/Icon/Warning.png';
 export interface ErrorMessageProps {
   message: string;
   className?: string | string[] | (string | undefined | null | false)[];
+  style?: React.CSSProperties;
 }
 
-export default function ErrorMessage({ message, className }: ErrorMessageProps) {
+export default function ErrorMessage({ message, className, style }: ErrorMessageProps) {
   const baseStyles = [
     'flex',
     'items-center',
@@ -22,7 +23,7 @@ export default function ErrorMessage({ message, className }: ErrorMessageProps) 
   const allClasses = clsx(baseStyles, className);
 
   return (
-    <div className={allClasses}>
+    <div className={allClasses} style={style}>
       <img
         src={warningIcon}
         alt="Warning"

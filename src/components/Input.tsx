@@ -29,8 +29,8 @@ export default function Input({
     'leading-[100%]',
     'placeholder:text-[#888]',
     'focus:ring-2',
-    'focus:ring-main',
-    'focus:border-main',
+    'focus:ring-secondGray',
+    'focus:border-secondGray',
   ];
 
   const errorStyles = error
