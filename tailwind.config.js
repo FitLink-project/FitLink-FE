@@ -25,6 +25,7 @@ export default {
   },
       fontFamily: {
         mplus1: ['"M PLUS 1"', 'sans-serif'],
+        pretendard: ['Pretendard', 'sans-serif'],
       },
       height: {
         'real-screen': 'calc(var(--vh, 1vh) * 100)',

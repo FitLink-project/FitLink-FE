@@ -8,6 +8,8 @@ import OAuth2Redirect from "../pages/oauth2/OAuth2Redirect";
 import EmailRequired from "../pages/auth/EmailRequired";
 import SocialTermsAgreementPage from "../pages/auth/SocialTermsAgreementPage";
 import PrivacyAgreementPage from "../pages/auth/PrivacyAgreementPage";
+import ServiceTermsPage from "../pages/auth/ServiceTermsPage";
+import LocationServicePage from "../pages/auth/LocationServicePage";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +46,14 @@ export const router = createBrowserRouter([
       {
         path: "/privacy-agreement",
         element: <PrivacyAgreementPage />,
+      },
+      {
+        path: "/service-terms",
+        element: <ServiceTermsPage />,
+      },
+      {
+        path: "/location-service",
+        element: <LocationServicePage />,
       },
     ],
   },

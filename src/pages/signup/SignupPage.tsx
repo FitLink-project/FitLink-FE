@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "react-feather";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -21,7 +21,6 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [validationError, setValidationError] = useState("");
   const [nameError, setNameError] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -73,7 +72,6 @@ export default function SignupPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setValidationError("");
     setNameError(false);
     setNameErrorMessage("");
     setEmailError(false);
@@ -166,32 +164,33 @@ export default function SignupPage() {
       }
     } catch (err) {
       const apiError = err as ApiError;
-      let errorMessage = "회원가입에 실패했습니다. 다시 시도해주세요.";
 
       switch (apiError.code) {
         case ERROR_CODES.COMMON400:
-          errorMessage = "잘못된 요청입니다.";
+          setNameErrorMessage("잘못된 요청입니다.");
+          setNameError(true);
           break;
         case ERROR_CODES.USER4001:
-          errorMessage = "올바른 이메일 형식이 아닙니다.";
+          setEmailErrorMessage("올바른 이메일 형식이 아닙니다.");
           setEmailError(true);
           break;
         case ERROR_CODES.USER4002:
-          errorMessage = "올바른 비밀번호 형식이 아닙니다.";
+          setPasswordErrorMessage("올바른 비밀번호 형식이 아닙니다.");
           setPasswordError(true);
           break;
         case ERROR_CODES.USER4031:
-          errorMessage = "중복된 이메일입니다.";
+          setEmailErrorMessage("중복된 이메일입니다.");
           setEmailError(true);
           break;
         case ERROR_CODES.COMMON500:
-          errorMessage = "서버 에러, 관리자에게 문의 바랍니다.";
+          setNameErrorMessage("서버 에러, 관리자에게 문의 바랍니다.");
+          setNameError(true);
           break;
         default:
-          errorMessage = apiError.message || "회원가입에 실패했습니다.";
+          setNameErrorMessage(apiError.message || "회원가입에 실패했습니다.");
+          setNameError(true);
       }
 
-      setValidationError(errorMessage);
       console.error("회원가입 실패:", apiError);
     } finally {
       setIsLoading(false);
@@ -387,7 +386,7 @@ export default function SignupPage() {
               <div className="space-y-2 pl-3">
                 <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
                   <span className="text-sm text-gray font-mplus1 leading-[100%]">
-                    <span className="underline">개인정보 수집/이용</span> <span className="text-gray"> 동의(필수)</span>
+                    <Link to="/privacy-agreement" className="underline" onClick={(e) => e.stopPropagation()}>개인정보 수집/이용</Link> <span className="text-gray"> 동의(필수)</span>
                   </span>
                   <Checkbox
                     checked={privacyAgree}
@@ -400,7 +399,7 @@ export default function SignupPage() {
                 </label>
                 <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
                   <span className="text-sm text-gray font-mplus1 leading-[100%]">
-                  서비스<span className="underline"> 이용약관</span> <span className="text-gray">(필수)</span>
+                  서비스<Link to="/service-terms" className="underline" onClick={(e) => e.stopPropagation()}> 이용약관</Link> <span className="text-gray">(필수)</span>
                   </span>
                   <Checkbox
                     checked={serviceAgree}
@@ -426,7 +425,7 @@ export default function SignupPage() {
                 </label>
                 <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
                   <span className="text-sm text-gray font-mplus1 leading-[100%]">
-                    <span className="underline">위치기반 서비스</span> <span className="text-gray"> 이용약관(필수)</span>
+                    <Link to="/location-service" className="underline" onClick={(e) => e.stopPropagation()}>위치기반 서비스</Link> <span className="text-gray"> 이용약관(필수)</span>
                   </span>
                   <Checkbox
                     checked={locationAgree}
@@ -445,12 +444,6 @@ export default function SignupPage() {
               )}
             </div>
 
-            {/* 에러 메시지 */}
-            {validationError && !validationError.includes("비밀번호") && !validationError.includes("약관") && (
-              <div className="w-[345px] mb-4">
-                <ErrorMessage message={validationError} className="justify-start" />
-              </div>
-            )}
 
             {/* 완료 버튼 */}
             <div className="mt-4">
