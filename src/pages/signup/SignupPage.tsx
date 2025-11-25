@@ -198,12 +198,13 @@ export default function SignupPage() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-white px-4 py-8">
+  return (<>
+              {/* 헤더 */}
+              <PageHeader title="회원가입" />
+    <div className="min-h-screen bg-white px-4 pt-8 pb-8">
       <div className="w-full max-w-sm mx-auto">
         <div className="animate-slideUpFadeIn">
-          {/* 헤더 */}
-          <PageHeader title="회원가입" />
+
 
           {/* 프로필 이미지 */}
           <div className="flex justify-center mb-8">
@@ -491,5 +492,6 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

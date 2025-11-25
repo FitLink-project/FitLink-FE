@@ -23,16 +23,19 @@ export default function PageHeader({
   };
 
   return (
-    <div className="relative flex items-center justify-center mb-8">
+    <div 
+      className="relative flex items-center justify-center h-[60px]"
+      style={{ boxShadow: '0 1px 6px 0 rgba(34, 34, 34, 0.18)' }}
+    >
       {showBackButton && (
         <button
           onClick={handleBack}
-          className="absolute left-0 p-2 -ml-2"
+          className="absolute left-0 p-2 ml-2"
         >
-          <img src={backIcon} alt="뒤로가기" className="w-6 h-6" />
+          <img src={backIcon} alt="뒤로가기" className="w-[14px] h-[14px]" />
         </button>
       )}
-      <h1 className="text-lg font-semibold text-softBlack font-mplus1">{title}</h1>
+      <h1 className="text-base font-medium text-softBlack font-mplus1 leading-[150%]">{title}</h1>
     </div>
   );
 }
