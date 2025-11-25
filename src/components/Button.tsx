@@ -4,7 +4,7 @@ import clsx from 'clsx';
 export type ButtonVariant = 'lightBlue' | 'backgroundGray' | 'main';
 export type ButtonState = 'default' | 'hover';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
   children: React.ReactNode;
   variant?: ButtonVariant;
   state?: ButtonState;
