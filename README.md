@@ -106,7 +106,7 @@ export default function Button({ children, onClick, variant = 'primary' }: Butto
     <button
       onClick={onClick}
       className={`px-4 py-2 rounded-lg ${
-        variant === 'primary' ? 'bg-maingreen text-white' : 'bg-buttonGray'
+        variant === 'primary' ? 'bg-main text-softWhite' : 'bg-backgroundGray'
       }`}
     >
       {children}
@@ -326,10 +326,13 @@ export function useUpdateUser() {
 이 프로젝트는 Tailwind CSS를 사용합니다. 커스텀 색상은 `tailwind.config.js`에 정의되어 있습니다.
 
 ```typescript
-// 사용 가능한 커스텀 색상
-className="bg-maingreen text-white"      // 메인 그린
-className="text-textblack"                // 텍스트 블랙
-className="bg-buttonGray"                  // 버튼 그레이
+// 사용 가능한 Figma Design System 색상
+className="bg-main text-softWhite"           // 메인 블루
+className="text-softBlack"                   // 소프트 블랙
+className="bg-backgroundGray"                // 배경 그레이
+className="bg-lightBlue text-main"           // 라이트 블루
+className="text-gray"                        // 그레이
+className="text-darkGray"                    // 다크 그레이
 ```
 
 ### 폰트
