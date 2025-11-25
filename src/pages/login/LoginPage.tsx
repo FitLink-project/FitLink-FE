@@ -5,6 +5,8 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import ErrorMessage from "../../components/ErrorMessage";
 import LinkMove from "../../components/LinkMove";
+import { login } from "../../api/user";
+import { ERROR_CODES, type ApiError } from "../../types/user";
 import logoBlue from "../../assets/Full_Logo/logo-blue.png";
 import kakaoIcon from "../../assets/SocialIcon/kakao-icon.png";
 import kakaoIconClicked from "../../assets/SocialIcon/kakao-icon-clicked.png";
@@ -78,16 +80,49 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // TODO: 실제 API 호출로 대체
-      // const response = await loginApi(email, password);
-      // localStorage.setItem('accessToken', response.token);
+      const response = await login({ email, password });
       
-      // 임시: 1초 후 홈으로 이동
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate("/");
+      if (response.isSuccess && response.result) {
+        // accessToken 저장
+        localStorage.setItem('accessToken', response.result.accessToken);
+        // 홈으로 이동
+        navigate("/");
+      }
     } catch (err) {
-      setValidationError("① 이메일과 비밀번호를 정확히 입력해주세요");
-      console.error("로그인 실패:", err);
+      const apiError = err as ApiError;
+      let errorMessage = "① 이메일과 비밀번호를 정확히 입력해주세요";
+      
+      // 에러 코드에 따라 다른 메시지 표시
+      switch (apiError.code) {
+        case ERROR_CODES.COMMON400:
+          errorMessage = "① 잘못된 요청입니다.";
+          break;
+        case ERROR_CODES.USER4001:
+          errorMessage = "① 올바른 이메일 형식이 아닙니다.";
+          setEmailError(true);
+          break;
+        case ERROR_CODES.USER4011:
+          errorMessage = "① 이메일 또는 비밀번호가 올바르지 않습니다.";
+          setEmailError(true);
+          setPasswordError(true);
+          break;
+        case ERROR_CODES.USER4032:
+          errorMessage = "① 비활성화된 사용자입니다.";
+          break;
+        case ERROR_CODES.USER4041:
+          errorMessage = "① 사용자를 찾을 수 없습니다.";
+          setEmailError(true);
+          break;
+        case ERROR_CODES.COMMON500:
+          errorMessage = "① 서버 에러, 관리자에게 문의 바랍니다.";
+          break;
+        default:
+          errorMessage = apiError.message || "① 로그인에 실패했습니다.";
+      }
+      
+      setValidationError(errorMessage);
+      console.error("로그인 실패:", apiError);
+    } finally {
       setIsLoading(false);
     }
   };
