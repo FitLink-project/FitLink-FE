@@ -38,7 +38,7 @@ export default function Button({
       disabled={disabled}
       className={`
         px-4 py-2 rounded-lg font-mplus1
-        ${variant === 'primary' ? 'bg-maingreen text-white' : 'bg-buttonGray text-textblack'}
+        ${variant === 'primary' ? 'bg-main text-softWhite' : 'bg-backgroundGray text-softBlack'}
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'}
       `}
     >
