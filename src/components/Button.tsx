@@ -19,7 +19,11 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseStyles = [
-    'px-4 py-3.5',
+    'box-border',
+    'w-[345px]',
+    'h-[52px]',
+    'px-4',
+    'py-[10px]',
     'rounded-[10px]',
     'font-mplus1',
     'text-base',
@@ -35,6 +39,7 @@ export default function Button({
         'bg-lightBlue',
         'text-main',
         'shadow-[0px_0px_4px_0px_rgba(34,34,34,0.06)]',
+        'hover:opacity-80',
       ],
       hover: [
         'bg-lightBlue',
@@ -48,6 +53,7 @@ export default function Button({
         'bg-backgroundGray',
         'text-darkGray',
         'shadow-[0px_0px_4px_0px_rgba(34,34,34,0.1)]',
+        'hover:opacity-80',
       ],
       hover: [
         'bg-backgroundGray',
@@ -61,6 +67,8 @@ export default function Button({
         'bg-main',
         'text-softWhite',
         'shadow-[0px_0px_4px_0px_rgba(34,34,34,0.1)]',
+        'hover:opacity-90',
+        'active:opacity-80',
       ],
       hover: [
         'bg-main',
