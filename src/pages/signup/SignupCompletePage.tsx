@@ -1,56 +1,51 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
-import { CheckCircle } from "react-feather";
+import PageHeader from "../../components/PageHeader";
+import logoBlue from "../../assets/Full_Logo/logo-blue.png";
 
 export default function SignupCompletePage() {
   const navigate = useNavigate();
 
-  const handleComplete = () => {
-    navigate("/login");
+  const handleStart = () => {
+    navigate("/");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-8">
-      <div className="w-full max-w-sm">
-        <div className="animate-slideUpFadeIn">
-          {/* 헤더 - FitLink 로고 */}
-          <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold mb-2">
-              <span className="text-blue-500">Fit</span>
-              <span className="text-gray-900">Link</span>
-            </h1>
-          </div>
-
-          {/* 완료 메시지 */}
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 bg-main rounded-full flex items-center justify-center">
-                <CheckCircle className="w-12 h-12 text-softWhite" />
-              </div>
+    <div>
+      <PageHeader title="회원가입" showBackButton={false} />
+      
+      <div className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center bg-white px-4">
+        <div className="w-full max-w-sm flex flex-col items-center">
+          <div className="animate-slideUpFadeIn flex flex-col items-center">
+            {/* FitLink 로고 */}
+            <div className="mb-10">
+              <img src={logoBlue} alt="FitLink" className="w-[204px] h-[50px]" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              회원가입이 완료되었습니다
-            </h2>
-            <p className="text-gray-600 text-base leading-relaxed">
-              FitLink에 오신 것을 환영합니다!
-              <br />
-              이제 로그인하여 서비스를 이용하실 수 있습니다.
-            </p>
-          </div>
 
-          {/* 확인 버튼 */}
-          <div className="w-full">
-            <Button
-              type="button"
-              variant="main"
-              state="hover"
-              onClick={handleComplete}
-              className="w-full"
-            >
-              로그인하러 가기
-            </Button>
+            {/* 완료 메시지 */}
+            <div className="text-center mb-12">
+              <h2 className="text-[20px] font-semibold text-softBlack mb-3 font-pretendard leading-[150%] tracking-normal">
+                회원가입이 완료되었습니다!
+              </h2>
+              <p className="w-[196px] mx-auto text-base font-medium text-gray font-pretendard leading-[150%] tracking-normal">
+                지금부터 FitLink와 함께 운동 기회를 손쉽게 탐색해 봐요
+              </p>
+            </div>
+
           </div>
         </div>
+            {/* 시작하기 버튼 */}
+            <div className="w-full">
+              <Button
+                type="button"
+                variant="main"
+                state="default"
+                onClick={handleStart}
+                className="w-full"
+              >
+                시작하기
+              </Button>
+            </div>
       </div>
     </div>
   );

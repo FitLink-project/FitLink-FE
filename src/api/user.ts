@@ -1,4 +1,4 @@
-import { 
+import type { 
   ApiResponse, 
   ApiError,
   SignupRequest, 
@@ -20,7 +20,14 @@ export async function signup(signupData: SignupRequest): Promise<ApiResponse<Sig
   formData.append('name', signupData.name);
   formData.append('email', signupData.email);
   formData.append('password', signupData.password);
-  formData.append('agreements', JSON.stringify(signupData.agreements));
+  
+  // agreements 객체의 각 필드를 개별적으로 append
+  formData.append('agreements.privacy', String(signupData.agreements.privacy));
+  formData.append('agreements.service', String(signupData.agreements.service));
+  formData.append('agreements.over14', String(signupData.agreements.over14));
+  if (signupData.agreements.location !== undefined) {
+    formData.append('agreements.location', String(signupData.agreements.location));
+  }
   
   if (signupData.img) {
     formData.append('Img', signupData.img);
