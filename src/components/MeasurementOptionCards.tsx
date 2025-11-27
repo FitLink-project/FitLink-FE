@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
+import Modal from "./Modal";
 import arcGauge from "../assets/Gauge/arc-gauge.png";
 import rainbowGauge from "../assets/Gauge/rainbow-gauge.png";
 
 export default function MeasurementOptionCards() {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="flex gap-4 items-center justify-center">
       {/* 1. 측정 결과가 있는 경우 (O) */}
-      <Button variant="measurement">
+      <Button
+        variant="measurement"
+        onClick={() => {
+          if (isLoggedIn) {
+            navigate("/");
+          } else {
+            setShowModal(true);
+          }
+        }}
+      >
         {/* 텍스트 영역 */}
         <div className="px-2">
           <div className="font-mplus text-gray text-[0.7em] my-2">
@@ -47,7 +62,16 @@ export default function MeasurementOptionCards() {
       </Button>
 
       {/* 2. 측정 결과가 없는 경우 (X) */}
-      <Button variant="measurement">
+      <Button
+        variant="measurement"
+        onClick={() => {
+          if (isLoggedIn) {
+            navigate("/");
+          } else {
+            setShowModal(true);
+          }
+        }}
+      >
         {/* 텍스트 영역 */}
         <div className="px-2">
           <div className="font-mplus text-gray text-[0.7em] my-2">
@@ -85,6 +109,28 @@ export default function MeasurementOptionCards() {
           className="w-full h-auto px-8 py-2"
         />
       </Button>
+
+      <Modal
+        isOpen={showModal}
+        title="로그인 후 진행해 주세요"
+        description={
+          <>
+            FitLink의 체력진단 및 리포트
+            <br />
+            결과 제공을 위해 로그인이 필요해요
+          </>
+        }
+        primaryButton={{
+          text: "로그인하기",
+          onClick: () => navigate("/login"),
+          // variant: 'main' (생략 시 기본값)
+        }}
+        secondaryButton={{
+          text: "다음에 하기",
+          onClick: () => setShowModal(false),
+          // variant: 'backgroundGray' (생략 시 기본값)
+        }}
+      />
     </div>
   );
 }
