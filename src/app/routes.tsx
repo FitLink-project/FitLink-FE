@@ -10,6 +10,7 @@ import SocialTermsAgreementPage from "../pages/auth/SocialTermsAgreementPage";
 import PrivacyAgreementPage from "../pages/auth/PrivacyAgreementPage";
 import ServiceTermsPage from "../pages/auth/ServiceTermsPage";
 import LocationServicePage from "../pages/auth/LocationServicePage";
+import FitnessLandingPage from "../pages/fitness/FitnessLandingPage";
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +56,10 @@ export const router = createBrowserRouter([
         path: "/location-service",
         element: <LocationServicePage />,
       },
+      {
+        path: "/fitness-landing",
+        element: <FitnessLandingPage />,
+      },
     ],
   },
 ]);
-
