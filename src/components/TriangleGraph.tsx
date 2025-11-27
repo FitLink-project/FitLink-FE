@@ -1,4 +1,3 @@
-import React from "react";
 import type { TriangleGraphProps } from "../types/graphProps";
 
 export default function TriangleGraph({

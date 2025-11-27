@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import Modal from "./Modal";
@@ -67,6 +67,7 @@ export default function MeasurementOptionCards() {
         onClick={() => {
           if (isLoggedIn) {
             navigate("/");
+            setIsLoggedIn(false); // 그냥 부르는 거
           } else {
             setShowModal(true);
           }
