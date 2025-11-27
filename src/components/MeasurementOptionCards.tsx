@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "./Button";
-import arcGauge from "../../assets/Gauge/arc-gauge.png";
-import rainbowGauge from "../../assets/Gauge/rainbow-gauge.png";
+import arcGauge from "../assets/Gauge/arc-gauge.png";
+import rainbowGauge from "../assets/Gauge/rainbow-gauge.png";
 
 export default function MeasurementOptionCards() {
   return (
