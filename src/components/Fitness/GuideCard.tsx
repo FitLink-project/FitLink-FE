@@ -6,7 +6,7 @@ interface GuideCardProps {
 }
 
 export default function GuideCard({
-  title = "앉아윗몸앞으로굽히기 간단 측정 방법",
+  title = "앉아윗몸앞으로굽히기 간단 측정 방법 🌟",
   supplies = "줄자 또는 막대자",
   steps = [
     "무릎을 펴고 앉아주세요",
@@ -15,16 +15,12 @@ export default function GuideCard({
     "양손이 줄자에 닿은 지점을 기록합니다",
     "기준선(30cm)을 넘으면 양수,\n기준선을 넘지 못하면 음수로 기록합니다",
   ],
-  examples = [
-    "ex) 실제 값: 33cm → 기록 값: 3cm",
-    "ex) 실제 값: 28cm → 기록 값: -2cm",
-  ],
+  examples = [],
 }: GuideCardProps) {
   return (
     <div className="w-full bg-white rounded-2xl p-6 shadow-[0_0_20px_0_rgba(0,0,0,0.1)]">
       <div className="flex items-center gap-1 mb-3">
         <h3 className="font-bold text-darkGray leading-tight">{title}</h3>
-        <span className="text-xl">✨</span>
       </div>
 
       <div className="text-xs mb-6">
@@ -53,13 +49,13 @@ export default function GuideCard({
         })}
       </div>
 
-      {examples && examples.length > 0 && (
+      {examples?.length ? (
         <div className="bg-white rounded-lg p-3 text-xs text-darkGray space-y-1">
           {examples.map((ex, i) => (
             <p key={i}>{ex}</p>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
