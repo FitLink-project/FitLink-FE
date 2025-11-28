@@ -5,7 +5,8 @@ export type ButtonVariant =
   | "lightBlue"
   | "backgroundGray"
   | "main"
-  | "measurement";
+  | "measurement"
+  | "white";
 export type ButtonState = "default" | "hover";
 
 export interface ButtonProps
@@ -86,11 +87,11 @@ export default function Button({
       default: [
         "bg-white",
         "text-darkGray",
-        "!h-auto", // 기존 높이 무시
-        "!w-full", // 부모 컨테이너에 맞춤 (기존 너비 무시)
-        "!rounded-[20px]", // 모서리 더 둥글게
-        "!px-0 !py-6", // 내부 여백 재설정
-        "flex flex-col items-center justify-center", // 세로 정렬
+        "!h-auto",
+        "!w-full",
+        "!rounded-[20px]",
+        "!px-0 !py-6",
+        "flex flex-col items-center justify-center",
         "shadow-[0px_0px_10px_0px_rgba(0,0,0,0.05)]",
         "hover:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]",
       ],
@@ -103,6 +104,23 @@ export default function Button({
         "!px-0 !py-6",
         "flex flex-col items-center justify-center",
         "shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]",
+      ],
+    },
+    white: {
+      default: [
+        "bg-white",
+        "text-darkGray",
+        "shadow-[0px_0px_4px_0px_rgba(34,34,34,0.08)]",
+        "border",
+        "border-lineGray",
+        "hover:opacity-80",
+        "active:opacity-80",
+      ],
+      hover: [
+        "text-darkGray",
+        "shadow-[0px_0px_4px_0px_rgba(34,34,34,0.08)]",
+        "border",
+        "border-lineGray",
       ],
     },
   };
