@@ -10,6 +10,7 @@ export interface FormFieldProps {
   children: React.ReactNode;
   className?: string | string[] | (string | undefined | null | false)[];
   labelClassName?: string | string[] | (string | undefined | null | false)[];
+  errorClassName?: string | string[] | (string | undefined | null | false)[];
 }
 
 export default function FormField({
@@ -20,6 +21,7 @@ export default function FormField({
   children,
   className,
   labelClassName,
+  errorClassName,
 }: FormFieldProps) {
   const containerStyles = ["flex", "flex-col", "items-center"];
 
@@ -32,8 +34,11 @@ export default function FormField({
     "font-mplus1",
   ];
 
+  const errorStyles = ["w-[345px]", "mb-1", "text-sm", "font-mplus1"];
+
   const allContainerClasses = clsx(containerStyles, className);
   const allLabelClasses = clsx(labelStyles, labelClassName);
+  const allErrorClasses = clsx(errorStyles, errorClassName);
 
   return (
     <div className={allContainerClasses}>
@@ -49,11 +54,13 @@ export default function FormField({
       </div>
       {children}
       {error && errorMessage && (
-        <div className="w-[345px] mt-2">
-          <ErrorMessage
-            message={errorMessage}
-            style={{ justifyContent: "flex-start" }}
-          />
+        <div className={allErrorClasses}>
+          <div className="w-[345px] mt-2">
+            <ErrorMessage
+              message={errorMessage}
+              style={{ justifyContent: "flex-start" }}
+            />
+          </div>
         </div>
       )}
     </div>
