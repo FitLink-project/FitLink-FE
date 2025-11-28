@@ -27,6 +27,6 @@ export interface FitnessGeneralRequest {
   sitAndReach: number | null; // 앉아윗몸앞으로굽히기
   ymcaStepTest: number | null; // YMCA 스텝 테스트
   sliderStrength: number | null; // 슬라이더 근력
-  sliderPower: number | null; // 슬라이더 파워
+  sliderPower: number | null; // 슬라이더 순발력
   sliderAgility: number | null; // 슬라이더 민첩성
 }
