@@ -21,17 +21,15 @@ export default function GuideCard({
   ],
 }: GuideCardProps) {
   return (
-    <div className="w-full bg-graphGray rounded-2xl p-6 shadow-sm border border-gray-100">
+    <div className="w-full bg-white rounded-2xl p-6 shadow-[0_0_20px_0_rgba(0,0,0,0.1)]">
       <div className="flex items-center gap-1 mb-3">
-        <h3 className="text-lg font-bold text-gray-800 leading-tight">
-          {title}
-        </h3>
+        <h3 className="font-bold text-darkGray leading-tight">{title}</h3>
         <span className="text-xl">✨</span>
       </div>
 
-      <div className="text-sm mb-6">
-        <span className="text-blue-500 font-bold mr-2">준비물 |</span>
-        <span className="text-blue-400">{supplies}</span>
+      <div className="text-xs mb-6">
+        <span className="text-secondBlue font-bold mr-2">준비물 |</span>
+        <span className="text-secondBlue">{supplies}</span>
       </div>
 
       <div className="flex flex-col">
@@ -40,14 +38,14 @@ export default function GuideCard({
           return (
             <div key={index} className="flex gap-4 relative">
               <div className="flex flex-col items-center min-w-[24px]">
-                <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs font-bold flex items-center justify-center z-10 shrink-0">
+                <div className="w-6 h-6 rounded-full bg-secondBlue text-white text-xs font-bold flex items-center justify-center z-10 shrink-0">
                   {index + 1}
                 </div>
                 {!isLast && (
-                  <div className="w-[2px] bg-blue-200 h-full absolute top-6 bottom-0 left-[11px] -translate-x-1/2"></div>
+                  <div className="w-[2px] bg-secondBlue h-full absolute top-6 bottom-0 left-[11px] -translate-x-1/2"></div>
                 )}
               </div>
-              <p className="text-gray-600 text-sm pb-6 leading-relaxed whitespace-pre-line break-keep">
+              <p className="text-darkGray text-xs pb-6 leading-relaxed whitespace-pre-line break-keep">
                 {step}
               </p>
             </div>
@@ -56,7 +54,7 @@ export default function GuideCard({
       </div>
 
       {examples && examples.length > 0 && (
-        <div className="mt-2 bg-white border border-gray-100 rounded-lg p-3 text-sm text-gray-500 space-y-1">
+        <div className="bg-white rounded-lg p-3 text-xs text-darkGray space-y-1">
           {examples.map((ex, i) => (
             <p key={i}>{ex}</p>
           ))}
