@@ -20,6 +20,7 @@ export default function FormField({
   errorMessage,
   children,
   className,
+  // 체력 진단 결과 입력 폼에서 라벨과 에러 메시지가 튀어 나가는 이슈 때문에 해당 클래스들을 추가
   labelClassName,
   errorClassName,
 }: FormFieldProps) {
