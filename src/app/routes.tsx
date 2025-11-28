@@ -11,6 +11,8 @@ import PrivacyAgreementPage from "../pages/auth/PrivacyAgreementPage";
 import ServiceTermsPage from "../pages/auth/ServiceTermsPage";
 import LocationServicePage from "../pages/auth/LocationServicePage";
 import FitnessLandingPage from "../pages/fitness/FitnessLandingPage";
+import FitnessKookminPage from "../pages/fitness/FitnessKookminPage";
+import FitnessGeneralPage from "../pages/fitness/FitnessGeneralPage";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +61,14 @@ export const router = createBrowserRouter([
       {
         path: "/fitness-landing",
         element: <FitnessLandingPage />,
+      },
+      {
+        path: "/fitness-kookmin",
+        element: <FitnessKookminPage />,
+      },
+      {
+        path: "/fitness-general",
+        element: <FitnessGeneralPage />,
       },
     ],
   },
