@@ -49,7 +49,7 @@ export default function AbilitySlider({
         />
 
         {/* 트랙 배경 */}
-        <div className="absolute w-full h-3 bg-gray-100 rounded-full overflow-hidden z-0">
+        <div className="absolute w-full h-3 bg-graphGray rounded-full overflow-hidden z-0">
           <div
             className="h-full bg-blue-500 rounded-l-full transition-all duration-100 ease-out"
             style={{ width: `${getPercent()}%` }}
@@ -71,15 +71,15 @@ export default function AbilitySlider({
       {/* 하단 눈금 */}
       <div className="flex justify-between text-xs text-gray-400 mt-2 px-1">
         <div className="flex flex-col items-center gap-1">
-          <div className="w-[1px] h-2 bg-gray-300"></div>
+          <div className="w-[1px] h-2 bg-graphGray"></div>
           <span>{leftLabel}</span>
         </div>
         <div className="flex flex-col items-center gap-1">
-          <div className="w-[1px] h-2 bg-gray-300"></div>
+          <div className="w-[1px] h-2 bg-graphGray"></div>
           <span>{centerLabel}</span>
         </div>
         <div className="flex flex-col items-center gap-1">
-          <div className="w-[1px] h-2 bg-gray-300"></div>
+          <div className="w-[1px] h-2 bg-graphGray"></div>
           <span>{rightLabel}</span>
         </div>
       </div>

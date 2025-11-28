@@ -5,10 +5,11 @@ interface MeasurementInputProps {
   label: string;
   value: number | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isError: boolean;
-  errorMessage: string;
+  isError?: boolean;
+  errorMessage?: string;
   unit: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export default function MeasurementInput({
@@ -19,6 +20,7 @@ export default function MeasurementInput({
   errorMessage,
   unit,
   placeholder = "00.0",
+  disabled,
 }: MeasurementInputProps) {
   return (
     <FormField
@@ -41,6 +43,7 @@ export default function MeasurementInput({
             borderColor: isError ? "red" : "#ccc",
           }}
           className="w-full pr-10 text-left placeholder:text-left"
+          disabled={disabled}
         />
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">
           {unit}

@@ -21,7 +21,7 @@ export default function GuideCard({
   ],
 }: GuideCardProps) {
   return (
-    <div className="w-full bg-gray-50 rounded-2xl p-6 shadow-sm border border-gray-100">
+    <div className="w-full bg-graphGray rounded-2xl p-6 shadow-sm border border-gray-100">
       <div className="flex items-center gap-1 mb-3">
         <h3 className="text-lg font-bold text-gray-800 leading-tight">
           {title}

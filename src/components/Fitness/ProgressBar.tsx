@@ -12,7 +12,7 @@ export default function ProgressBar({
 
   return (
     // 배경색 (회색)
-    <div className="w-full h-1 bg-gray-200">
+    <div className="w-full h-1 bg-graphGray">
       {/* 채워지는 색 (파란색) & 애니메이션 */}
       <div
         className="h-full bg-blue-500 transition-all duration-300 ease-in-out"
