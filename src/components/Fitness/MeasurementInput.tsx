@@ -3,7 +3,7 @@ import Input from "../Input";
 
 interface MeasurementInputProps {
   label: string;
-  value: number | undefined;
+  value: number | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isError: boolean;
   errorMessage: string;
