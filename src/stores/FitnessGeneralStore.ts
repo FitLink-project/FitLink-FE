@@ -6,7 +6,7 @@ interface FitnessGeneralStore {
   setFormData: (data: Partial<FitnessGeneralRequest>) => void;
 }
 
-export const useFitnessKookminStore = create<FitnessGeneralStore>((set) => ({
+export const useFitnessGeneralStore = create<FitnessGeneralStore>((set) => ({
   formData: {
     gender: "M",
     birthDate: "",
@@ -18,7 +18,6 @@ export const useFitnessKookminStore = create<FitnessGeneralStore>((set) => ({
     ymcaStepTest: null,
     sitAndReach: null,
     sitUp: null,
-    crossSitUp: null,
   },
   setFormData: (data) =>
     set((state) => ({ formData: { ...state.formData, ...data } })),
