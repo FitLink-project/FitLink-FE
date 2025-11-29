@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "react-feather";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import ErrorMessage from "../../components/ErrorMessage";
 import FormField from "../../components/FormField";
 import PageHeader from "../../components/PageHeader";
-import Checkbox from "../../components/Checkbox";
+import TermsAgreement from "../../components/TermsAgreement";
 import { signup } from "../../api/user";
 import { ERROR_CODES, type ApiError } from "../../types/user";
 import addProfileIcon from "../../assets/profile/add-profile.png";
@@ -60,15 +60,25 @@ export default function SignupPage() {
     if (termsError) setTermsError(false);
   };
 
-  const handleIndividualAgreeChange = () => {
+  const handlePrivacyAgreeChange = (checked: boolean) => {
+    setPrivacyAgree(checked);
     if (termsError) setTermsError(false);
   };
 
-  // 4개 약관이 모두 선택되면 전체 동의도 자동 선택
-  useEffect(() => {
-    const allChecked = privacyAgree && serviceAgree && over14Agree && locationAgree;
-    setAllAgree(allChecked);
-  }, [privacyAgree, serviceAgree, over14Agree, locationAgree]);
+  const handleServiceAgreeChange = (checked: boolean) => {
+    setServiceAgree(checked);
+    if (termsError) setTermsError(false);
+  };
+
+  const handleOver14AgreeChange = (checked: boolean) => {
+    setOver14Agree(checked);
+    if (termsError) setTermsError(false);
+  };
+
+  const handleLocationAgreeChange = (checked: boolean) => {
+    setLocationAgree(checked);
+    if (termsError) setTermsError(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -371,78 +381,20 @@ export default function SignupPage() {
             </div>
 
             {/* 약관 동의 */}
-            <div className="w-[345px] mt-4 mb-4">
-              <div className="mb-3">
-                <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-lg font-semibold text-softBlack font-mplus1 leading-[150%]">약관 전체 동의</span>
-                  <Checkbox
-                    checked={allAgree}
-                    onChange={handleAllAgreeChange}
-                    error={termsError && !allAgree}
-                  />
-                </label>
-              </div>
-              <div className="border-t border-lineGray mb-3"></div>
-              <div className="space-y-2 pl-3">
-                <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-sm text-gray font-mplus1 leading-[100%]">
-                    <Link to="/privacy-agreement" className="underline" onClick={(e) => e.stopPropagation()}>개인정보 수집/이용</Link> <span className="text-gray"> 동의(필수)</span>
-                  </span>
-                  <Checkbox
-                    checked={privacyAgree}
-                    onChange={(checked) => {
-                      setPrivacyAgree(checked);
-                      handleIndividualAgreeChange();
-                    }}
-                    error={termsError && !privacyAgree}
-                  />
-                </label>
-                <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-sm text-gray font-mplus1 leading-[100%]">
-                  서비스<Link to="/service-terms" className="underline" onClick={(e) => e.stopPropagation()}> 이용약관</Link> <span className="text-gray">(필수)</span>
-                  </span>
-                  <Checkbox
-                    checked={serviceAgree}
-                    onChange={(checked) => {
-                      setServiceAgree(checked);
-                      handleIndividualAgreeChange();
-                    }}
-                    error={termsError && !serviceAgree}
-                  />
-                </label>
-                <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-sm text-gray font-mplus1 leading-[100%]">
-                    <span >만 14세 이상 서비스 이용 동의</span> <span className="text-gray">(필수)</span>
-                  </span>
-                  <Checkbox
-                    checked={over14Agree}
-                    onChange={(checked) => {
-                      setOver14Agree(checked);
-                      handleIndividualAgreeChange();
-                    }}
-                    error={termsError && !over14Agree}
-                  />
-                </label>
-                <label className="flex items-center justify-between cursor-pointer" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-sm text-gray font-mplus1 leading-[100%]">
-                    <Link to="/location-service" className="underline" onClick={(e) => e.stopPropagation()}>위치기반 서비스</Link> <span className="text-gray"> 이용약관(필수)</span>
-                  </span>
-                  <Checkbox
-                    checked={locationAgree}
-                    onChange={(checked) => {
-                      setLocationAgree(checked);
-                      handleIndividualAgreeChange();
-                    }}
-                    error={false}
-                  />
-                </label>
-              </div>
-              {termsError && termsErrorMessage && (
-                <div className="mt-4">
-                  <ErrorMessage message={termsErrorMessage} style={{ justifyContent: 'flex-start' }} />
-                </div>
-              )}
-            </div>
+            <TermsAgreement
+              allAgree={allAgree}
+              privacyAgree={privacyAgree}
+              serviceAgree={serviceAgree}
+              over14Agree={over14Agree}
+              locationAgree={locationAgree}
+              onAllAgreeChange={handleAllAgreeChange}
+              onPrivacyAgreeChange={handlePrivacyAgreeChange}
+              onServiceAgreeChange={handleServiceAgreeChange}
+              onOver14AgreeChange={handleOver14AgreeChange}
+              onLocationAgreeChange={handleLocationAgreeChange}
+              termsError={termsError}
+              termsErrorMessage={termsErrorMessage}
+            />
 
 
             {/* 완료 버튼 */}
