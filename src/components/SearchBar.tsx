@@ -1,6 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+// 이미지 import
+import SearchBlack from "../assets/Icon/Search-Black.png";
+import BackDefault from "../assets/Icon/Back-Default.png";
+import DeleteDefault from "../assets/Icon/Delete-Default.png";
+
 interface SearchBarProps {
   type?: "default" | "input";
   value?: string;
@@ -28,13 +33,13 @@ export default function SearchBar({
       {/* 왼쪽 아이콘 */}
       {type === "default" ? (
         <img
-          src="/assets/Icon/Terms/Search-Black.png"
+          src={SearchBlack}
           alt="search"
           className="w-5 h-5 mr-3"
         />
       ) : (
         <img
-          src="/assets/Icon/Terms/Back-Default.png"
+          src={BackDefault}
           alt="back"
           className="w-5 h-5 mr-3 cursor-pointer"
           onClick={() => navigate(-1)}
@@ -56,7 +61,7 @@ export default function SearchBar({
         <button onClick={onClear}>
           <div className="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
             <img
-              src="/assets/Icon/Terms/Delete-Default.png"
+              src={DeleteDefault}
               alt="clear"
               className="w-3 h-3"
             />

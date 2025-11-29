@@ -1,27 +1,39 @@
 import { useEffect } from "react";
 
-interface MapContainerProps {
-  center?: { lat: number; lng: number };
+declare global {
+  interface Window {
+    Tmapv3: any;
+  }
 }
 
 export default function MapContainer({
   center = { lat: 37.5665, lng: 126.978 },
-}: MapContainerProps) {
+}) {
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://apis.openapi.sk.com/tmap/js?version=1&appKey=${
-      import.meta.env.VITE_TMAP_API_KEY
-    }`;
-    script.onload = () => {
-      new window.Tmapv2.Map("mapDiv", {
-        center: new window.Tmapv2.LatLng(center.lat, center.lng),
-        width: "100%",
-        height: "100%",
-      });
-    };
+    const timer = setInterval(() => {
+      if (window.Tmapv3) {
+        console.log("Tmapv3 로딩 완료!");
 
-    document.head.appendChild(script);
+        new window.Tmapv3.Map("mapDiv", {
+          center: new window.Tmapv3.LatLng(center.lat, center.lng),
+          width: "100%",
+          height: "100%",
+          zoom: 16,
+        });
+
+        clearInterval(timer);
+      } else {
+        console.log("Tmapv3 로딩 대기중…");
+      }
+    }, 150);
+
+    return () => clearInterval(timer);
   }, [center]);
 
-  return <div id="mapDiv" className="w-full h-full" />;
+  return (
+    <div
+      id="mapDiv"
+      style={{ width: "100%", height: "100%", background: "#eee" }}
+    />
+  );
 }

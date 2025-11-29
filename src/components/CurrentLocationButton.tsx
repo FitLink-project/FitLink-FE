@@ -1,5 +1,5 @@
 // src/components/CurrentLocationButton.tsx
-import MapClick from "@/assets/Icon/Map-Click.png";
+import MapClick from "../assets/Icon/Map-Click.png";
 
 interface Props {
   onClick: () => void;
