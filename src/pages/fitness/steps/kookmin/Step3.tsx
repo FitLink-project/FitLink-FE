@@ -5,15 +5,14 @@ import MeasurementInput from "../../../../components/Fitness/MeasurementInput";
 import { useFitnessKookminStore } from "../../../../stores/FitnessKookminStore";
 import { useState } from "react";
 import ErrorMessage from "../../../../components/ErrorMessage";
+import { postKookminFitness } from "../../../../api/fitness";
+import { useNavigate } from "react-router-dom";
 
 export default function Step2() {
   const { formData, setFormData } = useFitnessKookminStore();
-
-  // 제출 상태
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  // 에러
   const [showError, setShowError] = useState(false);
+  const navigate = useNavigate();
 
   // 숫자 입력 처리 함수
   const handleChange =
@@ -31,8 +30,8 @@ export default function Step2() {
       }
     };
 
-  // 다음 버튼 클릭
-  const handleNext = () => {
+  // 최종 제출 처리
+  const handleNext = async () => {
     // 둘 다 비어있으면 에러
     if (!formData.sitUp && !formData.crossSitUp) {
       setShowError(true);
@@ -40,8 +39,21 @@ export default function Step2() {
     }
 
     // 에러 없으면 초기화
-    console.log(formData);
+    console.log("보낼 데이터:", formData);
     setIsSubmitted(true);
+
+    // API 호출
+    try {
+      const response = await postKookminFitness(formData);
+      console.log("서버 응답:", response);
+      navigate("/fitness/result", {
+        state: { result: response },
+      });
+    } catch (error) {
+      console.error("제출 중 오류 발생:", error);
+      alert("제출에 실패했습니다. 다시 시도해주세요.");
+      setIsSubmitted(false);
+    }
   };
 
   // 둘 중 하나라도 입력되어 있는지에 따라 다른 필드 disabled

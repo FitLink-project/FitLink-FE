@@ -1,0 +1,35 @@
+/**
+ * Fitness 관련 API 모듈
+ * POST 요청만 포함
+ */
+
+import { axiosConfig } from "./axios.config";
+import type {
+  FitnessKookminRequest,
+  FitnessGeneralRequest,
+  FitnessResponse,
+} from "../types/fitness";
+
+/**
+ * 국민체력100 인증 기반 측정 결과 계산 API
+ * @param data FitnessKookminRequest
+ * @returns FitnessResponse
+ */
+export const postKookminFitness = async (
+  data: FitnessKookminRequest
+): Promise<FitnessResponse> => {
+  const res = await axiosConfig.post("/api/fitness/kookmin", data);
+  return res.data;
+};
+
+/**
+ * 간단 체력 측정 결과 계산 API
+ * @param data FitnessGeneralRequest
+ * @returns FitnessResponse
+ */
+export const postGeneralFitness = async (
+  data: FitnessGeneralRequest
+): Promise<FitnessResponse> => {
+  const res = await axiosConfig.post("/api/fitness/general", data);
+  return res.data;
+};

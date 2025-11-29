@@ -4,27 +4,33 @@ import { useFitnessGeneralStore } from "../../../../stores/FitnessGeneralStore";
 import { useState } from "react";
 import AbilitySlider from "../../../../components/Fitness/AbilitySlider";
 import LoadingOverlay from "../../../../components/Fitness/LoadingOverlay";
+import { postGeneralFitness } from "../../../../api/fitness";
+import { useNavigate } from "react-router-dom";
 
 export default function Step5() {
   const { formData, setFormData } = useFitnessGeneralStore();
-
-  // 제출 상태
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const navigate = useNavigate();
 
-  // 다음 버튼 클릭
-  const handleNext = () => {
-    setFormData({
-      sliderStrength: formData.sliderStrength ?? 50,
-      sliderAgility: formData.sliderAgility ?? 50,
-      sliderPower: formData.sliderPower ?? 50,
-    });
-
-    // 최종 데이터 확인용 로그
-    console.log({
-      ...formData,
-    });
-
+  // 최종 제출 처리
+  const handleSubmit = async () => {
+    console.log("보낼 데이터:", formData);
     setIsSubmitted(true);
+
+    try {
+      // API 호출
+      const response = await postGeneralFitness(formData);
+      console.log("서버 응답:", response);
+
+      // 결과 페이지로 이동 (응답 값 전달)
+      navigate("/fitness/result", {
+        state: { result: response },
+      });
+    } catch (error) {
+      console.error("제출 중 오류 발생:", error);
+      alert("제출에 실패했습니다. 다시 시도해주세요.");
+      setIsSubmitted(false);
+    }
   };
 
   return (
@@ -64,13 +70,12 @@ export default function Step5() {
           onChange={(val) => setFormData({ sliderPower: val })}
         />
 
-        {/* 다음 버튼 */}
-        <Button type="button" variant="main" onClick={handleNext}>
-          다음
+        {/* 제출 버튼 */}
+        <Button type="button" variant="main" onClick={handleSubmit}>
+          결과 보기
         </Button>
       </form>
 
-      {/* 로딩 애니메이션 */}
       {isSubmitted && <LoadingOverlay />}
     </>
   );
