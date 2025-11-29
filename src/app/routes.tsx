@@ -13,7 +13,7 @@ import LocationServicePage from "../pages/auth/LocationServicePage";
 import FitnessLandingPage from "../pages/fitness/FitnessLandingPage";
 import GymPage from "../pages/gym/Gym";
 import ReportPage from "../pages/report/Report";
-import MyPage from "../pages/my/Mypage";
+import MyPage from "../pages/mypage/MyPage";
 
 export const router = createBrowserRouter([
   {
