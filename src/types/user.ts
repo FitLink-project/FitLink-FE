@@ -63,3 +63,37 @@ export interface LoginResponse {
   accessToken: string;
 }
 
+//프로필 수정 요청 (부분 업데이트)
+export interface EditProfileRequest {
+  name?: string;
+  email?: string;
+  password?: string;
+  agreements?: {
+    privacy?: boolean;
+    service?: boolean;
+    over14?: boolean;
+    location?: boolean;
+  };
+  img?: File;
+}
+
+// 프로필 수정 결과 (백엔드 result와 동일)
+export interface EditProfileResult {
+  userId: number;
+  email: string;
+  name: string;
+  profileUrl: string;
+  isActive: boolean;
+  regDate: string;
+  provider: string;
+  deleteDate: string | null;
+  agreements: {
+    privacy: boolean;
+    service: boolean;
+    over14: boolean;
+    location: boolean;
+  };
+}
+
+// 프로필 수정 응답 타입
+export type EditProfileResponse = ApiResponse<EditProfileResult>;

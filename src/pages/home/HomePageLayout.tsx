@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import logoBlue from "../../assets/Full_Logo/logo-blue.png";
 import HomeGauge from "../../assets/Gauge/home-guage.png";
+import BottomBar from "../../components/BottomBar";
 
 interface HomePageLayoutProps {
   children: ReactNode;
   isLoggedIn: boolean;
   onLogout?: () => void;
   showLocationButton?: boolean;
+  onLocationClick?: () => void;  
 }
 
 export default function HomePageLayout({
@@ -15,6 +17,7 @@ export default function HomePageLayout({
   isLoggedIn,
   onLogout,
   showLocationButton = false,
+   onLocationClick,   
 }: HomePageLayoutProps) {
   return (
     <div className="w-full min-h-screen bg-softWhite">
@@ -59,23 +62,28 @@ export default function HomePageLayout({
 
           {/* 지도 섹션 */}
           <div className="w-full h-[253px] bg-softWhite rounded-[10px] p-[10px] shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)]">
-            <div className="flex items-center justify-between mb-[24px]">
+            <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-softBlack font-pretendard leading-[150%]">
                 FitLink가 찾은 주변 공공체육시설 🔥
               </h3>
             </div>
-            <p className="text-xs font-medium text-gray font-pretendard leading-[1.193em] mb-[10px]">
-              서울 용산구 한강대로 345
+            <div className="flex justify-between items-center">
+              <p className="text-xs font-medium text-gray font-pretendard leading-[1.193em] mb-[10px]">
+              서울 용산구 한강대로 345(여기 위치연결)
             </p>
             {showLocationButton && (
               <div className="flex justify-end mb-[10px]">
-                <button className="flex items-center gap-1 px-3 py-[6px] rounded-[30px] border border-lineGray">
+                <button
+                  className="flex items-center gap-1 px-3 py-[6px] rounded-[30px] border border-lineGray"
+                  onClick={onLocationClick}
+                >
                   <span className="text-xs font-medium text-darkGray font-pretendard leading-[1.193em]">
                     내위치
                   </span>
                 </button>
               </div>
             )}
+            </div>
             {/* 지도 영역 */}
             <div className="w-full h-[175px] bg-backgroundGray rounded-[10px] relative">
               {/* 지도 이미지 또는 지도 컴포넌트가 들어갈 자리 */}
@@ -91,42 +99,7 @@ export default function HomePageLayout({
       </div>
 
       {/* BottomBar */}
-      <div className="fixed bottom-0 left-0 right-0 w-full h-[80px] bg-softWhite shadow-[0px_0px_6px_0px_rgba(34,34,34,0.18)]">
-        <div className="w-full h-full flex items-center justify-center px-[35px]">
-          <div className="w-full max-w-[323px] flex justify-between items-center">
-            <Link to="/" className="flex flex-col items-center gap-[7px]">
-              <div className="w-6 h-6 bg-main rounded"></div>
-              <span className="text-sm font-medium text-main font-pretendard leading-[1.193em]">
-                홈
-              </span>
-            </Link>
-            <Link to="/gym" className="flex flex-col items-center gap-[7px]">
-              <div className="w-6 h-6 bg-gray rounded"></div>
-              <span className="text-sm font-medium text-gray font-pretendard leading-[1.193em]">
-                주변시설
-              </span>
-            </Link>
-            <Link to="/fitness" className="flex flex-col items-center gap-[7px]">
-              <div className="w-6 h-6 bg-gray rounded"></div>
-              <span className="text-sm font-medium text-gray font-pretendard leading-[1.193em]">
-                체력진단
-              </span>
-            </Link>
-            <Link to="/report" className="flex flex-col items-center gap-[7px]">
-              <div className="w-6 h-6 bg-gray rounded"></div>
-              <span className="text-sm font-medium text-gray font-pretendard leading-[1.193em]">
-                리포트
-              </span>
-            </Link>
-            <Link to="/my" className="flex flex-col items-center gap-[7px]">
-              <div className="w-6 h-6 bg-gray rounded"></div>
-              <span className="text-sm font-medium text-gray font-pretendard leading-[1.193em]">
-                My
-              </span>
-            </Link>
-          </div>
-        </div>
-      </div>
+      <BottomBar />
     </div>
   );
 }
