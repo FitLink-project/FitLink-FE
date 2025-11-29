@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import PageHeader from "../../components/PageHeader";
 import TermsAgreement from "../../components/TermsAgreement";
+import { useUser } from "../../contexts/UserContext";
 
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://www.fitlink1207.store";
 
@@ -14,6 +15,7 @@ export default function SocialTermsAgreementPage() {
   const [locationAgreed, setLocationAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [termsError, setTermsError] = useState(false);
+  const { setTokenAndLoadUser } = useUser(); 
 
   const navigate = useNavigate();
 
@@ -88,6 +90,7 @@ export default function SocialTermsAgreementPage() {
       if (!response.ok) {
         throw new Error("약관 동의 처리 실패");
       }
+      await setTokenAndLoadUser(token);
 
       // 회원가입 완료 페이지로 이동
       navigate("/signup/complete");

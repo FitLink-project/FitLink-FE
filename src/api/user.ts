@@ -6,7 +6,8 @@ import type {
   SignupResponse, 
   LoginResponse, 
   EditProfileRequest,
-  EditProfileResponse
+  EditProfileResponse,
+  ProfileResponse
 } from '../types/user';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -116,6 +117,34 @@ export async function editProfile(
       Authorization: `Bearer ${accessToken}`,
     },
     body: formData,
+  });
+
+  if (!response.ok) {
+    const errorData: ApiError = await response.json().catch(() => ({
+      isSuccess: false,
+      code: 'COMMON500',
+      message: '서버 에러, 관리자에게 문의 바랍니다.',
+      result: null,
+    }));
+    throw errorData;
+  }
+
+  return response.json();
+}
+/**
+ * 프로필 조회 API
+ * @param accessToken 로그인 시 받은 accessToken
+ * @returns 프로필 정보 응답
+ */
+export async function getProfile(
+  accessToken: string,
+): Promise<ProfileResponse> {
+  const response = await fetch(`${BASE_URL}/api/user/profile`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
   });
 
   if (!response.ok) {

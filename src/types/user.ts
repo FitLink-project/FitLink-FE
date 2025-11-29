@@ -97,3 +97,28 @@ export interface EditProfileResult {
 
 // 프로필 수정 응답 타입
 export type EditProfileResponse = ApiResponse<EditProfileResult>;
+
+// 프로필 조회 결과 타입
+export interface ProfileResult {
+  userId: number;
+  email: string;
+  name: string;
+  profileUrl: string;
+  isActive: boolean;
+  regDate: string;
+  provider: string;
+  deleteDate: string | null;
+  agreements: {
+    privacy: boolean;
+    service: boolean;
+    over14: boolean;
+    location: boolean;
+  };
+  //users_info에서 오는 추가 필드
+  height: number | null;
+  weight: number | null;
+  birthDate: string | null; // "YYYYMMDD"
+  sex: "M" | "F" | null;
+}
+
+export type ProfileResponse = ApiResponse<ProfileResult>;
