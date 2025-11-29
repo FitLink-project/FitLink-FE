@@ -3,12 +3,10 @@ import Button from "../../components/Button";
 import { StrengthGraphCard } from "../../components/graph/StrengthGraphCard";
 
 interface HomePageLoggedInProps {
-  onLogout: () => void;
   hasFitnessResult: boolean; // ✅ 체력진단 기록 여부
 }
 
 export default function HomePageLoggedIn({
-  onLogout,
   hasFitnessResult,
 }: HomePageLoggedInProps) {
   const navigate = useNavigate();

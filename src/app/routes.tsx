@@ -68,7 +68,7 @@ export const router = createBrowserRouter([
       // 정서윤
       { path: "/report", element: <ReportPage /> },
       // 장서원
-      { path: "/my", element: <MyPage /> },
+      { path: "/my", element: <MyPage/> },
     ],
   },
 ]);

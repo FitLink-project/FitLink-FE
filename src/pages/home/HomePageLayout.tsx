@@ -16,7 +16,6 @@ export default function HomePageLayout({
   children,
   isLoggedIn,
   onLogout,
-  showLocationButton = false,
    onLocationClick,   
 }: HomePageLayoutProps) {
   return (
@@ -82,7 +81,7 @@ export default function HomePageLayout({
               <p className="text-xs font-medium text-gray font-pretendard leading-[1.193em] mb-[10px]">
               서울 용산구 한강대로 345(여기 위치연결)
             </p>
-            {showLocationButton && (
+            
               <div className="flex justify-end mb-[10px]">
                 <button
                   className="flex items-center gap-1 px-3 py-[6px] rounded-[30px] border border-lineGray"
@@ -93,7 +92,6 @@ export default function HomePageLayout({
                   </span>
                 </button>
               </div>
-            )}
             </div>
             {/* 지도 영역 */}
             <div className="w-full h-[175px] bg-backgroundGray rounded-[10px] relative">
