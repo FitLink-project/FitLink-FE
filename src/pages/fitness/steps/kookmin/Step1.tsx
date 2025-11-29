@@ -1,9 +1,9 @@
-import Button from "../../../components/Button";
-import FormField from "../../../components/FormField";
-import FormTitle from "../../../components/FormTitle";
-import Select from "../../../components/Select";
-import MeasurementInput from "../../../components/Fitness/MeasurementInput";
-import { useFitnessKookminStore } from "../../../stores/FitnessKookminStore";
+import Button from "../../../../components/Button";
+import FormField from "../../../../components/FormField";
+import FormTitle from "../../../../components/FormTitle";
+import Select from "../../../../components/Select";
+import MeasurementInput from "../../../../components/Fitness/MeasurementInput";
+import { useFitnessKookminStore } from "../../../../stores/FitnessKookminStore";
 import { useState, useEffect } from "react";
 
 interface StepProps {
