@@ -17,9 +17,9 @@ export default function AbilitySlider({
   min = 0,
   max = 100,
   defaultValue = 50,
-  leftLabel = "☹️",
+  leftLabel = "0",
   centerLabel = "50",
-  rightLabel = "😊",
+  rightLabel = "100",
   onChange,
 }: AbilitySliderProps) {
   const [value, setValue] = useState(defaultValue);
