@@ -26,14 +26,24 @@ export default function Step1({ setCurrentStep, NEXT_STEP }: StepProps) {
   });
   const [showErrors, setShowErrors] = useState(false);
 
-  // 날짜 관련 로직
+  // 나이 제한
   const currentYear = new Date().getFullYear();
-  const yearOptions = Array.from({ length: 100 }, (_, i) =>
-    (currentYear - i).toString()
+  const MIN_AGE = 19;
+  const MAX_AGE = 64;
+
+  const maxBirthYear = currentYear - MIN_AGE;
+  const minBirthYear = currentYear - MAX_AGE;
+
+  // 날짜 관련 로직
+  const yearOptions = Array.from(
+    { length: maxBirthYear - minBirthYear + 1 },
+    (_, i) => (maxBirthYear - i).toString()
   );
+
   const monthOptions = Array.from({ length: 12 }, (_, i) =>
     (i + 1).toString().padStart(2, "0")
   );
+
   const dayOptions = () => {
     const y = Number(year);
     const m = Number(month);
