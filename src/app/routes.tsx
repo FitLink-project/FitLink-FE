@@ -11,6 +11,9 @@ import PrivacyAgreementPage from "../pages/auth/PrivacyAgreementPage";
 import ServiceTermsPage from "../pages/auth/ServiceTermsPage";
 import LocationServicePage from "../pages/auth/LocationServicePage";
 import FitnessLandingPage from "../pages/fitness/FitnessLandingPage";
+import GymPage from "../pages/gym/Gym";
+import ReportPage from "../pages/report/Report";
+import MyPage from "../pages/mypage/MyPage";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +63,12 @@ export const router = createBrowserRouter([
         path: "/fitness-landing",
         element: <FitnessLandingPage />,
       },
+      //김채원
+      { path: "/gym", element: <GymPage /> },
+      // 정서윤
+      { path: "/report", element: <ReportPage /> },
+      // 장서원
+      { path: "/my", element: <MyPage/> },
     ],
   },
 ]);
