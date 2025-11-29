@@ -88,7 +88,7 @@ const handleLocationAgree = async () => {
         onLocationClick={openLocationModal}
       >
         {isLoggedIn ? (
-          <HomePageLoggedIn onLogout={handleLogout} />
+          <HomePageLoggedIn onLogout={handleLogout}   hasFitnessResult={false}/>
         ) : (
           <HomePageNotLoggedIn />
         )}

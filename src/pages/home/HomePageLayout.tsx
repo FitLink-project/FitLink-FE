@@ -45,8 +45,14 @@ export default function HomePageLayout({
       <div className="w-full px-4 pt-[31px] pb-[80px]">
         <div className="w-full max-w-[361px] mx-auto flex flex-col gap-[31px]">
           {/* 배너 */}
-          <div className="w-full h-[102px] bg-main rounded-[10px] p-[14px] relative overflow-hidden shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)]">
-            <div className="relative z-10 flex flex-col gap-[10px]">
+          <button
+            type="button"
+            onClick={() => window.open("https://nfa.kspo.or.kr/beforeReserve.kspo", "_blank")}
+            className="w-full h-[102px] bg-main rounded-[10px] p-[14px] relative overflow-hidden shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)]
+                      transition-transform duration-150 ease-out
+                      hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <div className="relative z-10 flex flex-col gap-[10px] text-left">
               <h3 className="text-[18px] font-bold text-softWhite font-pretendard leading-[150%]">
                 FitLink 체력진단 결과를 더 정확하게!
               </h3>
@@ -54,11 +60,16 @@ export default function HomePageLayout({
                 체력인증센터 예약하고 국민체력 100 측정하기
               </p>
             </div>
-            {/* 배경 이미지 효과 */}
-            <div className="absolute inset-0 opacity-60 ">
-              <img src={HomeGauge} alt="" className="w-[161px] h-[75px] absolute right-0 bottom-0" />
+
+            <div className="absolute inset-0 opacity-60">
+              <img
+                src={HomeGauge}
+                alt=""
+                className="w-[161px] h-[75px] absolute right-0 bottom-0"
+              />
             </div>
-          </div>
+          </button>
+
 
           {/* 지도 섹션 */}
           <div className="w-full h-[253px] bg-softWhite rounded-[10px] p-[10px] shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)]">
