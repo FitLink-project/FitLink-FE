@@ -51,7 +51,12 @@ export default function FacilityMapPage() {
         </div>
 
         <div className="absolute bottom-24 right-4 z-20">
-          <CurrentLocationButton />
+          <CurrentLocationButton 
+            onClick={() => {
+                console.log("내 위치로 이동!");
+                // 이후 여기에 myLocation 업데이트 함수 넣을 예정
+            }} 
+            />
         </div>
       </div>
 
