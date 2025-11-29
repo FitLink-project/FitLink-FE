@@ -19,7 +19,7 @@ export default function Step1({ setCurrentStep, NEXT_STEP }: StepProps) {
   const [day, setDay] = useState(formData.birthDate.slice(6, 8));
 
   const [errors, setErrors] = useState({
-    gender: false,
+    sex: false,
     birthDate: false,
     height: false,
     weight: false,
@@ -58,7 +58,7 @@ export default function Step1({ setCurrentStep, NEXT_STEP }: StepProps) {
 
   const handleNext = () => {
     const newErrors = {
-      gender: !formData.gender,
+      sex: !formData.sex,
       birthDate: birthDateIncomplete(),
       height: !formData.height,
       weight: !formData.weight,
@@ -94,27 +94,27 @@ export default function Step1({ setCurrentStep, NEXT_STEP }: StepProps) {
         {/* 성별 */}
         <FormField
           label="성별"
-          error={showErrors && errors.gender}
+          error={showErrors && errors.sex}
           errorMessage="성별을 선택해주세요"
           className="col-span-2"
         >
           <div className="flex gap-4 items-center justify-center w-full">
             <Button
-              variant={formData.gender === "M" ? "main" : "white"}
-              onClick={() => setFormData({ gender: "M" })}
+              variant={formData.sex === "M" ? "main" : "white"}
+              onClick={() => setFormData({ sex: "M" })}
               style={{
                 border: "1px solid",
-                borderColor: showErrors && errors.gender ? "red" : "#ccc",
+                borderColor: showErrors && errors.sex ? "red" : "#ccc",
               }}
             >
               남
             </Button>
             <Button
-              variant={formData.gender === "F" ? "main" : "white"}
-              onClick={() => setFormData({ gender: "F" })}
+              variant={formData.sex === "F" ? "main" : "white"}
+              onClick={() => setFormData({ sex: "F" })}
               style={{
                 border: "1px solid",
-                borderColor: showErrors && errors.gender ? "red" : "#ccc",
+                borderColor: showErrors && errors.sex ? "red" : "#ccc",
               }}
             >
               여

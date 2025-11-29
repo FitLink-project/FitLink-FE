@@ -1,6 +1,10 @@
+/**
+ * 국민 체력 100 평가 요청 DTO
+ * 백엔드 FitnessKookminRequestDTO 매핑
+ */
 export interface FitnessKookminRequest {
   // Step 1: 기본 정보
-  gender: "M" | "F";
+  sex: "M" | "F";
   birthDate: string; // YYYYMMDD
   height: number | null;
   weight: number | null;
@@ -15,9 +19,13 @@ export interface FitnessKookminRequest {
   crossSitUp: number | null; // 교차윗몸일으키기
 }
 
+/**
+ * 간단 체력 평가 요청 DTO
+ * 백엔드 FitnessGeneralRequestDTO 매핑
+ */
 export interface FitnessGeneralRequest {
   // Step 1: 기본 정보
-  gender: "M" | "F";
+  sex: "M" | "F";
   birthDate: string; // YYYYMMDD
   height: number | null;
   weight: number | null;
@@ -29,4 +37,43 @@ export interface FitnessGeneralRequest {
   sliderStrength: number | null; // 슬라이더 근력
   sliderPower: number | null; // 슬라이더 순발력
   sliderAgility: number | null; // 슬라이더 민첩성
+}
+
+/**
+ * 체력 평가 결과 응답 DTO
+ * 백엔드 FitnessResponseDTO 매핑
+ */
+export interface FitnessResponse {
+  strength: number | null; // 근력
+  muscular: number | null; // 근지구력
+  flexibility: number | null; // 유연성
+  cardiopulmonary: number | null; // 심폐지구력
+  agility: number | null; // 민첩성
+  quickness: number | null; // 순발력
+  average: FitnessAverage | null; // 대한민국 평균 데이터
+  userInfo: UserInfo | null; // 사용자 신체 정보
+}
+
+/**
+ * 대한민국 평균 측정값
+ * FitnessResponseDTO.FitnessAverage
+ */
+export interface FitnessAverage {
+  gripStrength: number | null;
+  sitUp: number | null;
+  sitAndReach: number | null;
+  shuttleRun: number | null;
+  sprint: number | null;
+  standingLongJump: number | null;
+}
+
+/**
+ * 사용자 신체 정보
+ * FitnessResponseDTO.UserInfo
+ */
+export interface UserInfo {
+  sex: "M" | "F";
+  birthDate: string; // YYYYMMDD
+  height: number | null;
+  weight: number | null;
 }
