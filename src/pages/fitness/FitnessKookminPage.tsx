@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PageHeader from "../../components/PageHeader";
 import ProgressBar from "../../components/Fitness/ProgressBar";
-import Step1 from "./steps/Step1";
+import Step1 from "./steps/kookmin/Step1";
 import Step2 from "./steps/kookmin/Step2";
 import Step3 from "./steps/kookmin/Step3";
 

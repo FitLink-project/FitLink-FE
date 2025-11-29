@@ -1,8 +1,11 @@
 import { useState } from "react";
 import PageHeader from "../../components/PageHeader";
 import ProgressBar from "../../components/Fitness/ProgressBar";
-import Step1 from "./steps/Step1";
+import Step1 from "./steps/general/Step1";
 import Step2 from "./steps/general/Step2";
+import Step3 from "./steps/general/Step3";
+import Step4 from "./steps/general/Step4";
+import Step5 from "./steps/general/Step5";
 
 export default function FitnessGeneralPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -18,6 +21,16 @@ export default function FitnessGeneralPage() {
         return (
           <Step2 setCurrentStep={setCurrentStep} NEXT_STEP={currentStep + 1} />
         );
+      case 3:
+        return (
+          <Step3 setCurrentStep={setCurrentStep} NEXT_STEP={currentStep + 1} />
+        );
+      case 4:
+        return (
+          <Step4 setCurrentStep={setCurrentStep} NEXT_STEP={currentStep + 1} />
+        );
+      case 5:
+        return <Step5 />;
     }
   };
 
