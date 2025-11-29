@@ -12,13 +12,6 @@ import ServiceTermsPage from "../pages/auth/ServiceTermsPage";
 import LocationServicePage from "../pages/auth/LocationServicePage";
 import FitnessLandingPage from "../pages/fitness/FitnessLandingPage";
 
-import FacilityMapPage from "../pages/facility/FacilityMapPage";
-import FacilitySearchPage from "../pages/facility/FacilitySearchPage";
-import FacilitySearchResultPage from "../pages/facility/FacilitySearchResultPage";
-import StationResultMapPage from "../pages/facility/StationResultMapPage";
-import FacilityDetailPage from "../pages/facility/FacilityDetailPage";
-import FacilityProgramsPage from "../pages/facility/FacilityProgramsPage";
-
 export const router = createBrowserRouter([
   {
     element: <App />,
@@ -67,45 +60,6 @@ export const router = createBrowserRouter([
         path: "/fitness-landing",
         element: <FitnessLandingPage />,
       },
-
-
-      // A. 주변시설 지도 페이지
-      {
-        path: "/facility",
-        element: <FacilityMapPage />,
-      },
-
-      // B. 검색화면
-      {
-        path: "/facility/search",
-        element: <FacilitySearchPage />,
-      },
-
-      // C. 검색결과 화면 (keyword는 query string으로 받음)
-      {
-        path: "/facility/search/result",
-        element: <FacilitySearchResultPage />,
-      },
-
-      // D. 지하철역 검색 → 지도 이동 페이지
-      {
-        path: "/facility/station/:stationId",
-        element: <StationResultMapPage />,
-      },
-
-      // E. 공공체육시설 상세 페이지
-      {
-        path: "/facility/detail/:facilityId",
-        element: <FacilityDetailPage />,
-      },
-
-      // F. 공공체육시설 프로그램 목록 페이지
-      {
-        path: "/facility/detail/:facilityId/programs",
-        element: <FacilityProgramsPage />,
-      },
-
-
     ],
   },
 ]);
