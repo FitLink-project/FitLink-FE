@@ -17,10 +17,13 @@ export default function OAuth2Redirect() {
     const error = searchParams.get("error");
     const errorMessage = searchParams.get("message");
     const needsEmailUpdate = searchParams.get("needsEmailUpdate") === "true";
+    const needsTermsAgreement = searchParams.get("needsTermsAgreement") === "true";
 
     console.log("토큰:", token ? "있음" : "없음");
     console.log("에러:", error);
     console.log("에러 메시지:", errorMessage);
+    console.log("needsEmailUpdate:", needsEmailUpdate);
+    console.log("needsTermsAgreement:", needsTermsAgreement);
 
     // 에러 처리
     if (error) {
@@ -50,8 +53,15 @@ export default function OAuth2Redirect() {
       localStorage.setItem("accessToken", token);
       console.log("로그인 성공! 토큰 저장 완료");
 
-      // 이메일 업데이트가 필요한 경우
-      if (needsEmailUpdate) {
+      // 약관 동의가 필요한 경우 (신규 사용자)
+      if (needsTermsAgreement) {
+        setStatus("약관 동의가 필요합니다...");
+        
+        setTimeout(() => {
+          navigate("/auth/social-terms");
+        }, 1000);
+      } else if (needsEmailUpdate) {
+        // 이메일 업데이트가 필요한 경우
         setStatus("이메일 입력이 필요합니다...");
         
         setTimeout(() => {
