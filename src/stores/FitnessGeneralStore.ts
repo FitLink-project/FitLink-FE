@@ -8,7 +8,7 @@ interface FitnessGeneralStore {
 
 export const useFitnessGeneralStore = create<FitnessGeneralStore>((set) => ({
   formData: {
-    gender: "M",
+    sex: "M",
     birthDate: "",
     height: null,
     weight: null,

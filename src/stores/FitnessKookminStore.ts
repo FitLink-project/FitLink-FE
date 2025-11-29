@@ -8,7 +8,7 @@ interface FitnessKookminStore {
 
 export const useFitnessKookminStore = create<FitnessKookminStore>((set) => ({
   formData: {
-    gender: "M",
+    sex: "M",
     birthDate: "",
     height: null,
     weight: null,
