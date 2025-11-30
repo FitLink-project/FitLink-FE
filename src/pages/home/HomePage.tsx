@@ -1,43 +1,105 @@
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+// HomePage.tsx
+import { useState, useEffect } from "react";
+import HomePageLayout from "./HomePageLayout";
+import HomePageLoggedIn from "./HomePageLoggedIn";
+import HomePageNotLoggedIn from "./HomePageNotLoggedIn";
+import LocationAgreementModal from "./LocationAgreementModal";
+import { editProfile } from "../../api/user";
 
 export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [isLocationAgreed, setIsLocationAgreed] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
+
+    const locationAgreed = localStorage.getItem("locationAgreed") === "true";
+    setIsLocationAgreed(locationAgreed);
+
+    // 아직 동의 안 했으면 모달 띄우기 (로그인 여부 상관 없음)
+    if (!locationAgreed) {
+      setShowLocationModal(true);
+    }
   }, []);
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="text-center">
-        {/* FitLink 로고 */}
-        <h1 className="text-5xl font-bold mb-4">
-          <span className="text-blue-500">Fit</span>
-          <span className="text-gray-900">Link</span>
-        </h1>
-        <p className="text-gray-600 mb-12 text-lg">
-          건강한 라이프스타일을 위한 연결
-        </p>
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsLoggedIn(false);
 
-        {/* 로그인 상태 표시 */}
+    // 위치 동의는 유지 → locationAgreed 지우지 않음
+    if (!isLocationAgreed) {
+      setShowLocationModal(true);
+    }
+  };
+
+
+const handleLocationAgree = async () => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      // 비로그인 상태에서 동의만 로컬에 저장할지, 로그인 강제할지는 UX에 따라
+      localStorage.setItem("locationAgreed", "true");
+      setIsLocationAgreed(true);
+      setShowLocationModal(false);
+      return;
+    }
+
+    // 서버에 위치 동의(true)로 업데이트
+    await editProfile(
+      {
+        agreements: {
+          location: true,
+          // 다른 동의 항목들(privacy, service, over14 등)을 서버가 필요로 하면 같이 넣기
+          // privacy: true,
+          // service: true,
+          // over14: true,
+        },
+      },
+      accessToken
+    );
+
+    // 서버 업데이트 성공하면 로컬도 동기화
+    localStorage.setItem("locationAgreed", "true");
+    setIsLocationAgreed(true);
+    setShowLocationModal(false);
+  } catch (e) {
+    console.error("위치 동의 업데이트 실패:", e);
+    // 필요하면 에러 토스트 / 알럿
+  }
+};
+
+
+  const handleLocationLater = () => {
+    setShowLocationModal(false);
+  };
+
+  const openLocationModal = () => {
+    setShowLocationModal(true); // 내위치 버튼 눌렀을 때 호출
+  };
+
+  return (
+    <>
+      <HomePageLayout
+        isLoggedIn={isLoggedIn}
+        onLogout={handleLogout}
+        showLocationButton={!isLocationAgreed} // 동의했으면 버튼 숨기기 등
+        onLocationClick={openLocationModal}
+      >
         {isLoggedIn ? (
-          <div className="mb-8">
-            <p className="text-green-600 font-semibold text-lg">
-              로그인되었습니다!
-            </p>
-          </div>
+          <HomePageLoggedIn  hasFitnessResult={false}/>
         ) : (
-          <Link
-            to="/login"
-            className="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95"
-          >
-            로그인하기
-          </Link>
+          <HomePageNotLoggedIn />
         )}
-      </div>
-    </div>
+      </HomePageLayout>
+
+      {showLocationModal && (
+        <LocationAgreementModal
+          onAgree={handleLocationAgree}
+          onLater={handleLocationLater}
+        />
+      )}
+    </>
   );
 }
-

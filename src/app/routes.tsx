@@ -13,6 +13,9 @@ import LocationServicePage from "../pages/auth/LocationServicePage";
 import FitnessLandingPage from "../pages/fitness/FitnessLandingPage";
 import FitnessKookminPage from "../pages/fitness/FitnessKookminPage";
 import FitnessGeneralPage from "../pages/fitness/FitnessGeneralPage";
+import GymPage from "../pages/gym/Gym";
+import ReportPage from "../pages/report/Report";
+import MyPage from "../pages/mypage/MyPage";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +73,12 @@ export const router = createBrowserRouter([
         path: "/fitness-general",
         element: <FitnessGeneralPage />,
       },
+      //김채원
+      { path: "/gym", element: <GymPage /> },
+      // 정서윤
+      { path: "/report", element: <ReportPage /> },
+      // 장서원
+      { path: "/my", element: <MyPage /> },
     ],
   },
 ]);

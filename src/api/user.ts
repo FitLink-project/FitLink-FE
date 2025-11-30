@@ -4,10 +4,12 @@ import type {
   SignupRequest, 
   LoginRequest, 
   SignupResponse, 
-  LoginResponse 
+  LoginResponse, 
+  EditProfileRequest,
+  EditProfileResponse
 } from '../types/user';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://www.fitlink1207.store';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 /**
  * 회원가입 API
@@ -77,4 +79,54 @@ export async function login(loginData: LoginRequest): Promise<ApiResponse<LoginR
 
   return response.json();
 }
+// 프로필 수정 API
+export async function editProfile(
+  data: EditProfileRequest,
+  accessToken: string
+): Promise<EditProfileResponse> {
+  const formData = new FormData();
 
+  if (data.name !== undefined) formData.append('name', data.name);
+  if (data.email !== undefined) formData.append('email', data.email);
+  if (data.password !== undefined) formData.append('password', data.password);
+
+  // ✅ JSON 문자열 대신 개별 필드로 전송
+  if (data.agreements) {
+    if (data.agreements.privacy !== undefined) {
+      formData.append('agreements.privacy', String(data.agreements.privacy));
+    }
+    if (data.agreements.service !== undefined) {
+      formData.append('agreements.service', String(data.agreements.service));
+    }
+    if (data.agreements.over14 !== undefined) {
+      formData.append('agreements.over14', String(data.agreements.over14));
+    }
+    if (data.agreements.location !== undefined) {
+      formData.append('agreements.location', String(data.agreements.location));
+    }
+  }
+
+  if (data.img) {
+    formData.append('Img', data.img);
+  }
+
+  const response = await fetch(`${BASE_URL}/api/user/edit`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorData: ApiError = await response.json().catch(() => ({
+      isSuccess: false,
+      code: 'COMMON500',
+      message: '서버 에러, 관리자에게 문의 바랍니다.',
+      result: null,
+    }));
+    throw errorData;
+  }
+
+  return response.json();
+}
