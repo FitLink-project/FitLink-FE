@@ -1,22 +1,19 @@
 import React from "react";
 import clsx from "clsx";
 
-export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "className"> {
+export interface SelectProps
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className"> {
   className?: string | string[] | (string | undefined | null | false)[];
   error?: boolean;
-  disabled?: boolean;
 }
 
-export default function Input({
+export default function Select({
   className,
   error = false,
-  disabled = false,
   style,
   ...props
-}: InputProps) {
+}: SelectProps) {
   const baseStyles = [
-    "w-full",
     "h-[47px]",
     "px-4",
     "py-3",
@@ -31,27 +28,17 @@ export default function Input({
     "font-medium",
     "leading-[100%]",
     "placeholder:text-[#888]",
-    "focus:ring-1",
+    "focus:ring-2",
     "focus:ring-secondGray",
     "focus:border-secondGray",
+    "appearance-none",
   ];
 
   const errorStyles = error
     ? ["border-1", "border-red", "focus:ring-red", "focus:border-red"]
     : [];
 
-  const disabledStyles = disabled
-    ? ["bg-graphGray", "cursor-not-allowed", "hover:opacity-100"]
-    : [];
+  const allClasses = clsx(baseStyles, errorStyles, className);
 
-  const allClasses = clsx(baseStyles, errorStyles, disabledStyles, className);
-
-  return (
-    <input
-      className={allClasses}
-      style={style}
-      disabled={disabled}
-      {...props}
-    />
-  );
+  return <select className={allClasses} style={style} {...props} />;
 }
