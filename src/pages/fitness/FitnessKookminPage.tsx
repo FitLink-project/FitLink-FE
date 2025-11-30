@@ -4,6 +4,7 @@ import ProgressBar from "../../components/Fitness/ProgressBar";
 import Step1 from "./steps/kookmin/Step1";
 import Step2 from "./steps/kookmin/Step2";
 import Step3 from "./steps/kookmin/Step3";
+import BottomBar from "../../components/BottomBar";
 
 export default function FitnessKookminPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -40,6 +41,7 @@ export default function FitnessKookminPage() {
       </div>
 
       {/* 하단 바 */}
+      <BottomBar />
     </>
   );
 }

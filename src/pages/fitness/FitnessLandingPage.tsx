@@ -2,6 +2,7 @@ import PageHeader from "../../components/PageHeader";
 import MeasurementOptionCards from "../../components/MeasurementOptionCards";
 import TriangleGraph from "../../components/TriangleGraph";
 import Button from "../../components/Button";
+import BottomBar from "../../components/BottomBar";
 
 export default function FitnessLandingPage() {
   return (
@@ -71,7 +72,7 @@ export default function FitnessLandingPage() {
                 국민체력 100 예약하러 가기
               </Button>
 
-              <div className="space-y-1 font-mplus1 text-xs my-8 p-4">
+              <div className="space-y-1 font-mplus1 text-xs mt-4 mb-16 p-4">
                 <p>국민체력 100 결과를 입력하면</p>
                 <p>근력・근지구력・유연성・심폐지구력・민첩성・순발력의</p>
                 <p>체력 분석 결과 및 맞춤 운동 추천 등을 확인할 수 있어요</p>
@@ -79,6 +80,7 @@ export default function FitnessLandingPage() {
             </section>
 
             {/* 하단 바 */}
+            <BottomBar />
           </section>
         </div>
       </div>

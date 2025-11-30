@@ -6,6 +6,7 @@ import Step2 from "./steps/general/Step2";
 import Step3 from "./steps/general/Step3";
 import Step4 from "./steps/general/Step4";
 import Step5 from "./steps/general/Step5";
+import BottomBar from "../../components/BottomBar";
 
 export default function FitnessGeneralPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -50,6 +51,7 @@ export default function FitnessGeneralPage() {
       </div>
 
       {/* 하단 바 */}
+      <BottomBar />
     </>
   );
 }
