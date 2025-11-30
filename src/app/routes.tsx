@@ -16,6 +16,7 @@ import FitnessGeneralPage from "../pages/fitness/FitnessGeneralPage";
 import GymPage from "../pages/gym/Gym";
 import ReportPage from "../pages/report/Report";
 import MyPage from "../pages/mypage/MyPage";
+import FacilityMapPage from "../pages/facility/FacilityMapPage";
 
 export const router = createBrowserRouter([
   {
@@ -78,7 +79,15 @@ export const router = createBrowserRouter([
       // 정서윤
       { path: "/report", element: <ReportPage /> },
       // 장서원
-      { path: "/my", element: <MyPage /> },
+      { path: "/my", element: <MyPage/> },
+
+
+       // A. 주변시설 지도 페이지
+      {
+        path: "/facility",
+        element: <FacilityMapPage />,
+      },
+
     ],
   },
 ]);

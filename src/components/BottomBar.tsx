@@ -38,9 +38,9 @@ export default function BottomBar() {
             </span>
           </Link>
 
-          <Link to="/gym" className="flex flex-col items-center gap-[7px]">
+          <Link to="/facility" className="flex flex-col items-center gap-[7px]">
             <img
-              src={isActive("/gym") ? GymClick : GymDefault}
+              src={isActive("/facility") ? GymClick : GymDefault}
               alt="주변시설"
               className="w-[21px] h-[24px]"
             />
