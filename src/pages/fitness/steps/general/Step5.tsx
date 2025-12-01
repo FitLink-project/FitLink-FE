@@ -23,7 +23,7 @@ export default function Step5() {
       console.log("서버 응답:", response);
 
       // 결과 페이지로 이동 (응답 값 전달)
-      navigate("/fitness/result", {
+      navigate("/report", {
         state: { result: response },
       });
     } catch (error) {
