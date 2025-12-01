@@ -1,4 +1,6 @@
-import type { TriangleGraphProps } from "../types/graphProps";
+export interface TriangleGraphProps {
+  data: Record<string, number>; // 위, 왼쪽 아래, 오른쪽 아래 순서대로
+}
 
 export default function TriangleGraph({
   data = { 체력: 80, 지력: 60, 매력: 90 },
