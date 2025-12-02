@@ -115,30 +115,26 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="font-mplus1 text-sm">
-                {user?.name ?? "회원"} | {age}세 ({userInfo?.sex === "M" ? "남" : "여"})
+              <p className="font-mplus1 text-xs">
+                {user?.name ?? "회원"} | {age}세
               </p>
             </Card>
 
             {/* 2. 신체 정보 카드 */}
-            <Card className="flex flex-col gap-4 py-16">
-              <div className="flex justify-between items-center font-mplus1 text-sm">
-                <span className="font-mplus1 text-darkGray">키</span>
-                <span className="font-mplus1 font-bold">
-                  {userInfo?.height ?? "-"} cm
-                </span>
+            <Card className="flex flex-col gap-4 py-8">
+              <div className="flex justify-between font-mplus1 text-sm">
+                <span className="text-darkGray">키</span>
+                <span>{userInfo?.height ?? "-"} cm</span>
               </div>
               <div className="flex justify-between items-center font-mplus1 text-sm">
-                <span className="font-mplus1 text-darkGray">체중</span>
-                <span className="font-mplus1 font-bold">
-                  {userInfo?.weight ?? "-"} kg
-                </span>
+                <span className="text-darkGray">체중</span>
+                <span>{userInfo?.weight ?? "-"} kg</span>
               </div>
             </Card>
           </div>
 
           {/* [오른쪽 영역] 그래프 및 분석 멘트 */}
-          <Card className="md:col-span-2 flex flex-col items-center justify-center gap-4">
+          <Card className="md:col-span-2 flex flex-col items-center justify-center">
             <div className="w-full h-auto rounded-lg flex items-center justify-center">
               {data.testKookmin && <HexagonGraph data={graphData} />}
               {data.testGeneral && <TriangleGraph data={graphData} />}
