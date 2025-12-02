@@ -122,3 +122,15 @@ export interface ProfileResult {
 }
 
 export type ProfileResponse = ApiResponse<ProfileResult>;
+
+// 회원탈퇴 결과 타입
+export interface DeleteUserResult {
+  userId: number;
+  email: string;
+  isActive: boolean;
+  regDate: string;
+  provider: string;
+  deleteDate: string | null;
+}
+
+export type DeleteUserResponse = ApiResponse<DeleteUserResult>;

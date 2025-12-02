@@ -159,3 +159,32 @@ export async function getProfile(
 
   return response.json();
 }
+
+/**
+ * 회원탈퇴 API
+ * DELETE /api/user/delete
+ * Authorization: Bearer {accessToken}
+ */
+export async function deleteUser(
+  accessToken: string,
+): Promise<DeleteUserResponse> {
+  const response = await fetch(`${BASE_URL}/api/user/delete`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorData: ApiError = await response.json().catch(() => ({
+      isSuccess: false,
+      code: 'COMMON500',
+      message: '서버 에러, 관리자에게 문의 바랍니다.',
+      result: null,
+    }));
+    throw errorData;
+  }
+
+  return response.json();
+}
