@@ -1,37 +1,31 @@
 interface StrengthGraphItemProps {
   label: string;
   valueText: string;
-  filledWidth: number; // 점수 (0 ~ 100)
-  totalWidth?: number; // 전체 바 길이 (px)
+  userScr: number;
+  avgScr: number;
+  MAX_SCORE?: number;
+  totalWidth?: number;
   highlight?: boolean;
-  averageWidth?: number; // 평균 점수 (0 ~ 100)
 }
 
 export function StrengthGraphItem({
   label,
   valueText,
-  filledWidth,
-  totalWidth = 240, // 기본 길이 240px
+  userScr,
+  avgScr,
+  MAX_SCORE = 100,
+  totalWidth = 240,
   highlight = false,
-  averageWidth,
 }: StrengthGraphItemProps) {
-  const MAX_SCORE = 100;
+  // 값 안전 처리 (undefined/null/음수 방지)
+  const safeUserScr = typeof userScr === "number" && userScr >= 0 ? userScr : 0;
+  const safeAvgScr = typeof avgScr === "number" && avgScr >= 0 ? avgScr : 0;
+  const safeMax =
+    typeof MAX_SCORE === "number" && MAX_SCORE > 0 ? MAX_SCORE : 1;
 
-  // 1. 값 안전 처리 (undefined/null 시 0)
-  const safeFilled =
-    typeof filledWidth === "number" && filledWidth >= 0 ? filledWidth : 0;
-  const safeAvg =
-    typeof averageWidth === "number" && averageWidth >= 0 ? averageWidth : 0;
-
-  // 2. [점수 -> 픽셀 변환, px 폭은 totalWidth 초과X]
-  const myPixelWidth = Math.min(
-    (safeFilled / MAX_SCORE) * totalWidth,
-    totalWidth
-  );
-  const avgPixelWidth = Math.min(
-    (safeAvg / MAX_SCORE) * totalWidth,
-    totalWidth
-  );
+  // bar: (값 / MAX_SCORE) * 전체 폭
+  const myPixelWidth = (safeUserScr / safeMax) * totalWidth;
+  const avgPixelWidth = (safeAvgScr / safeMax) * totalWidth;
 
   return (
     <div className="w-full flex items-center justify-between">
@@ -50,10 +44,16 @@ export function StrengthGraphItem({
             style={{ width: `${totalWidth}px` }}
           />
 
-          {/* 3. 평균 바 (평균 점수) */}
+          {/* 3. 평균 바 (평균 점수, 세로 실선) */}
           <div
-            className="absolute inset-y-0 left-0 rounded-full z-20 bg-red opacity-30"
-            style={{ width: `${avgPixelWidth}px` }}
+            className="absolute top-0 z-20"
+            style={{
+              left: `${avgPixelWidth}px`,
+              width: "0px",
+              height: "100%",
+              borderLeft: "2px dashed #ff0000",
+              opacity: 0.8,
+            }}
           />
 
           {/* 2. 데이터 바 (내 점수) */}

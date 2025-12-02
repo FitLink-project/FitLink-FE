@@ -47,7 +47,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
   // 데이터가 없을 경우 안전 처리
   if (!data) return null;
 
-  const { userInfo, average, ...rawMetrics } = data;
+  const { userInfo, standard, ...rawMetrics } = data;
 
   // 그래프용 데이터
   const graphData: Record<string, number> = {};

@@ -52,8 +52,8 @@ export interface FitnessResponse {
   agility: number | null; // 민첩성
   quickness: number | null; // 순발력
 
-  // 2. 포함된 객체 정보
-  average: FitnessAverage | null; // 대한민국 평균 데이터
+  // 2. 포함된 객체 정보 (Average -> Standard 변경)
+  standard: FitnessStandardResponse | null; // 운동 종목별 대한민국 평균/등급 데이터
   userInfo: UserInfo | null; // 사용자 신체 정보
 
   // 3. 상세 측정 기록
@@ -62,7 +62,16 @@ export interface FitnessResponse {
 }
 
 /**
- * 대한민국 평균 측정값
+ * 1등급과 2등급 데이터를 모두 포함하는 응답 DTO
+ * 백엔드 FitnessResponseDTO.FitnessStandardResponse 매핑
+ */
+export interface FitnessStandardResponse {
+  grade1: FitnessAverage | null; // 1등급 평균/기준값
+  grade2: FitnessAverage | null; // 2등급 평균/기준값
+}
+
+/**
+ * 대한민국 평균 측정값 (등급별 기준값)
  * FitnessResponseDTO.FitnessAverage
  */
 export interface FitnessAverage {

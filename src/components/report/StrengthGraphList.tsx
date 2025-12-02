@@ -11,20 +11,23 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
     {
       key: "muscular", // 근지구력
       label: "근지구력",
-      filledWidth: data.testGeneral?.sitUp,
-      averageWidth: data.average?.sitUp,
+      userScr: data.testGeneral?.sitUp as number | null,
+      avgScr: data.standard?.grade1?.sitUp as number | null,
+      maxValue: 43, // 예시(최대 43회, 실제 max는 도메인에 따라 조정)
     },
     {
       key: "flexibility", // 유연성
       label: "유연성",
-      filledWidth: data.testGeneral?.sitAndReach,
-      averageWidth: data.average?.sitAndReach,
+      userScr: data.testGeneral?.sitAndReach as number | null,
+      avgScr: data.standard?.grade1?.sitAndReach as number | null,
+      maxValue: 50, // 예시(50cm)
     },
     {
       key: "cardiopulmonary", // 심폐지구력
       label: "심폐지구력",
-      filledWidth: data.testGeneral?.ymcaStepTest,
-      averageWidth: data.average?.shuttleRun, // 평균값 없음
+      userScr: data.testGeneral?.ymcaStepTest as number | null,
+      avgScr: data.standard?.grade1?.shuttleRun as number | null,
+      maxValue: 120, // 예시(120회, 도메인확인 필요)
     },
   ];
 
@@ -33,38 +36,44 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
     {
       key: "strength", // 근력
       label: "근력",
-      filledWidth: data.testKookmin?.gripStrength,
-      averageWidth: data.average?.gripStrength,
+      userScr: data.testKookmin?.gripStrength as number | null,
+      avgScr: data.standard?.grade1?.gripStrength as number | null,
+      maxValue: 70, // 예시(70kg)
     },
     {
       key: "muscular", // 근지구력
       label: "근지구력",
-      filledWidth: data.testKookmin?.sitUp,
-      averageWidth: data.average?.sitUp,
+      userScr: data.testKookmin?.sitUp as number | null,
+      avgScr: data.standard?.grade1?.sitUp as number | null,
+      maxValue: 43, // 예시
     },
     {
       key: "flexibility", // 유연성
       label: "유연성",
-      filledWidth: data.testKookmin?.sitAndReach,
-      averageWidth: data.average?.sitAndReach,
+      userScr: data.testKookmin?.sitAndReach as number | null,
+      avgScr: data.standard?.grade1?.sitAndReach as number | null,
+      maxValue: 50, // 예시
     },
     {
       key: "cardiopulmonary", // 심폐지구력
       label: "심폐지구력",
-      filledWidth: data.testKookmin?.shuttleRun,
-      averageWidth: data.average?.shuttleRun,
+      userScr: data.testKookmin?.shuttleRun as number | null,
+      avgScr: data.standard?.grade1?.shuttleRun as number | null,
+      maxValue: 120, // 예시
     },
     {
       key: "agility", // 민첩성
       label: "민첩성",
-      filledWidth: data.testKookmin?.sprint,
-      averageWidth: data.average?.sprint,
+      userScr: data.testKookmin?.sprint as number | null,
+      avgScr: data.standard?.grade1?.sprint as number | null,
+      maxValue: 30, // 예시(30초, 도메인확인 필요)
     },
     {
       key: "quickness", // 순발력
       label: "순발력",
-      filledWidth: data.testKookmin?.standingLongJump,
-      averageWidth: data.average?.standingLongJump,
+      userScr: data.testKookmin?.standingLongJump as number | null,
+      avgScr: data.standard?.grade1?.standingLongJump as number | null,
+      maxValue: 200, // 예시(200cm)
     },
   ];
 
@@ -72,13 +81,13 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
 
   return (
     <>
-      {renderList.map(({ key, label, filledWidth, averageWidth }) => (
+      {renderList.map(({ key, label, userScr, avgScr }) => (
         <StrengthGraphItem
           key={key}
           label={label}
-          valueText={typeof filledWidth === "number" ? `${filledWidth}` : "-"}
-          filledWidth={typeof filledWidth === "number" ? filledWidth : 0}
-          averageWidth={typeof averageWidth === "number" ? averageWidth : 0}
+          valueText={typeof userScr === "number" ? `${userScr}` : "-"}
+          userScr={typeof userScr === "number" ? userScr : 0}
+          avgScr={typeof avgScr === "number" ? avgScr : 0}
         />
       ))}
     </>
