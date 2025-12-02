@@ -17,13 +17,21 @@ export function StrengthGraphItem({
 }: StrengthGraphItemProps) {
   const MAX_SCORE = 100;
 
-  // 1. [점수 -> 픽셀 변환]
-  // filledWidth가 30이면 -> (30 / 100) * 240 = 72px
-  const myPixelWidth = (filledWidth / MAX_SCORE) * totalWidth;
+  // 1. 값 안전 처리 (undefined/null 시 0)
+  const safeFilled =
+    typeof filledWidth === "number" && filledWidth >= 0 ? filledWidth : 0;
+  const safeAvg =
+    typeof averageWidth === "number" && averageWidth >= 0 ? averageWidth : 0;
 
-  // averageWidth가 70이면 -> (70 / 100) * 240 = 168px
-  // 값이 없을 경우를 대비해 (averageWidth || 0) 처리를 하되, 괄호로 감싸야 함
-  const avgPixelPosition = ((averageWidth || 0) / MAX_SCORE) * totalWidth;
+  // 2. [점수 -> 픽셀 변환, px 폭은 totalWidth 초과X]
+  const myPixelWidth = Math.min(
+    (safeFilled / MAX_SCORE) * totalWidth,
+    totalWidth
+  );
+  const avgPixelWidth = Math.min(
+    (safeAvg / MAX_SCORE) * totalWidth,
+    totalWidth
+  );
 
   return (
     <div className="w-full flex items-center justify-between">
@@ -45,24 +53,16 @@ export function StrengthGraphItem({
           {/* 3. 평균 바 (평균 점수) */}
           <div
             className="absolute inset-y-0 left-0 rounded-full z-20 bg-red opacity-30"
-            style={{
-              width: `${
-                avgPixelPosition < totalWidth ? averageWidth : totalWidth
-              }px`,
-            }}
+            style={{ width: `${avgPixelWidth}px` }}
           />
 
           {/* 2. 데이터 바 (내 점수) */}
           <div
             className={
               "absolute inset-y-0 left-0 rounded-full z-10 " +
-              (myPixelWidth < avgPixelPosition ? "bg-main" : "bg-graphBlue")
+              (myPixelWidth < avgPixelWidth ? "bg-main" : "bg-graphBlue")
             }
-            style={{
-              width: `${
-                myPixelWidth < totalWidth ? myPixelWidth : totalWidth
-              }px`,
-            }}
+            style={{ width: `${myPixelWidth}px` }}
           />
         </div>
       </div>

@@ -1,9 +1,10 @@
 import Card from "../../../components/report/Card";
 import SectionHeader from "../../../components/report/SectionHeader";
-import { StrengthGraphItem } from "../../../components/graph/StrengthGraphItem";
 import HexagonGraph from "../../../components/HexogonGraph";
 import defaultProfile from "../../../assets/profile/default-profile.png";
 import type { FitnessResponse } from "../../../types/fitness";
+import TriangleGraph from "../../../components/TriangleGraph";
+import StrengthGraphList from "../../../components/report/StrengthGraphList";
 
 // 영어 키를 한글로 변환하기 위한 맵핑 객체
 const LABEL_MAP: Record<string, string> = {
@@ -51,7 +52,14 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
   // 그래프용 데이터
   const graphData: Record<string, number> = {};
 
+  // testGeneral이면 근지구력, 유연성, 심폐지구력만 포함
+  const GENERAL_KEYS = ["muscular", "flexibility", "cardiopulmonary"];
+
   Object.entries(rawMetrics).forEach(([key, value]) => {
+    // data.testGeneral이 있으면 GENERAL_KEYS만, 아니면 기존대로 모두
+    if (data.testGeneral) {
+      if (!GENERAL_KEYS.includes(key)) return;
+    }
     // 해당 키에 맞는 한글 라벨 찾기
     const koreanLabel = LABEL_MAP[key];
 
@@ -124,7 +132,8 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
           {/* [오른쪽 영역] 그래프 및 분석 멘트 */}
           <Card className="md:col-span-2 flex flex-col items-center justify-center gap-4">
             <div className="w-full h-auto rounded-lg flex items-center justify-center">
-              <HexagonGraph data={graphData} />
+              {data.testKookmin && <HexagonGraph data={graphData} />}
+              {data.testGeneral && <TriangleGraph data={graphData} />}
             </div>
 
             {/* 하단 텍스트 */}
@@ -151,44 +160,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
           description="비슷한 연령대 데이터를 기준으로 비교했어요"
         />
         <Card>
-          <StrengthGraphItem
-            label="근력"
-            valueText={data?.strength != null ? `${data.strength}` : "-"}
-            filledWidth={data?.strength || 0}
-            averageWidth={data?.average?.gripStrength || 0}
-          />
-          <StrengthGraphItem
-            label="근지구력"
-            valueText={data?.muscular != null ? `${data?.muscular}` : "-"}
-            filledWidth={data?.muscular || 0}
-            averageWidth={data?.average?.sitUp || 0}
-          />
-          <StrengthGraphItem
-            label="유연성"
-            valueText={data?.flexibility != null ? `${data?.flexibility}` : "-"}
-            filledWidth={data?.flexibility || 0}
-            averageWidth={data?.average?.sitAndReach || 0}
-          />
-          <StrengthGraphItem
-            label="심폐지구력"
-            valueText={
-              data?.cardiopulmonary != null ? `${data?.cardiopulmonary}` : "-"
-            }
-            filledWidth={data?.cardiopulmonary || 0}
-            averageWidth={data?.average?.shuttleRun || 0}
-          />
-          <StrengthGraphItem
-            label="민첩성"
-            valueText={data?.agility != null ? `${data?.agility}` : "-"}
-            filledWidth={data?.agility || 0}
-            averageWidth={data?.average?.sprint || 0}
-          />
-          <StrengthGraphItem
-            label="순발력"
-            valueText={data?.quickness != null ? `${data?.quickness}` : "-"}
-            filledWidth={data?.quickness || 0}
-            averageWidth={data?.average?.standingLongJump || 0}
-          />
+          <StrengthGraphList data={data} />
         </Card>
       </section>
     </>
