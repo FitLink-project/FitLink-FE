@@ -72,6 +72,7 @@ export default function MyPage() {
                 </div>
                 <button
                   type="button"
+                  onClick={() => navigate("/my/edit")}
                   className="mt-2 px-4 py-2 rounded-[10px] bg-[#E2EDFF] text-main text-sm font-medium font-pretendard leading-[150%]"
                 >
                   프로필 편집

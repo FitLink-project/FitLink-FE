@@ -14,6 +14,7 @@ import FitnessLandingPage from "../pages/fitness/FitnessLandingPage";
 import GymPage from "../pages/gym/Gym";
 import ReportPage from "../pages/report/Report";
 import MyPage from "../pages/mypage/MyPage";
+import ProfileEdit from "../pages/mypage/ProfileEdit";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,7 @@ export const router = createBrowserRouter([
       { path: "/report", element: <ReportPage /> },
       // 장서원
       { path: "/my", element: <MyPage/> },
+      { path: "/my/edit", element: <ProfileEdit/> },
     ],
   },
 ]);
