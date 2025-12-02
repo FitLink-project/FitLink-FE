@@ -6,8 +6,6 @@ import TermsAgreement from "../../components/TermsAgreement";
 import { useUser } from "../../contexts/UserContext";
 import { editProfile } from "../../api/user";
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
-
 export default function SocialTermsAgreementPage() {
   const [allAgreed, setAllAgreed] = useState(false);
   const [privacyAgreed, setPrivacyAgreed] = useState(false);
