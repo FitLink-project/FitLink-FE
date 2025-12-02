@@ -104,7 +104,7 @@ export default function TermsAgreement({
           <Checkbox
             checked={locationAgree}
             onChange={onLocationAgreeChange}
-            error={false}
+             error={termsError && !locationAgree}
           />
         </label>
       </div>
