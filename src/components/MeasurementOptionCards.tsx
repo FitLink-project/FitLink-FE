@@ -76,12 +76,12 @@ export default function MeasurementOptionCards() {
         <div className="px-2">
           <div className="font-mplus text-gray text-[0.7em] my-2">
             <p>국민체력 100</p>
-            <p>측정 결과가 있으신가요?</p>
+            <p>측정 결과가 없으신가요?</p>
           </div>
 
           <div className="flex items-center justify-center gap-1">
             <span className="font-mplus1 font-bold text-[0.8em]">
-              국민체력 100 결과 입력
+              간단 체력측정으로 시작
             </span>
             <svg
               width="0.375rem"
