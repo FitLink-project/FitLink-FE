@@ -13,19 +13,20 @@ export function StrengthGraphItem({
   valueText,
   userScr,
   avgScr,
-  MAX_SCORE = 100,
   totalWidth = 240,
   highlight = false,
 }: StrengthGraphItemProps) {
+  const MAX_SCORE = 100;
+
   // 값 안전 처리 (undefined/null/음수 방지)
-  const safeUserScr = typeof userScr === "number" && userScr >= 0 ? userScr : 0;
   const safeAvgScr = typeof avgScr === "number" && avgScr >= 0 ? avgScr : 0;
-  const safeMax =
+  const safeUserScr = typeof userScr === "number" && userScr >= 0 ? userScr : 0;
+  const safeMaxScore =
     typeof MAX_SCORE === "number" && MAX_SCORE > 0 ? MAX_SCORE : 1;
 
-  // bar: (값 / MAX_SCORE) * 전체 폭
-  const myPixelWidth = (safeUserScr / safeMax) * totalWidth;
-  const avgPixelWidth = (safeAvgScr / safeMax) * totalWidth;
+  // (값 / 기준값) * 전체 폭
+  const myPixelWidth = (safeUserScr / safeMaxScore) * totalWidth;
+  const avgPixelWidth = (safeAvgScr / safeMaxScore) * totalWidth;
 
   return (
     <div className="w-full flex items-center justify-between">

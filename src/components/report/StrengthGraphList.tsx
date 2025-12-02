@@ -11,23 +11,20 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
     {
       key: "muscular", // 근지구력
       label: "근지구력",
-      userScr: data.testGeneral?.sitUp as number | null,
-      avgScr: data.standard?.grade1?.sitUp as number | null,
-      maxValue: 43, // 예시(최대 43회, 실제 max는 도메인에 따라 조정)
+      userScr: data.testGeneral?.sitUp,
+      avgScr: data.standard?.grade1?.sitUp,
     },
     {
       key: "flexibility", // 유연성
       label: "유연성",
-      userScr: data.testGeneral?.sitAndReach as number | null,
-      avgScr: data.standard?.grade1?.sitAndReach as number | null,
-      maxValue: 50, // 예시(50cm)
+      userScr: data.testGeneral?.sitAndReach,
+      avgScr: data.standard?.grade1?.sitAndReach,
     },
     {
       key: "cardiopulmonary", // 심폐지구력
       label: "심폐지구력",
-      userScr: data.testGeneral?.ymcaStepTest as number | null,
-      avgScr: data.standard?.grade1?.shuttleRun as number | null,
-      maxValue: 120, // 예시(120회, 도메인확인 필요)
+      userScr: data.testGeneral?.ymcaStepTest,
+      avgScr: data.standard?.grade1?.shuttleRun, // 예시
     },
   ];
 
@@ -36,44 +33,38 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
     {
       key: "strength", // 근력
       label: "근력",
-      userScr: data.testKookmin?.gripStrength as number | null,
-      avgScr: data.standard?.grade1?.gripStrength as number | null,
-      maxValue: 70, // 예시(70kg)
+      userScr: data.testKookmin?.gripStrength,
+      avgScr: data.standard?.grade1?.gripStrength,
     },
     {
       key: "muscular", // 근지구력
       label: "근지구력",
-      userScr: data.testKookmin?.sitUp as number | null,
-      avgScr: data.standard?.grade1?.sitUp as number | null,
-      maxValue: 43, // 예시
+      userScr: data.testKookmin?.sitUp,
+      avgScr: data.standard?.grade1?.sitUp,
     },
     {
       key: "flexibility", // 유연성
       label: "유연성",
-      userScr: data.testKookmin?.sitAndReach as number | null,
-      avgScr: data.standard?.grade1?.sitAndReach as number | null,
-      maxValue: 50, // 예시
+      userScr: data.testKookmin?.sitAndReach,
+      avgScr: data.standard?.grade1?.sitAndReach,
     },
     {
       key: "cardiopulmonary", // 심폐지구력
       label: "심폐지구력",
-      userScr: data.testKookmin?.shuttleRun as number | null,
-      avgScr: data.standard?.grade1?.shuttleRun as number | null,
-      maxValue: 120, // 예시
+      userScr: data.testKookmin?.shuttleRun,
+      avgScr: data.standard?.grade1?.shuttleRun,
     },
     {
       key: "agility", // 민첩성
       label: "민첩성",
-      userScr: data.testKookmin?.sprint as number | null,
-      avgScr: data.standard?.grade1?.sprint as number | null,
-      maxValue: 30, // 예시(30초, 도메인확인 필요)
+      userScr: data.testKookmin?.sprint,
+      avgScr: data.standard?.grade1?.sprint,
     },
     {
       key: "quickness", // 순발력
       label: "순발력",
-      userScr: data.testKookmin?.standingLongJump as number | null,
-      avgScr: data.standard?.grade1?.standingLongJump as number | null,
-      maxValue: 200, // 예시(200cm)
+      userScr: data.testKookmin?.standingLongJump,
+      avgScr: data.standard?.grade1?.standingLongJump,
     },
   ];
 
@@ -81,15 +72,43 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
 
   return (
     <>
-      {renderList.map(({ key, label, userScr, avgScr }) => (
-        <StrengthGraphItem
-          key={key}
-          label={label}
-          valueText={typeof userScr === "number" ? `${userScr}` : "-"}
-          userScr={typeof userScr === "number" ? userScr : 0}
-          avgScr={typeof avgScr === "number" ? avgScr : 0}
-        />
-      ))}
+      {renderList.map(({ key, label, userScr, avgScr }) => {
+        let maxScoreValue = 100;
+        if (data.standard?.grade1) {
+          switch (key) {
+            case "strength":
+              maxScoreValue = data.standard.grade1.gripStrength ?? 100;
+              break;
+            case "muscular":
+              maxScoreValue = data.standard.grade1.sitUp ?? 100;
+              break;
+            case "flexibility":
+              maxScoreValue = data.standard.grade1.sitAndReach ?? 100;
+              break;
+            case "cardiopulmonary":
+              maxScoreValue = data.standard.grade1.shuttleRun ?? 100;
+              break;
+            case "agility":
+              maxScoreValue = data.standard.grade1.sprint ?? 100;
+              break;
+            case "quickness":
+              maxScoreValue = data.standard.grade1.standingLongJump ?? 100;
+              break;
+            default:
+              maxScoreValue = 100;
+          }
+        }
+        return (
+          <StrengthGraphItem
+            key={key}
+            label={label}
+            valueText={typeof userScr === "number" ? `${userScr}` : "-"}
+            userScr={typeof userScr === "number" ? userScr : 0}
+            avgScr={typeof avgScr === "number" ? avgScr : 0}
+            MAX_SCORE={maxScoreValue}
+          />
+        );
+      })}
     </>
   );
 }
