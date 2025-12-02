@@ -17,6 +17,7 @@ import GymPage from "../pages/gym/Gym";
 import ReportPage from "../pages/report/Report";
 import MyPage from "../pages/mypage/MyPage";
 import FacilityMapPage from "../pages/facility/FacilityMapPage";
+import ProfileEdit from "../pages/mypage/ProfileEdit";
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,7 @@ export const router = createBrowserRouter([
         element: <FacilityMapPage />,
       },
 
+      { path: "/my/edit", element: <ProfileEdit/> },
     ],
   },
 ]);
