@@ -13,7 +13,7 @@ export default function ReportPage() {
   const navigate = useNavigate();
 
   const [isLoggedIn] = useState(() => !!localStorage.getItem("accessToken"));
-  const [showModal, setShowModal] = useState(!isLoggedIn);
+  const [showModal] = useState(!isLoggedIn);
 
   const [fitnessData, setFitnessData] = useState(() => {
     const stateData = location.state?.result;
