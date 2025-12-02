@@ -18,6 +18,7 @@ import ReportPage from "../pages/report/Report";
 import MyPage from "../pages/mypage/MyPage";
 import FacilityMapPage from "../pages/facility/FacilityMapPage";
 import ProfileEdit from "../pages/mypage/ProfileEdit";
+import FacilitySearchPage from "../pages/facility/FacilitySearchPage";
 
 export const router = createBrowserRouter([
   {
@@ -90,6 +91,13 @@ export const router = createBrowserRouter([
       },
 
       { path: "/my/edit", element: <ProfileEdit/> },
+
+
+      // B. 주변시설 검색 페이지 
+      { path: "/facility/search",
+         element: <FacilitySearchPage />
+      },
+      
     ],
   },
 ]);
