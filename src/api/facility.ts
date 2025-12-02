@@ -44,3 +44,12 @@ export const searchFacilities = async (keyword: string) => {
     throw err;
   }
 };
+
+
+/* -------------------------------
+   3. 시설 상세 조회 API
+-------------------------------- */
+export async function getFacilityDetail(facilityId: number) {
+  const res = await axiosConfig.get(`/api/facility/${facilityId}`);
+  return res.data.result;
+}
