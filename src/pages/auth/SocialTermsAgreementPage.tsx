@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import PageHeader from "../../components/PageHeader";
 import TermsAgreement from "../../components/TermsAgreement";
-
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://www.fitlink1207.store";
+import { useUser } from "../../contexts/UserContext";
+import { editProfile } from "../../api/user";
 
 export default function SocialTermsAgreementPage() {
   const [allAgreed, setAllAgreed] = useState(false);
@@ -12,13 +12,15 @@ export default function SocialTermsAgreementPage() {
   const [serviceAgreed, setServiceAgreed] = useState(false);
   const [over14Agreed, setOver14Agreed] = useState(false);
   const [locationAgreed, setLocationAgreed] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [termsError, setTermsError] = useState(false);
+  const [termsErrorMessage, setTermsErrorMessage] = useState("");
 
+  const { setTokenAndLoadUser } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 토큰 확인
     const token = localStorage.getItem("accessToken");
     if (!token) {
       navigate("/login");
@@ -31,73 +33,89 @@ export default function SocialTermsAgreementPage() {
     setServiceAgreed(checked);
     setOver14Agreed(checked);
     setLocationAgreed(checked);
-    if (termsError) setTermsError(false);
+    if (termsError) {
+      setTermsError(false);
+      setTermsErrorMessage("");
+    }
   };
 
   const handlePrivacyAgreeChange = (checked: boolean) => {
     setPrivacyAgreed(checked);
-    if (termsError) setTermsError(false);
+    if (termsError) {
+      setTermsError(false);
+      setTermsErrorMessage("");
+    }
   };
 
   const handleServiceAgreeChange = (checked: boolean) => {
     setServiceAgreed(checked);
-    if (termsError) setTermsError(false);
+    if (termsError) {
+      setTermsError(false);
+      setTermsErrorMessage("");
+    }
   };
 
   const handleOver14AgreeChange = (checked: boolean) => {
     setOver14Agreed(checked);
-    if (termsError) setTermsError(false);
+    if (termsError) {
+      setTermsError(false);
+      setTermsErrorMessage("");
+    }
   };
 
   const handleLocationAgreeChange = (checked: boolean) => {
     setLocationAgreed(checked);
-    if (termsError) setTermsError(false);
+    if (termsError) {
+      setTermsError(false);
+      setTermsErrorMessage("");
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!privacyAgreed || !serviceAgreed || !over14Agreed || !locationAgreed) {
-      setTermsError(true);
+  // 필수 항목 체크
+  if (!privacyAgreed || !serviceAgreed || !over14Agreed) {
+    setTermsError(true);
+    setTermsErrorMessage("필수 약관에 동의해주세요");
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      navigate("/login");
       return;
     }
 
-    setIsLoading(true);
-
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      const response = await fetch(`${BACKEND_URL}/api/user/terms`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
+    // 🔹 프로필 수정 API 호출 (약관만 수정)
+    await editProfile(
+      {
+        agreements: {
           privacy: privacyAgreed,
           service: serviceAgreed,
           over14: over14Agreed,
           location: locationAgreed,
-        }),
-      });
+        },
+      },
+      token,
+    );
 
-      if (!response.ok) {
-        throw new Error("약관 동의 처리 실패");
-      }
-
-      // 회원가입 완료 페이지로 이동
-      navigate("/signup/complete");
-    } catch (err) {
-      console.error("약관 동의 실패:", err);
-      setTermsError(true);
-    } finally {
-      setIsLoading(false);
+    await setTokenAndLoadUser(token);
+    navigate("/signup/complete");
+  } catch (err) {
+    console.error("약관 동의 실패:", err);
+    setTermsError(true);
+    if (!termsErrorMessage) {
+      setTermsErrorMessage("약관 동의 처리 중 오류가 발생했습니다.");
     }
-  };
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="w-full">
@@ -116,20 +134,23 @@ export default function SocialTermsAgreementPage() {
             {/* 약관 동의 폼 */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <TermsAgreement
-                allAgree={allAgreed}
-                privacyAgree={privacyAgreed}
-                serviceAgree={serviceAgreed}
-                over14Agree={over14Agreed}
-                locationAgree={locationAgreed}
-                onAllAgreeChange={handleAllAgree}
-                onPrivacyAgreeChange={handlePrivacyAgreeChange}
-                onServiceAgreeChange={handleServiceAgreeChange}
-                onOver14AgreeChange={handleOver14AgreeChange}
-                onLocationAgreeChange={handleLocationAgreeChange}
-                termsError={termsError}
-                termsErrorMessage={termsError ? "필수 약관에 동의해주세요" : ""}
-                className="w-full"
-              />
+                  allAgree={allAgreed}
+                  privacyAgree={privacyAgreed}
+                  serviceAgree={serviceAgreed}
+                  over14Agree={over14Agreed}
+                  locationAgree={locationAgreed}
+                  onAllAgreeChange={handleAllAgree}
+                  onAllAgreeSync={(checked: boolean) => {
+                    setAllAgreed(checked);
+                  }}
+                  onPrivacyAgreeChange={handlePrivacyAgreeChange}
+                  onServiceAgreeChange={handleServiceAgreeChange}
+                  onOver14AgreeChange={handleOver14AgreeChange}
+                  onLocationAgreeChange={handleLocationAgreeChange}
+                  termsError={termsError}
+                  termsErrorMessage={termsErrorMessage}
+                  className="w-full"
+                />
 
               {/* 다음 버튼 */}
               <div className="pt-4">
@@ -137,7 +158,6 @@ export default function SocialTermsAgreementPage() {
                   type="submit"
                   variant="main"
                   state={isLoading ? "default" : "default"}
-                  disabled={isLoading || !privacyAgreed || !serviceAgreed || !over14Agreed || !locationAgreed}
                   className="w-full"
                 >
                   {isLoading ? (

@@ -10,6 +10,13 @@ export interface TermsAgreementProps {
   over14Agree: boolean;
   locationAgree: boolean;
   onAllAgreeChange: (checked: boolean) => void;
+  /**
+   * Optional: called when internal state of individual agreements changes
+   * and TermsAgreement wants to sync the `allAgree` value back to parent
+   * without forcing individual agreement changes. If not provided,
+   * `onAllAgreeChange` will be used as a fallback.
+   */
+  onAllAgreeSync?: (checked: boolean) => void;
   onPrivacyAgreeChange: (checked: boolean) => void;
   onServiceAgreeChange: (checked: boolean) => void;
   onOver14AgreeChange: (checked: boolean) => void;
@@ -26,6 +33,7 @@ export default function TermsAgreement({
   over14Agree,
   locationAgree,
   onAllAgreeChange,
+  onAllAgreeSync,
   onPrivacyAgreeChange,
   onServiceAgreeChange,
   onOver14AgreeChange,
@@ -38,7 +46,9 @@ export default function TermsAgreement({
   useEffect(() => {
     const allChecked = privacyAgree && serviceAgree && over14Agree && locationAgree;
     if (allChecked !== allAgree) {
-      onAllAgreeChange(allChecked);
+      // Prefer sync callback which only updates allAgree in parent
+      if (onAllAgreeSync) onAllAgreeSync(allChecked);
+      else onAllAgreeChange(allChecked);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [privacyAgree, serviceAgree, over14Agree, locationAgree]);
@@ -94,7 +104,7 @@ export default function TermsAgreement({
           <Checkbox
             checked={locationAgree}
             onChange={onLocationAgreeChange}
-            error={false}
+             error={termsError && !locationAgree}
           />
         </label>
       </div>

@@ -65,8 +65,8 @@ export default function EmailRequired() {
       // 성공 메시지 표시
       alert("이메일이 성공적으로 업데이트되었습니다!");
       
-      // 메인 페이지로 이동
-      navigate("/");
+      // agre
+      navigate("/auth/social-terms");
       
     } catch (err) {
       console.error("이메일 업데이트 오류:", err);
