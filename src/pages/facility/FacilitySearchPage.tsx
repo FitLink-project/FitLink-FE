@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import TopBar from "../../components/TopBar";
 import BottomBar from "../../components/BottomBar";
 import BackIcon from "../../assets/Icon/Back-Hover.png";
+import DeleteIcon from "../../assets/Icon/Delete-Default.png";
+import SearchIcon from "../../assets/Icon/Search-Gray.png";
 import { searchFacilities } from "../../api/facility";
 
 export default function FacilitySearchPage() {
@@ -36,27 +38,44 @@ export default function FacilitySearchPage() {
     });
   }
 
+  // 검색어 삭제 
+  function handleClear() { 
+    setKeyword(""); setResults([]); 
+}
+
   return (
     <div className="w-full h-screen flex flex-col bg-white">
       <TopBar isLoggedIn={true} />
 
       {/* 검색바 */}
       <div className="mt-[72px] px-4">
-        <div className="w-full h-[48px] rounded-2xl flex items-center px-4 gap-3 bg-[#EEEEEE]">
-          <button onClick={() => navigate(-1)}>
-            <img src={BackIcon} alt="back" className="w-5 h-5 opacity-70" />
-          </button>
+  <div className="w-full h-[48px] rounded-2xl flex items-center px-4 bg-[#EEEEEE]">
 
-          <input
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={handleKeyDown}  // ⬅ 엔터로 검색 실행
-            placeholder="지하철역 또는 체육시설 검색"
-            className="flex-1 bg-transparent text-[15px] text-gray-700
-                       placeholder:text-[#A1A1A1] focus:outline-none"
-          />
-        </div>
-      </div>
+    <button onClick={() => navigate(-1)}>
+      <img src={BackIcon} alt="back" className="w-5 h-5 opacity-70" />
+    </button>
+
+    <input
+      value={keyword}
+      onChange={(e) => setKeyword(e.target.value)}
+      onKeyDown={handleKeyDown}
+      placeholder="지하철역 또는 체육시설 검색"
+      className="
+        flex-1 bg-transparent text-[15px] text-gray-700
+        placeholder:text-[#A1A1A1] focus:outline-none
+        mr-2
+      "
+    />
+
+    {/* X 버튼 */}
+    {keyword.length > 0 && (
+      <button onClick={handleClear}>
+        <img src={DeleteIcon} alt="delete" className="w-4 h-4 opacity-70" />
+      </button>
+    )}
+  </div>
+</div>
+
 
       {/* 안내 문구 */}
       {results.length === 0 && keyword.length === 0 && (
@@ -68,22 +87,42 @@ export default function FacilitySearchPage() {
       )}
 
       {/* 검색 결과 */}
-      {results.length > 0 && (
-        <div className="px-4 mt-4 overflow-y-auto flex-1">
-          {results.map((item: any, index: number) => (
-            <div
-              key={index}
-              onClick={() => handleSelect(item)}
-              className="py-4 border-b cursor-pointer"
-            >
-              <div className="text-[16px] font-semibold">
-                {item.facility_name}
-              </div>
-              <div className="text-[13px] text-gray-500">{item.address}</div>
-            </div>
-          ))}
-        </div>
-      )}
+{keyword.length > 0 && (
+  <div className="px-4 mt-4 overflow-y-auto flex-1">
+
+    {results.map((item: any, index: number) => (
+  <div
+    key={index}
+    onClick={() => handleSelect(item)}
+    className="py-4 flex items-start gap-3 cursor-pointer"
+  >
+    {/* 왼쪽 돋보기 아이콘 */}
+    <img
+      src={SearchIcon}
+      alt="search"
+      className="w-5 h-5 mt-[2px] opacity-70"
+    />
+
+    {/* 텍스트 */}
+    <div>
+      <div className="text-[16px] font-semibold text-gray-800">
+        {item.facility_name}
+      </div>
+      <div className="text-[13px] text-gray-500">
+        {item.address}
+      </div>
+    </div>
+  </div>
+))}
+
+    {results.length === 0 && (
+      <div className="text-center text-gray-400 mt-10">
+        검색 결과가 없습니다.
+      </div>
+    )}
+
+  </div>
+)}
 
       <div className="fixed bottom-0 left-0 w-full z-30">
         <BottomBar />
