@@ -5,6 +5,8 @@ import BottomBar from "../../components/BottomBar";
 import Modal from "../../components/Modal";
 import { getFitnessResult } from "../../api/fitness";
 import FitnessBalance from "./sections/FitnessBalance";
+import type { AIPrescriptionRequest } from "../../types/aiPrescription";
+import AIContainer from "./sections/AIContainer";
 
 export default function ReportPage() {
   const location = useLocation();
@@ -59,15 +61,23 @@ export default function ReportPage() {
 
   const age = calculateAge(fitnessData?.userInfo?.birthDate);
 
+  const AIRequest: AIPrescriptionRequest = {
+    age: typeof age === "number" ? age : Number(age),
+    gender: fitnessData?.userInfo?.gender ?? 0,
+    height: fitnessData?.userInfo?.height ?? 0,
+    weight: fitnessData?.userInfo?.weight ?? 0,
+  };
+
   return (
     <>
       <PageHeader title="체력 리포트" />
 
       <div className="flex justify-center bg-white">
-        <div className="w-full max-w-sm mb-16">
+        <div className="w-full max-w-sm mb-64">
           {isLoggedIn && fitnessData && (
             <>
               <FitnessBalance data={fitnessData} age={Number(age)} />
+              <AIContainer data={AIRequest} />
             </>
           )}
         </div>
