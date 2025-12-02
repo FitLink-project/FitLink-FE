@@ -53,20 +53,27 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
   const graphData: Record<string, number> = {};
 
   // testGeneral이면 근지구력, 유연성, 심폐지구력만 포함
-  const GENERAL_KEYS = ["muscular", "flexibility", "cardiopulmonary"];
-
-  Object.entries(rawMetrics).forEach(([key, value]) => {
-    // data.testGeneral이 있으면 GENERAL_KEYS만, 아니면 기존대로 모두
-    if (data.testGeneral) {
-      if (!GENERAL_KEYS.includes(key)) return;
+  if (data.testGeneral) {
+    // FitnessGeneralRequest 3개 분석
+    const testGen = data.testGeneral;
+    if (typeof testGen.sitUp === "number") {
+      graphData["근지구력"] = testGen.sitUp;
     }
-    // 해당 키에 맞는 한글 라벨 찾기
-    const koreanLabel = LABEL_MAP[key];
-
-    if (typeof value === "number" && koreanLabel) {
-      graphData[koreanLabel] = value;
+    if (typeof testGen.sitAndReach === "number") {
+      graphData["유연성"] = testGen.sitAndReach;
     }
-  });
+    if (typeof testGen.ymcaStepTest === "number") {
+      graphData["심폐지구력"] = testGen.ymcaStepTest;
+    }
+  } else {
+    Object.entries(rawMetrics).forEach(([key, value]) => {
+      // 해당 키에 맞는 한글 라벨 찾기
+      const koreanLabel = LABEL_MAP[key];
+      if (typeof value === "number" && koreanLabel) {
+        graphData[koreanLabel] = value;
+      }
+    });
+  }
 
   // 최댓값/최솟값 계산 및 라벨링
   const validScores = Object.values(graphData);
