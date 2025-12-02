@@ -75,10 +75,10 @@ export default function ReportPage() {
       <div className="flex justify-center bg-white">
         <div className="w-full max-w-sm mb-64">
           {isLoggedIn && fitnessData && (
-            <>
+            <div className="flex flex-col gap-16">
               <FitnessBalance data={fitnessData} age={Number(age)} />
               <AIContainer data={AIRequest} />
-            </>
+            </div>
           )}
         </div>
       </div>

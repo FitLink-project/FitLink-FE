@@ -96,7 +96,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
   return (
     <>
       {/* 첫 번째 섹션 */}
-      <section className="my-8">
+      <section>
         <SectionHeader
           title="나의 체력 밸런스는?"
           description="체력 데이터를 바탕으로 분석한 결과예요"
