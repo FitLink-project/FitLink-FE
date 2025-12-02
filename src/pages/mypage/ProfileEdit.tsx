@@ -9,7 +9,7 @@ import PageHeader from "../../components/PageHeader";
 import TermsAgreement from "../../components/TermsAgreement";
 import { editProfile, getProfile } from "../../api/user";
 import { ERROR_CODES, type ApiError, type ProfileResult } from "../../types/user";
-import addProfileIcon from "../../assets/profile/add-profile.png";
+import addProfileIcon from "../../assets/profile/default-profile.png";
 
 export default function ProfileEdit() {
   const [name, setName] = useState("");
@@ -279,7 +279,13 @@ export default function ProfileEdit() {
                   className="w-24 h-24"
                 />
               )}
-              <input
+              <div className="w-[20px] h-[20px] rounded-full absolute bottom-[10px] right-[0px] bg-[#c4c4c4] border-[2px] border-white flex items-center justify-center">
+                     {/* 세로 막대 */}
+  <div className="absolute inset-0 m-auto w-[1.5px] h-[9px] bg-white" />
+  {/* 가로 막대 */}
+  <div className="absolute inset-0 m-auto w-[9px] h-[1.5px] bg-white" />
+                </div>
+                <input
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
