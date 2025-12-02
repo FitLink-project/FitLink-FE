@@ -5,7 +5,7 @@ import PageHeader from "../../components/PageHeader";
 import TermsAgreement from "../../components/TermsAgreement";
 import { useUser } from "../../contexts/UserContext";
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://www.fitlink1207.store";
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL ;
 
 export default function SocialTermsAgreementPage() {
   const [allAgreed, setAllAgreed] = useState(false);
@@ -28,6 +28,7 @@ export default function SocialTermsAgreementPage() {
   }, [navigate]);
 
   const handleAllAgree = (checked: boolean) => {
+    console.log('handleAllAgree ->', checked);
     setAllAgreed(checked);
     setPrivacyAgreed(checked);
     setServiceAgreed(checked);
@@ -37,21 +38,25 @@ export default function SocialTermsAgreementPage() {
   };
 
   const handlePrivacyAgreeChange = (checked: boolean) => {
+    console.log('privacy change ->', checked);
     setPrivacyAgreed(checked);
     if (termsError) setTermsError(false);
   };
 
   const handleServiceAgreeChange = (checked: boolean) => {
+    console.log('service change ->', checked);
     setServiceAgreed(checked);
     if (termsError) setTermsError(false);
   };
 
   const handleOver14AgreeChange = (checked: boolean) => {
+    console.log('over14 change ->', checked);
     setOver14Agreed(checked);
     if (termsError) setTermsError(false);
   };
 
   const handleLocationAgreeChange = (checked: boolean) => {
+    console.log('location change ->', checked);
     setLocationAgreed(checked);
     if (termsError) setTermsError(false);
   };
@@ -125,6 +130,10 @@ export default function SocialTermsAgreementPage() {
                 over14Agree={over14Agreed}
                 locationAgree={locationAgreed}
                 onAllAgreeChange={handleAllAgree}
+                onAllAgreeSync={(checked: boolean) => {
+                  console.log('onAllAgreeSync ->', checked);
+                  setAllAgreed(checked);
+                }}
                 onPrivacyAgreeChange={handlePrivacyAgreeChange}
                 onServiceAgreeChange={handleServiceAgreeChange}
                 onOver14AgreeChange={handleOver14AgreeChange}
