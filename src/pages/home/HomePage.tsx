@@ -8,29 +8,55 @@ import { editProfile, getProfile } from "../../api/user";
 import { useUser } from "../../contexts/UserContext"; 
 
 export default function HomePage() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isLocationAgreed, setIsLocationAgreed] = useState(false);
 
-  const { user, loading } = useUser();
+  const { user } = useUser();  // ⬅ context에서 프로필 사용
 
-  const [isLoggedIn, setIsLoggedIn] = useState(!!user);
   useEffect(() => {
-    // 1) 아직 user 로딩 중이면 아무 것도 하지 않음 (팝업도 X)
-    if (loading) return;
+    const token = localStorage.getItem("accessToken");
+    const loggedIn = !!token;
+    setIsLoggedIn(loggedIn);
 
-    // 2) 로그인 상태라면: user.agreements.location 기준
-    if (isLoggedIn && user) {
+    // 1) 비로그인인 경우: localStorage만 사용
+    if (!loggedIn) {
+      const locationAgreedLocal = localStorage.getItem("locationAgreed") === "true";
+      setIsLocationAgreed(locationAgreedLocal);
+      setShowLocationModal(!locationAgreedLocal);
+      return;
+    }
+
+    // 2) 로그인 + user 이미 로드된 경우: context 우선
+    if (user) {
       const locationAgreedServer = user.agreements.location === true;
       setIsLocationAgreed(locationAgreedServer);
       setShowLocationModal(!locationAgreedServer);
       return;
     }
 
-    // 3) 비로그인: localStorage 기준
-    const locationAgreedLocal = localStorage.getItem("locationAgreed") === "true";
-    setIsLocationAgreed(locationAgreedLocal);
-    setShowLocationModal(!locationAgreedLocal);
-  }, [loading, isLoggedIn, user]);
+    // 3) 로그인인데 user가 아직 없으면: 직접 프로필 조회 후 판단
+    (async () => {
+      try {
+        if (!token) return;
+        const res = await getProfile(token);
+        if (res.isSuccess && res.result) {
+          const locationAgreedServer = res.result.agreements.location === true;
+          setIsLocationAgreed(locationAgreedServer);
+          setShowLocationModal(!locationAgreedServer);
+        } else {
+          // 프로필 못 가져오면 보수적으로 모달 띄우기
+          setIsLocationAgreed(false);
+          setShowLocationModal(true);
+        }
+      } catch (e) {
+        console.error("프로필 조회 실패:", e);
+        setIsLocationAgreed(false);
+        setShowLocationModal(true);
+      }
+    })();
+  }, [user]);
+
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
