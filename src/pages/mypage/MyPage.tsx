@@ -4,6 +4,13 @@ import logoBlue from "../../assets/Full_Logo/logo-blue.png";
 import HomeGauge from "../../assets/Gauge/home-guage.png";
 import BottomBar from "../../components/BottomBar";
 import DefaultProfile from "../../assets/profile/default-profile.png";
+import GoIcon from '../../assets/Icon/Terms/Go.png';
+import LocationServiceIcon from '../../assets/Icon/Terms/LocationService.png';
+import LogoutIcon from '../../assets/Icon/Terms/Logout.png';
+import PersonalIcon from '../../assets/Icon/Terms/Personal.png';
+import ServiceIcon from '../../assets/Icon/Terms/Service.png';
+import UnregisterIcon from '../../assets/Icon/Terms/Unregister.png';
+
 
 export default function MyPage() {
   const { user, logout } = useUser();
@@ -65,7 +72,7 @@ export default function MyPage() {
                 </div>
                 <button
                   type="button"
-                  className="mt-2 px-4 py-2 rounded-[20px] bg-[#F3F5FF] text-main text-sm font-medium font-pretendard leading-[150%]"
+                  className="mt-2 px-4 py-2 rounded-[10px] bg-[#E2EDFF] text-main text-sm font-medium font-pretendard leading-[150%]"
                 >
                   프로필 편집
                 </button>
@@ -79,9 +86,7 @@ export default function MyPage() {
                   <span className="text-[20px] font-semibold text-softBlack font-pretendard leading-[150%]">
                     로그인 후 이용해 주세요
                   </span>
-                  <span className="text-[20px] font-semibold text-softBlack font-pretendard leading-[150%]">
-                    ›
-                  </span>
+                  <img src={GoIcon} alt="Go" className="w-[20px] h-[20px]" />
                 </button>
             )}
           </div>
@@ -122,10 +127,13 @@ export default function MyPage() {
             onClick={() => navigate("/privacy-agreement")}
             className="w-full flex items-center justify-between px-5 h-[44px]"
           >
-            <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
-              개인정보 수집/이용 동의
-            </span>
-            <span className="text-lg text-gray">{">"}</span>
+            <div className="flex items-center gap-2">
+              <img src={PersonalIcon} alt="Personal" className="w-[20px] h-20px]"/>
+              <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
+                개인정보 수집/이용 동의
+              </span>
+            </div>
+            <img src={GoIcon} alt="Go" className="w-[20px] h-[20px]" />
           </button>
 
           {/* 서비스 이용약관 */}
@@ -134,10 +142,13 @@ export default function MyPage() {
             onClick={() => navigate("/service-terms")}
             className="w-full flex items-center justify-between px-5 h-[44px]"
           >
+            <div className="flex items-center gap-2">
+             <img src={ServiceIcon} alt="Service" className="w-[20px] h-[20px]" />
             <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
               서비스 이용약관
             </span>
-            <span className="text-lg text-gray">{">"}</span>
+            </div>
+            <img src={GoIcon} alt="Go" className="w-[20px] h-[20px]" />
           </button>
 
           {/* 위치기반 서비스 이용 약관 */}
@@ -146,32 +157,42 @@ export default function MyPage() {
             onClick={() => navigate("/location-service")}
             className="w-full flex items-center justify-between px-5 h-[44px]"
           >
-            <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
-              위치기반 서비스 이용 약관
-            </span>
-            <span className="text-lg text-gray">{">"}</span>
+            
+            <div className="flex items-center gap-2">
+              <img src={LocationServiceIcon} alt="Location service" className="w-[20px] h-[20px]" />
+              <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
+                위치기반 서비스 이용 약관
+              </span>
+            </div>
+            <img src={GoIcon} alt="Go" className="w-[20px] h-[20px]" />
           </button>
 
           {/* 로그아웃 */}
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full flex items-center justify-between px-5 h-[44px]"
+            className="w-full flex items-center px-5 h-[44px]"
           >
+            <div className="flex items-center gap-2">
+            <img src={LogoutIcon} alt="Logout" className="w-[20px] h-[20px]" />
             <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
               로그아웃
             </span>
+            </div>
           </button>
 
           {/* 회원탈퇴 */}
           <button
             type="button"
             onClick={() => navigate("/withdraw")}
-            className="w-full flex items-center justify-between px-5 h-[44px]"
+            className="w-full flex items-center px-5 h-[44px]"
           >
+            <div className="flex items-center gap-2">
+            <img src={UnregisterIcon} alt="Unregister" className="w-[20px] h-[20px]" />
             <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
               회원탈퇴
             </span>
+            </div>
           </button>
         </div>
 
