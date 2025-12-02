@@ -4,26 +4,33 @@ import HomePageLayout from "./HomePageLayout";
 import HomePageLoggedIn from "./HomePageLoggedIn";
 import HomePageNotLoggedIn from "./HomePageNotLoggedIn";
 import LocationAgreementModal from "./LocationAgreementModal";
-import { editProfile } from "../../api/user";
+import { editProfile, getProfile } from "../../api/user";
+import { useUser } from "../../contexts/UserContext"; 
 
 export default function HomePage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isLocationAgreed, setIsLocationAgreed] = useState(false);
 
+  const { user, loading } = useUser();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(!!user);
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsLoggedIn(!!token);
+    // 1) 아직 user 로딩 중이면 아무 것도 하지 않음 (팝업도 X)
+    if (loading) return;
 
-    const locationAgreed = localStorage.getItem("locationAgreed") === "true";
-    setIsLocationAgreed(locationAgreed);
-
-    // 아직 동의 안 했으면 모달 띄우기 (로그인 여부 상관 없음)
-    if (!locationAgreed) {
-      setShowLocationModal(true);
+    // 2) 로그인 상태라면: user.agreements.location 기준
+    if (isLoggedIn && user) {
+      const locationAgreedServer = user.agreements.location === true;
+      setIsLocationAgreed(locationAgreedServer);
+      setShowLocationModal(!locationAgreedServer);
+      return;
     }
-  }, []);
 
+    // 3) 비로그인: localStorage 기준
+    const locationAgreedLocal = localStorage.getItem("locationAgreed") === "true";
+    setIsLocationAgreed(locationAgreedLocal);
+    setShowLocationModal(!locationAgreedLocal);
+  }, [loading, isLoggedIn, user]);
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
