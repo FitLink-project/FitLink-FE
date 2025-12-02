@@ -13,7 +13,7 @@ export function StrengthGraphItem({
   valueText,
   userScr,
   avgScr,
-  totalWidth = 240,
+  totalWidth = 220,
   highlight = false,
 }: StrengthGraphItemProps) {
   const MAX_SCORE = 100;
@@ -31,12 +31,12 @@ export function StrengthGraphItem({
   return (
     <div className="w-full flex items-center justify-between">
       {/* 지표 이름 */}
-      <div className="text-sm font-semibold font-pretendard leading-[150%] text-left w-[50px]">
+      <div className="text-xs font-pretendard leading-[150%] text-left w-[70px]">
         <span className={highlight ? "text-main" : "text-gray"}>{label}</span>
       </div>
 
       {/* 그래프 바 영역 */}
-      <div className="flex-1 flex flex-col gap-3 relative mx-3">
+      <div className="flex-1 relative mx-3">
         {/* 바 높이 설정 */}
         <div className="relative h-[14px]">
           {/* 1. 배경 바 (회색) */}

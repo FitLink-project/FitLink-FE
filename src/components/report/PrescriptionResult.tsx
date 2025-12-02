@@ -35,7 +35,7 @@ const PrescriptionResult = ({ data }: PrescriptionResultProps) => {
   ];
 
   return (
-    <div className="w-full max-w-md mx-auto p-4">
+    <div className="w-full max-w-md mx-auto">
       <div className="flex flex-col relative">
         {/* 점선 타임라인 (전체 배경) */}
         <div

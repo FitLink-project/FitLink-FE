@@ -71,7 +71,7 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
   const renderList = data.testGeneral ? GENERAL_KEYS : FULL_LIST;
 
   return (
-    <>
+    <div className="flex flex-col gap-3">
       {renderList.map(({ key, label, userScr, avgScr }) => {
         let maxScoreValue = 100;
         if (data.standard?.grade1) {
@@ -109,7 +109,7 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
           />
         );
       })}
-    </>
+    </div>
   );
 }
 
