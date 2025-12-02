@@ -63,7 +63,12 @@ export default function SocialTermsAgreementPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  console.log('submit states =>', {
+    privacyAgreed,
+    serviceAgreed,
+    over14Agreed,
+    locationAgreed,
+  });
     if (!privacyAgreed || !serviceAgreed || !over14Agreed || !locationAgreed) {
       setTermsError(true);
       return;
