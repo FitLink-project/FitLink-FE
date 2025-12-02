@@ -6,8 +6,10 @@ import type {
 } from "../../../types/aiPrescription";
 import PrescriptionResult from "../../../components/report/PrescriptionResult";
 import SectionHeader from "../../../components/report/SectionHeader";
+import { useUser } from "../../../contexts/UserContext";
 
 export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
+  const { user } = useUser();
   const [prescription, setPrescription] =
     useState<AIPrescriptionResponse | null>(null);
 
@@ -34,7 +36,7 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
     <section>
       <SectionHeader
         title="나의 체력에는 어떤 운동을 해야할까?"
-        description="FitLink가 OO 님의 체력 밸런스를 바탕으로 맞춤 운동을 추천해 드려요"
+        description={`FitLink가 ${user?.name ?? "회원"} 님의 체력 밸런스를 바탕으로 맞춤 운동을 추천해 드려요`}
       />
       {/* 결과가 있을 때만 컴포넌트 렌더링 */}
       {prescription && <PrescriptionResult data={prescription} />}

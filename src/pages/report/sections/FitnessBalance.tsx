@@ -5,6 +5,7 @@ import defaultProfile from "../../../assets/profile/default-profile.png";
 import type { FitnessResponse } from "../../../types/fitness";
 import TriangleGraph from "../../../components/TriangleGraph";
 import StrengthGraphList from "../../../components/report/StrengthGraphList";
+import { useUser } from "../../../contexts/UserContext";
 
 // 영어 키를 한글로 변환하기 위한 맵핑 객체
 const LABEL_MAP: Record<string, string> = {
@@ -47,6 +48,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
   // 데이터가 없을 경우 안전 처리
   if (!data) return null;
 
+  const { user } = useUser();
   const { userInfo, standard, ...rawMetrics } = data;
 
   // 그래프용 데이터
@@ -114,8 +116,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
                 />
               </div>
               <p className="font-mplus1 text-sm">
-                {/* 이름 정보는 현재 데이터에 없으므로 '회원' 등으로 대체 */}
-                김OO | {age}세 ({userInfo?.sex === "M" ? "남" : "여"})
+                {user?.name ?? "회원"} | {age}세 ({userInfo?.sex === "M" ? "남" : "여"})
               </p>
             </Card>
 
@@ -145,7 +146,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
 
             {/* 하단 텍스트 */}
             <div className="font-mplus1 text-center text-sm">
-              OO 님 은{" "}
+              {user?.name ?? "회원"} 님 은{" "}
               <span className="bg-[linear-gradient(transparent_60%,rgba(59,130,246,0.4)_60%)] px-1 font-bold">
                 {maxLabel}
               </span>
