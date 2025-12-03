@@ -54,8 +54,13 @@ export default function MyPage() {
   };
 
   const displayName = user?.name ?? "게스트";
-  const displayEmail = user?.email ?? "example@example.com";
+  const displayEmail =     user?.provider === "KAKAO"
+      ? "카카오 로그인"
+      : user?.provider === "GOOGLE"
+      ? "구글 로그인"
+      : user?.email ?? "example@example.com";
   const profileImgSrc = user?.profileUrl ? user.profileUrl : DefaultProfile;
+
 
   return (
     <div className="w-full min-h-screen bg-softWhite pb-[80px]">

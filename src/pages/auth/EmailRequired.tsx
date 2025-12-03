@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail } from "react-feather";
+import { useUser } from "../../contexts/UserContext";
 
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://www.fitlink1207.store";
 
@@ -9,6 +10,7 @@ export default function EmailRequired() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+    const { user } = useUser();    
 
   useEffect(() => {
     // 토큰 확인
@@ -18,6 +20,9 @@ export default function EmailRequired() {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
+    }
+        if (user && user.email) {
+      navigate("/", { replace: true });
     }
   }, [navigate]);
 
