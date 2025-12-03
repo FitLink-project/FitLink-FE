@@ -46,7 +46,7 @@ export default function Step2() {
     try {
       const response = await postKookminFitness(formData);
       console.log("서버 응답:", response);
-      navigate("/fitness/result", {
+      navigate("/report", {
         state: { result: response },
       });
     } catch (error) {

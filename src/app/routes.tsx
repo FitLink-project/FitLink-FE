@@ -19,6 +19,7 @@ import MyPage from "../pages/mypage/MyPage";
 import FacilityMapPage from "../pages/facility/FacilityMapPage";
 import ProfileEdit from "../pages/mypage/ProfileEdit";
 import FacilitySearchPage from "../pages/facility/FacilitySearchPage";
+import VideoDetailPage from "../pages/video/VideoDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -81,23 +82,24 @@ export const router = createBrowserRouter([
       // 정서윤
       { path: "/report", element: <ReportPage /> },
       // 장서원
-      { path: "/my", element: <MyPage/> },
+      { path: "/my", element: <MyPage /> },
 
-
-       // A. 주변시설 지도 페이지
+      // A. 주변시설 지도 페이지
       {
         path: "/facility",
         element: <FacilityMapPage />,
       },
 
-      { path: "/my/edit", element: <ProfileEdit/> },
+      { path: "/my/edit", element: <ProfileEdit /> },
 
+      // B. 주변시설 검색 페이지
+      { path: "/facility/search", element: <FacilitySearchPage /> },
 
-      // B. 주변시설 검색 페이지 
-      { path: "/facility/search",
-         element: <FacilitySearchPage />
+      // 운동 상세 페이지
+      {
+        path: "/video/:id",
+        element: <VideoDetailPage />,
       },
-      
     ],
   },
 ]);

@@ -44,7 +44,7 @@ export default function FitnessGeneralPage() {
       <ProgressBar currentStep={currentStep} totalSteps={TOTAL_STEPS} />
 
       <div className="flex justify-center bg-white">
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-sm my-32">
           {/* 각 단계에 맞는 입력 폼 */}
           {renderForm(currentStep)}
         </div>
