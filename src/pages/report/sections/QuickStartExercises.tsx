@@ -114,7 +114,7 @@ export default function QuickStartExercises({
         console.log("부족한 요소:", weakFactors);
 
         // 각 부족 요소별로 개별 요청을 보냄(쉼표로 합치지 않음)
-        const requests = weakFactors.map((f) => getFitnessVideos(f, 1, 10));
+        const requests = weakFactors.map((f) => getFitnessVideos(f, 1, 20));
         const settled = await Promise.allSettled(requests);
         console.log("getFitnessVideos settled:", settled);
 
