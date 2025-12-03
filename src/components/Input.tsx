@@ -16,7 +16,7 @@ export default function Input({
   ...props
 }: InputProps) {
   const baseStyles = [
-    "w-full",
+    "w-[345px]",
     "h-[47px]",
     "px-4",
     "py-3",

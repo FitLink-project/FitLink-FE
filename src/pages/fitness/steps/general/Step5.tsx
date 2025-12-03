@@ -6,11 +6,13 @@ import AbilitySlider from "../../../../components/Fitness/AbilitySlider";
 import LoadingOverlay from "../../../../components/Fitness/LoadingOverlay";
 import { postGeneralFitness } from "../../../../api/fitness";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../../../contexts/UserContext";
 
 export default function Step5() {
   const { formData, setFormData } = useFitnessGeneralStore();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+  const { setTokenAndLoadUser } = useUser();     
 
   // 최종 제출 처리
   const handleSubmit = async () => {
@@ -21,7 +23,10 @@ export default function Step5() {
       // API 호출
       const response = await postGeneralFitness(formData);
       console.log("서버 응답:", response);
-
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        await setTokenAndLoadUser(token);
+      }
       // 결과 페이지로 이동 (응답 값 전달)
       navigate("/report", {
         state: { result: response },

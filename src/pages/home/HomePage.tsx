@@ -14,6 +14,13 @@ export default function HomePage() {
 
   const { user } = useUser();  // ⬅ context에서 프로필 사용
 
+  const hasFitnessResult =
+    !!user &&
+    user.height !== null &&
+    user.weight !== null &&
+    user.birthDate !== null &&
+    user.sex !== null;
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const loggedIn = !!token;
@@ -121,7 +128,7 @@ const handleLocationAgree = async () => {
         onLocationClick={openLocationModal}
       >
         {isLoggedIn ? (
-          <HomePageLoggedIn  hasFitnessResult={false}/>
+          <HomePageLoggedIn  hasFitnessResult={hasFitnessResult}/>
         ) : (
           <HomePageNotLoggedIn />
         )}

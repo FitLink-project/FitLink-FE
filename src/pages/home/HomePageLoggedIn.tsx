@@ -11,6 +11,7 @@ export default function HomePageLoggedIn({
 }: HomePageLoggedInProps) {
   const navigate = useNavigate();
 
+  console.log("HomePageLoggedIn hasFitnessResult =", hasFitnessResult);
   // 체력진단 결과 데이터 (예시)
   const fitnessData = {
     ageRange: "20~24세 여성",
