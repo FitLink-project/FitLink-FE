@@ -7,6 +7,7 @@ import { getFitnessResult } from "../../api/fitness";
 import FitnessBalance from "./sections/FitnessBalance";
 import type { AIPrescriptionRequest } from "../../types/aiPrescription";
 import AIContainer from "./sections/AIContainer";
+import QuickStartExercises from "./sections/QuickStartExercises";
 
 export default function ReportPage() {
   const location = useLocation();
@@ -73,11 +74,12 @@ export default function ReportPage() {
       <PageHeader title="체력 리포트" />
 
       <div className="flex justify-center bg-white">
-        <div className="w-full max-w-sm mb-64">
+        <div className="w-full max-w-sm mb-32">
           {isLoggedIn && fitnessData && (
             <div className="flex flex-col gap-16 py-16">
               <FitnessBalance data={fitnessData} age={Number(age)} />
               <AIContainer data={AIRequest} />
+              <QuickStartExercises data={fitnessData} />
             </div>
           )}
         </div>
