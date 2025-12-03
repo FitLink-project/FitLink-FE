@@ -2,6 +2,7 @@ interface FacilityCardProps {
   title: string;
   address: string;
   tags?: string[];
+  prescription?: string[];
   homepageUrl?: string;
   onViewDetails?: () => void;
 }
@@ -10,6 +11,7 @@ export function FacilityCard({
   title,
   address,
   tags = [],
+  prescription = [],
   homepageUrl,
   onViewDetails,
 }: FacilityCardProps) {
@@ -42,9 +44,7 @@ export function FacilityCard({
           <span
             key={tag}
             className={`text-xs px-2 py-1 rounded-full font-mplus1 ${
-              tag === "기구필테스"
-                ? "bg-pink-100 text-pink-600"
-                : "bg-blue-100 text-blue-600"
+              prescription.includes(tag) ? "bg-pink-100 text-pink-600" : "none"
             }`}
           >
             {tag}

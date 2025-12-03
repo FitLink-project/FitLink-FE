@@ -60,7 +60,9 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
                   ? res.result
                   : [res.result];
                 setFacilities(facilitiesData);
+                console.log("주변 체육시설 응답:", facilitiesData);
               } else {
+                console.error("주변 체육시설 조회 실패:", res.message);
                 setFacilities([]);
               }
               setFacilitiesLoading(false);
@@ -96,7 +98,9 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
             ? res.result
             : [res.result];
           setFacilities(facilitiesData);
+          console.log("기본 위치로 주변 체육시설 응답:", facilitiesData);
         } else {
+          console.error("기본 위치 조회 실패:", res.message);
           setFacilities([]);
         }
       } catch (error) {
@@ -148,6 +152,7 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
                 title={facility.facilityName}
                 address={facility.address}
                 tags={facility.programNames || []}
+                prescription={prescription?.mainExercise || []}
                 homepageUrl={facility.homepageUrl}
                 onViewDetails={() => {
                   navigate(`/facility/${facility.facilityId}`);
