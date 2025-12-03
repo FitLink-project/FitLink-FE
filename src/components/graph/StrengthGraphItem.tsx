@@ -3,7 +3,9 @@ interface StrengthGraphItemProps {
   valueText: string;
   userScr: number;
   avgScr: number;
-  MAX_SCORE?: number;
+  maxScore?: number;
+  /** 픽셀 보정의 기본값 (기존에 고정으로 빼던 값) */
+  offsetBase?: number;
   totalWidth?: number;
   highlight?: boolean;
 }
@@ -13,20 +15,17 @@ export function StrengthGraphItem({
   valueText,
   userScr,
   avgScr,
+  maxScore = 100,
   totalWidth = 220,
   highlight = false,
 }: StrengthGraphItemProps) {
-  const MAX_SCORE = 100;
+  // 비율 기반 픽셀 폭 계산
+  const rawUserPixel = (userScr / maxScore) * totalWidth;
+  const rawAvgPixel = (avgScr / maxScore) * totalWidth;
 
-  // 값 안전 처리 (undefined/null/음수 방지)
-  const safeAvgScr = typeof avgScr === "number" && avgScr >= 0 ? avgScr : 0;
-  const safeUserScr = typeof userScr === "number" && userScr >= 0 ? userScr : 0;
-  const safeMaxScore =
-    typeof MAX_SCORE === "number" && MAX_SCORE > 0 ? MAX_SCORE : 1;
-
-  // (값 / 기준값) * 전체 폭
-  const myPixelWidth = (safeUserScr / safeMaxScore) * totalWidth;
-  const avgPixelWidth = (safeAvgScr / safeMaxScore) * totalWidth;
+  // 100 이상이면 100을 빼고, 미만이면 그대로
+  const userPixelWidth = rawUserPixel >= 100 ? rawUserPixel - 50 : rawUserPixel;
+  const avgPixelWidth = rawAvgPixel >= 50 ? rawAvgPixel - 100 : rawAvgPixel;
 
   return (
     <div className="w-full flex items-center justify-between">
@@ -49,7 +48,9 @@ export function StrengthGraphItem({
           <div
             className="absolute top-0 z-20"
             style={{
-              left: `${avgPixelWidth}px`,
+              left: `${
+                avgPixelWidth < totalWidth ? avgPixelWidth : totalWidth
+              }px`,
               width: "0px",
               height: "100%",
               borderLeft: "2px dashed #ff0000",
@@ -61,9 +62,13 @@ export function StrengthGraphItem({
           <div
             className={
               "absolute inset-y-0 left-0 rounded-full z-10 " +
-              (myPixelWidth < avgPixelWidth ? "bg-main" : "bg-graphBlue")
+              (userPixelWidth < avgPixelWidth ? "bg-main" : "bg-graphBlue")
             }
-            style={{ width: `${myPixelWidth}px` }}
+            style={{
+              width: `${
+                userPixelWidth < totalWidth ? userPixelWidth : totalWidth
+              }px`,
+            }}
           />
         </div>
       </div>

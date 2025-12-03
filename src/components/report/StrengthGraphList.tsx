@@ -12,19 +12,19 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
       key: "muscular", // 근지구력
       label: "근지구력",
       userScr: data.testGeneral?.sitUp,
-      avgScr: data.standard?.grade1?.sitUp,
+      avgScr: data.standard?.grade2?.sitUp,
     },
     {
       key: "flexibility", // 유연성
       label: "유연성",
       userScr: data.testGeneral?.sitAndReach,
-      avgScr: data.standard?.grade1?.sitAndReach,
+      avgScr: data.standard?.grade2?.sitAndReach,
     },
     {
       key: "cardiopulmonary", // 심폐지구력
       label: "심폐지구력",
       userScr: data.testGeneral?.ymcaStepTest,
-      avgScr: data.standard?.grade1?.shuttleRun, // 예시
+      avgScr: data.standard?.grade2?.shuttleRun, // 예시
     },
   ];
 
@@ -34,37 +34,37 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
       key: "strength", // 근력
       label: "근력",
       userScr: data.testKookmin?.gripStrength,
-      avgScr: data.standard?.grade1?.gripStrength,
+      avgScr: data.standard?.grade2?.gripStrength,
     },
     {
       key: "muscular", // 근지구력
       label: "근지구력",
       userScr: data.testKookmin?.sitUp,
-      avgScr: data.standard?.grade1?.sitUp,
+      avgScr: data.standard?.grade2?.sitUp,
     },
     {
       key: "flexibility", // 유연성
       label: "유연성",
       userScr: data.testKookmin?.sitAndReach,
-      avgScr: data.standard?.grade1?.sitAndReach,
+      avgScr: data.standard?.grade2?.sitAndReach,
     },
     {
       key: "cardiopulmonary", // 심폐지구력
       label: "심폐지구력",
       userScr: data.testKookmin?.shuttleRun,
-      avgScr: data.standard?.grade1?.shuttleRun,
+      avgScr: data.standard?.grade2?.shuttleRun,
     },
     {
       key: "agility", // 민첩성
       label: "민첩성",
       userScr: data.testKookmin?.sprint,
-      avgScr: data.standard?.grade1?.sprint,
+      avgScr: data.standard?.grade2?.sprint,
     },
     {
       key: "quickness", // 순발력
       label: "순발력",
       userScr: data.testKookmin?.standingLongJump,
-      avgScr: data.standard?.grade1?.standingLongJump,
+      avgScr: data.standard?.grade2?.standingLongJump,
     },
   ];
 
@@ -105,7 +105,7 @@ function StrengthGraphList({ data }: StrengthGraphListProps) {
             valueText={typeof userScr === "number" ? `${userScr}` : "-"}
             userScr={typeof userScr === "number" ? userScr : 0}
             avgScr={typeof avgScr === "number" ? avgScr : 0}
-            MAX_SCORE={maxScoreValue}
+            maxScore={maxScoreValue}
           />
         );
       })}
