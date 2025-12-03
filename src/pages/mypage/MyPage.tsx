@@ -1,26 +1,56 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
+
 import logoBlue from "../../assets/Full_Logo/logo-blue.png";
 import HomeGauge from "../../assets/Gauge/home-guage.png";
 import BottomBar from "../../components/BottomBar";
 import DefaultProfile from "../../assets/profile/default-profile.png";
-import GoIcon from '../../assets/Icon/Terms/Go.png';
-import LocationServiceIcon from '../../assets/Icon/Terms/LocationService.png';
-import LogoutIcon from '../../assets/Icon/Terms/Logout.png';
-import PersonalIcon from '../../assets/Icon/Terms/Personal.png';
-import ServiceIcon from '../../assets/Icon/Terms/Service.png';
-import UnregisterIcon from '../../assets/Icon/Terms/Unregister.png';
-
+import GoIcon from "../../assets/Icon/Terms/Go.png";
+import LocationServiceIcon from "../../assets/Icon/Terms/LocationService.png";
+import LogoutIcon from "../../assets/Icon/Terms/Logout.png";
+import PersonalIcon from "../../assets/Icon/Terms/Personal.png";
+import ServiceIcon from "../../assets/Icon/Terms/Service.png";
+import UnregisterIcon from "../../assets/Icon/Terms/Unregister.png";
+import WithdrawConfirmModal from "../../components/WithDrawConfirmModal";
+import { deleteUser } from "../../api/user";
 
 export default function MyPage() {
   const { user, logout } = useUser();
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const navigate = useNavigate();
 
   const isLoggedIn = !!user;
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleWithdrawClick = () => {
+    setShowWithdrawModal(true);
+  };
+
+  const handleWithdrawConfirm = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        throw new Error("accessToken 없음");
+      }
+
+      await deleteUser(token);        // 회원탈퇴 API 호출
+      logout();                      // 컨텍스트 정리
+      navigate("/login");            // 로그인 화면으로
+    } catch (e) {
+      console.error("회원 탈퇴 실패:", e);
+      // TODO: 토스트나 알럿으로 사용자에게 안내
+    } finally {
+      setShowWithdrawModal(false);
+    }
+  };
+
+  const handleWithdrawCancel = () => {
+    setShowWithdrawModal(false);
   };
 
   const displayName = user?.name ?? "게스트";
@@ -79,16 +109,16 @@ export default function MyPage() {
                 </button>
               </>
             ) : (
-                <button
-                  type="button"
-                  onClick={() => navigate("/login")}
-                  className="mt-3 flex items-center gap-1"
-                >
-                  <span className="text-[20px] font-semibold text-softBlack font-pretendard leading-[150%]">
-                    로그인 후 이용해 주세요
-                  </span>
-                  <img src={GoIcon} alt="Go" className="w-[20px] h-[20px]" />
-                </button>
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="mt-3 flex items-center gap-1"
+              >
+                <span className="text-[20px] font-semibold text-softBlack font-pretendard leading-[150%]">
+                  로그인 후 이용해 주세요
+                </span>
+                <img src={GoIcon} alt="Go" className="w-[20px] h-[20px]" />
+              </button>
             )}
           </div>
 
@@ -120,6 +150,7 @@ export default function MyPage() {
             </div>
           </button>
         </div>
+
         {/* 약관/로그아웃 리스트 카드 */}
         <div className="w-full mt-[16px] rounded-[10px] bg-backgroundGray shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)]">
           {/* 개인정보 수집/이용 동의 */}
@@ -129,7 +160,11 @@ export default function MyPage() {
             className="w-full flex items-center justify-between px-5 h-[44px]"
           >
             <div className="flex items-center gap-2">
-              <img src={PersonalIcon} alt="Personal" className="w-[20px] h-20px]"/>
+              <img
+                src={PersonalIcon}
+                alt="Personal"
+                className="w-[20px] h-[20px]"
+              />
               <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
                 개인정보 수집/이용 동의
               </span>
@@ -144,10 +179,10 @@ export default function MyPage() {
             className="w-full flex items-center justify-between px-5 h-[44px]"
           >
             <div className="flex items-center gap-2">
-             <img src={ServiceIcon} alt="Service" className="w-[20px] h-[20px]" />
-            <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
-              서비스 이용약관
-            </span>
+              <img src={ServiceIcon} alt="Service" className="w-[20px] h-[20px]" />
+              <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
+                서비스 이용약관
+              </span>
             </div>
             <img src={GoIcon} alt="Go" className="w-[20px] h-[20px]" />
           </button>
@@ -158,9 +193,12 @@ export default function MyPage() {
             onClick={() => navigate("/location-service")}
             className="w-full flex items-center justify-between px-5 h-[44px]"
           >
-            
             <div className="flex items-center gap-2">
-              <img src={LocationServiceIcon} alt="Location service" className="w-[20px] h-[20px]" />
+              <img
+                src={LocationServiceIcon}
+                alt="Location service"
+                className="w-[20px] h-[20px]"
+              />
               <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
                 위치기반 서비스 이용 약관
               </span>
@@ -175,29 +213,40 @@ export default function MyPage() {
             className="w-full flex items-center px-5 h-[44px]"
           >
             <div className="flex items-center gap-2">
-            <img src={LogoutIcon} alt="Logout" className="w-[20px] h-[20px]" />
-            <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
-              로그아웃
-            </span>
+              <img src={LogoutIcon} alt="Logout" className="w-[20px] h-[20px]" />
+              <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
+                로그아웃
+              </span>
             </div>
           </button>
 
           {/* 회원탈퇴 */}
           <button
             type="button"
-            onClick={() => navigate("/withdraw")}
+            onClick={handleWithdrawClick}
             className="w-full flex items-center px-5 h-[44px]"
           >
             <div className="flex items-center gap-2">
-            <img src={UnregisterIcon} alt="Unregister" className="w-[20px] h-[20px]" />
-            <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
-              회원탈퇴
-            </span>
+              <img
+                src={UnregisterIcon}
+                alt="Unregister"
+                className="w-[20px] h-[20px]"
+              />
+              <span className="text-sm font-medium text-softBlack font-pretendard leading-[150%]">
+                회원탈퇴
+              </span>
             </div>
           </button>
         </div>
-
       </div>
+
+      {/* 회원탈퇴 확인 모달 */}
+      {showWithdrawModal && (
+        <WithdrawConfirmModal
+          onConfirm={handleWithdrawConfirm}
+          onCancel={handleWithdrawCancel}
+        />
+      )}
 
       <BottomBar />
     </div>
