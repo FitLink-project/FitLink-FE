@@ -4,6 +4,7 @@ import Button from "../../components/Button";
 import { StrengthGraphCard } from "../../components/graph/StrengthGraphCard";
 import { getFitnessResult } from "../../api/fitness";        // ✅ API import 추가
 import type { FitnessResponse } from "../../types/fitness";
+import { useUser } from "../../contexts/UserContext";
 
 interface HomePageLoggedInProps {
   hasFitnessResult: boolean; // ✅ 체력진단 기록 여부
@@ -66,8 +67,26 @@ export default function HomePageLoggedIn({
 
   
   // ✅ 1) 로딩 중 & 아직 fitness 없음
-  if (loading && !fitness) {
-    return <div className="w-full">체력 진단 결과를 불러오는 중입니다...</div>;
+  if (loading && !fitness) {return (
+      <div className="w-full mb-[40px]">
+        <h3 className="text-[18px] font-semibold text-softBlack font-pretendard leading-[150%] mb-[10px]">
+          내 체력을 진단해 보세요 🔬
+        </h3>
+        <p className="text-sm font-medium text-gray font-pretendard leading-[1.193em] mb-[10px]">
+          체력 데이터를 기반으로 맞춤 운동 및 주변 체육시설을 알려드려요
+        </p>
+        <div className="w-full h-[135px] overflow-hidden bg-softWhite rounded-[10px] px-[10px] py-[20px] shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)] blur-[1.5px]">
+          <StrengthGraphCard />
+        </div>
+        <Button
+          variant="main"
+          className="w-full h-[54px] rounded-t-none"
+          onClick={() => navigate("/fitness-landing")}
+        >
+          체력진단하고 나에게 맞는 운동 확인하기
+        </Button>
+      </div>
+    );
   }
 
   // ✅ 2) 로딩은 끝났는데 fitness를 못 가져온 경우 (에러 등)
@@ -159,6 +178,10 @@ if (age !== null) {
   const end = age + 2;
   ageRangeText = `${start}~${end}세`;
 }
+const { user } = useUser();   
+const userName = user?.name ?? "OO";
+
+
   const fitnessData = {
     ageRange: ageRangeText,
     comparison: "전반적인 체력 수준이에요",
@@ -205,14 +228,14 @@ const bars = metricsStandard.map(m => {
         체력 진단 결과 🏅
       </h3>
       <p className="text-sm font-medium text-gray font-pretendard leading-[1.193em] mb-[10px]">
-        OO 님의 체력 데이터를 기반으로 연령대 평균과 비교한 결과예요
+          {userName}님의 체력 데이터를 기반으로 연령대 평균과 비교한 결과예요
       </p>
 
-      <div className="w-full bg-softWhite rounded-[10px] p-[10px] shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)]">
-        <div className="flex flex-col items-center gap-5">
+      <div className="w-full bg-softWhite rounded-[10px] p-[10px] shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)] ">
+        <div className="flex flex-col items-center gap-5 mb-[20px] mt-[10px]">
           {/* 비교 결과 */}
           <div className="w-full flex flex-col items-center relative">
-            <div className="w-[129px] h-[10px] bg-red opacity-35 mb-3 absolute bottom-[10px]" />
+            <div className="w-[100px] h-[11px] bg-red opacity-35 mb-3 absolute bottom-[12px] left-[95px]" />
             <p className="text-base font-semibold text-softBlack font-pretendard leading-[150%] text-center">
               {fitnessData.ageRange} 평균에 비해
               <br />
@@ -222,13 +245,13 @@ const bars = metricsStandard.map(m => {
 
           {/* 체력 지표 + 막대 그래프 */}
           <div className="w-full flex flex-col gap-3">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center w-[330px] ">
               {/* 왼쪽: 지표 이름 */}
               <div className="flex flex-col gap-3">
                 {fitnessData.metrics.map((metric, index) => (
                   <div
                     key={index}
-                    className="text-sm font-semibold text-right font-pretendard leading-[150%]"
+                    className="text-sm font-semibold text-left font-pretendard leading-[150%]"
                   >
                     <span className={metric.isMain ? "text-main" : "text-gray"}>
                       {metric.name}
@@ -237,22 +260,10 @@ const bars = metricsStandard.map(m => {
                 ))}
               </div>
 
-              {/* 가운데: 값 */}
-              <div className="flex flex-col items-center gap-3">
-                {fitnessData.metrics.map((metric, index) => (
-                  <div
-                    key={index}
-                    className="text-sm font-semibold font-pretendard leading-[150%]"
-                  >
-                    <span className={metric.isMain ? "text-main" : "text-gray"}>
-                      {metric.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
 
-              {/* 오른쪽: 막대 + 평균선 (bars 사용) */}
-              <div className="flex-1 flex flex-col gap-3 relative ml-3">
+
+              {/* 가운데: 막대 + 평균선 (bars 사용) */}
+              <div className="flex-1 max-w-[210px] flex flex-col gap-5 relative mr-3">
                 {bars.map((bar, index) => (
                   <div key={index} className="relative h-[14px]">
                     {/* 회색 배경 바 */}
@@ -269,13 +280,26 @@ const bars = metricsStandard.map(m => {
                     {/* 세로 빨간 점선: standard(grade2)에 따라 위치 변경 */}
                     {bar.averagePercent !== null && (
                       <div
-                        className="absolute top-0 bottom-0 border-l-2 border-dashed border-red-500"
-                        style={{
-                          left: `${bar.averagePercent}%`,
-                          transform: "translateX(-1px)",
-                        }}
+                          className="absolute top-0 bottom-0 border-l border-dashed border-[#FF6B6B]"
+                          style={{
+                            left: `${bar.averagePercent}%`,
+                            transform: "translateX(-1px)",
+                          }}
                       />
                     )}
+                  </div>
+                ))}
+              </div>
+                            {/* 가운데: 값 */}
+              <div className="flex flex-col items-center gap-3 w-[30px] ">
+                {fitnessData.metrics.map((metric, index) => (
+                  <div
+                    key={index}
+                    className="text-sm font-semibold font-pretendard leading-[150%]"
+                  >
+                    <span className={metric.isMain ? "text-main" : "text-gray"}>
+                      {metric.value}
+                    </span>
                   </div>
                 ))}
               </div>
