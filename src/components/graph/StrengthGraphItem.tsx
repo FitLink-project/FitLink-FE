@@ -24,8 +24,8 @@ export function StrengthGraphItem({
   const rawAvgPixel = (avgScr / maxScore) * totalWidth;
 
   // 100 이상이면 100을 빼고, 미만이면 그대로
-  const userPixelWidth = rawUserPixel >= 100 ? rawUserPixel - 50 : rawUserPixel;
-  const avgPixelWidth = rawAvgPixel >= 50 ? rawAvgPixel - 100 : rawAvgPixel;
+  const userPixelWidth = rawUserPixel >= 50 ? rawUserPixel - 50 : rawUserPixel;
+  const avgPixelWidth = rawAvgPixel >= 50 ? rawAvgPixel - 50 : rawAvgPixel;
 
   return (
     <div className="w-full flex items-center justify-between">
