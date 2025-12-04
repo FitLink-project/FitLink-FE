@@ -227,7 +227,7 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
                       programDetails[facility.facilityId]?.homepage || ""
                     }
                     onViewDetails={() => {
-                      navigate(`/facility/${facility.facilityId}`);
+                      navigate(`/facility/${facility.facilityId}/programs`);
                     }}
                   />
                 ))}

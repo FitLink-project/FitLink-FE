@@ -4,7 +4,6 @@ interface StrengthGraphItemProps {
   userScr: number;
   avgScr: number;
   maxScore?: number;
-  /** 픽셀 보정의 기본값 (기존에 고정으로 빼던 값) */
   offsetBase?: number;
   totalWidth?: number;
   highlight?: boolean;

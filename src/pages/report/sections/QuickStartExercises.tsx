@@ -9,100 +9,22 @@ import NoMatchingWarning from "../../../components/report/NoMatchingWarning";
 
 interface QuickStartExercisesProps {
   data?: FitnessResponse;
+  weakFactors: string[];
 }
 
 export default function QuickStartExercises({
   data,
+  weakFactors,
 }: QuickStartExercisesProps) {
   const { user } = useUser();
   const navigate = useNavigate();
   const [exercises, setExercises] = useState<FitnessVideoDetail[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // 부족한 체력 요소 찾기 (data.standard.grade2 보다 못한 항목)
-  const getWeakFitnessFactors = (): string[] => {
-    if (!data || !data.standard?.grade2) return ["유연성"]; // 기본값
-
-    const weakFactors: string[] = [];
-    const standard = data.standard.grade2;
-
-    if (data.testGeneral) {
-      // 간단 체력 검사 기준
-      if (
-        typeof data.testGeneral.sitUp === "number" &&
-        typeof standard.sitUp === "number" &&
-        data.testGeneral.sitUp < standard.sitUp
-      ) {
-        weakFactors.push("근지구력");
-      }
-      if (
-        typeof data.testGeneral.sitAndReach === "number" &&
-        typeof standard.sitAndReach === "number" &&
-        data.testGeneral.sitAndReach < standard.sitAndReach
-      ) {
-        weakFactors.push("유연성");
-      }
-      if (
-        typeof data.testGeneral.ymcaStepTest === "number" &&
-        typeof standard.shuttleRun === "number" &&
-        data.testGeneral.ymcaStepTest < standard.shuttleRun
-      ) {
-        weakFactors.push("심폐지구력");
-      }
-    } else {
-      // 국민체력100 기준 - `data.testKookmin` 필드 사용
-      if (
-        typeof data.testKookmin?.gripStrength === "number" &&
-        typeof standard.gripStrength === "number" &&
-        data.testKookmin!.gripStrength < standard.gripStrength
-      ) {
-        weakFactors.push("근력");
-      }
-      if (
-        typeof data.testKookmin?.sitUp === "number" &&
-        typeof standard.sitUp === "number" &&
-        data.testKookmin!.sitUp < standard.sitUp
-      ) {
-        weakFactors.push("근지구력");
-      }
-      if (
-        typeof data.testKookmin?.sitAndReach === "number" &&
-        typeof standard.sitAndReach === "number" &&
-        data.testKookmin!.sitAndReach < standard.sitAndReach
-      ) {
-        weakFactors.push("유연성");
-      }
-      if (
-        typeof data.testKookmin?.shuttleRun === "number" &&
-        typeof standard.shuttleRun === "number" &&
-        data.testKookmin!.shuttleRun < standard.shuttleRun
-      ) {
-        weakFactors.push("심폐지구력");
-      }
-      if (
-        typeof data.testKookmin?.sprint === "number" &&
-        typeof standard.sprint === "number" &&
-        data.testKookmin!.sprint < standard.sprint
-      ) {
-        weakFactors.push("민첩성");
-      }
-      if (
-        typeof data.testKookmin?.standingLongJump === "number" &&
-        typeof standard.standingLongJump === "number" &&
-        data.testKookmin!.standingLongJump < standard.standingLongJump
-      ) {
-        weakFactors.push("순발력");
-      }
-    }
-
-    return weakFactors.length > 0 ? weakFactors : ["유연성"];
-  };
-
   useEffect(() => {
     const fetchExercises = async () => {
       try {
         setLoading(true);
-        const weakFactors = getWeakFitnessFactors();
 
         // 모든 부족한 체력 요소로 영상 가져오기
         if (weakFactors.length === 0) {

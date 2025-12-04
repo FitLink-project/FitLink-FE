@@ -21,6 +21,7 @@ const LABEL_MAP: Record<string, string> = {
 interface FitnessBalanceProps {
   data?: FitnessResponse;
   age: number;
+  weakFactors: string[];
 }
 
 /**
@@ -44,7 +45,11 @@ export const getAgeRange = (age: number): string => {
   return `${start}~${end}`;
 };
 
-export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
+export default function FitnessBalance({
+  data,
+  age,
+  weakFactors = [],
+}: FitnessBalanceProps) {
   // 데이터가 없을 경우 안전 처리
   if (!data) return null;
 
@@ -110,7 +115,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
             <Card className="flex flex-col items-center justify-center">
               <div className="w-20 h-20 bg-orange-100 rounded-full mb-4">
                 <img
-                  src={defaultProfile}
+                  src={user?.profileUrl ? user.profileUrl : defaultProfile}
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
@@ -164,7 +169,7 @@ export default function FitnessBalance({ data, age }: FitnessBalanceProps) {
           description="비슷한 연령대 데이터를 기준으로 비교했어요"
         />
         <Card>
-          <StrengthGraphList data={data} />
+          <StrengthGraphList data={data} age={age} weakFactors={weakFactors} />
         </Card>
       </section>
     </>
