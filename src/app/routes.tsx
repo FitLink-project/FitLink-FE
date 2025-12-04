@@ -22,6 +22,8 @@ import FacilitySearchPage from "../pages/facility/FacilitySearchPage";
 import VideoDetailPage from "../pages/video/VideoDetailPage";
 import FacilityDetailPage from "../pages/facility/FacilityDetailPage";
 import ProgramDetailPage from "../pages/facility/ProgramDetailPage";
+import RoutePage from "../pages/route/RoutePage";
+
 
 export const router = createBrowserRouter([
   {
@@ -109,6 +111,11 @@ export const router = createBrowserRouter([
       {
         path: "/facility/:facilityId/programs",
         element: <ProgramDetailPage />,
+      },
+
+      {
+        path: "/facility/:facilityId/route",
+        element: <RoutePage />,
       },
 
     ],

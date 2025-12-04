@@ -75,7 +75,9 @@ export default function FacilityDetailPage() {
 
                         {/* 길찾기 버튼 */}
                         <button
-                            onClick={handleDirection}
+                            onClick={() => {
+                                navigate(`/facility/${facilityId}/route`);
+                            }}
                             className="text-sm bg-[#EDEDED] px-3 py-1 rounded-full text-gray font-medium"
                         >
                             길찾기

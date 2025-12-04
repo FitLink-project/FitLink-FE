@@ -45,12 +45,6 @@ export default function ProgramDetailPage() {
         navigator.clipboard.writeText(facility.address);
     };
 
-    // 길찾기 (카카오맵)
-    const openMap = () => {
-        const url = `https://map.kakao.com/link/to/${facility.facilityName},${facility.latitude},${facility.longitude}`;
-        window.open(url);
-    };
-
     return (
         <div className="w-full min-h-screen bg-softWhite flex flex-col">
 
@@ -74,8 +68,11 @@ export default function ProgramDetailPage() {
                         <div className="text-lg font-semibold">{facility.facilityName}</div>
 
                         {/* 길찾기 버튼 (피그마 스타일: 테두리 + 연한 글자) */}
+
                         <button
-                            onClick={openMap}
+                            onClick={() => {
+                                navigate(`/facility/${facilityId}/route`);
+                            }}
                             className="px-3 py-1 rounded-full border border-lightGray text-[12px] text-gray-600"
                         >
                             길찾기

@@ -67,3 +67,32 @@ export const getFacilityPrograms = async (
     throw err;
   }
 };
+
+
+/* -------------------------------
+  5. 경로(Route) API 3종 호출
+-------------------------------- */
+export const getRouteByType = async (
+  originLat: number,
+  originLng: number,
+  destLat: number,
+  destLng: number,
+  type: "walk" | "car" | "transit"
+) => {
+  try {
+    const res = await axiosConfig.get(`/api/facility/route`, {
+      params: {
+        originLat, // 사용자 위치 위도
+        originLng, // 사용자 위치 경도
+        destLat, // 목적지 위도
+        destLng, // 목적지 경도
+        type,
+      },
+    });
+
+    return res.data;
+  } catch (err) {
+    console.error(`${type} 경로 조회 실패`, err);
+    return null; 
+  }
+};
