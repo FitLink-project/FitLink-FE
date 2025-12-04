@@ -164,9 +164,12 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
       <section>
         <SectionHeader
           title="나의 체력에는 어떤 운동을 해야할까?"
-          description={`FitLink가 ${
-            user?.name ?? "회원"
-          } 님의 체력 밸런스를 바탕으로 맞춤 운동을 추천해 드려요`}
+          description={
+            <>
+              FitLink가 {user?.name ?? "회원"} 님의 체력 밸런스를 바탕으로{" "}
+              <br /> 맞춤 운동을 추천해 드려요
+            </>
+          }
         />
         {prescription && <PrescriptionResult data={prescription} />}
       </section>
@@ -175,9 +178,7 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
       <section>
         <SectionHeader
           title="맞춤 운동, 주변에서 할 수 있을까?"
-          description={`추천 운동 프로그램을 운영하는 공공체육시설이에요 ${
-            user?.name ?? "회원"
-          }님의 체력 밸런스를 바탕으로 맞춤 운동을 추천해 드려요`}
+          description={`추천 운동 프로그램을 운영하는 공공체육시설이에요`}
         />
         {facilitiesLoading ? (
           <div className="text-center py-8 text-gray font-mplus1">
@@ -201,9 +202,13 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
             if (filteredFacilities.length === 0) {
               return (
                 <NoMatchingWarning
-                  description={`현재 ${
-                    user?.name ?? "회원"
-                  }님의 주변에 적합한 시설이 없어요`}
+                  description={
+                    <>
+                      현재 {user?.name ?? "회원"}님의 주변에 적합한 시설이
+                      없어요 <br />
+                      맞춤 운동을 참고해 간단한 운동부터 시작해 보세요!
+                    </>
+                  }
                 />
               );
             }

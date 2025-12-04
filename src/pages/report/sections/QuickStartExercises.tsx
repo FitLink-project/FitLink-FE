@@ -183,9 +183,13 @@ export default function QuickStartExercises({
     <section>
       <SectionHeader
         title="바로 시작할 수 있는 운동은 없을까?"
-        description={`${
-          user?.name ?? "회원"
-        } 님의 부족한 체력을 보완할 수 있는 국민체력 100 영상을 준비했어요`}
+        description={
+          <>
+            {user?.name ?? "회원"}님의 부족한 체력을 보완할 수 있는
+            <br />
+            국민체력 100 영상을 준비했어요
+          </>
+        }
       />
 
       {loading ? (
@@ -194,9 +198,13 @@ export default function QuickStartExercises({
         </div>
       ) : exercises.length === 0 ? (
         <NoMatchingWarning
-          description={`현재 ${
-            user?.name ?? "회원"
-          }님께 적합한 영상이 준비되지 않았어요`}
+          description={
+            <>
+              현재 {user?.name ?? "회원"}님께 적합한 영상이 준비되지 않았어요
+              <br />
+              먼저 맞춤 운동을 통해 운동을 시작해 보세요!
+            </>
+          }
         />
       ) : (
         <div className="grid grid-cols-2 gap-3">
