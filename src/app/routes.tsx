@@ -21,6 +21,7 @@ import ProfileEdit from "../pages/mypage/ProfileEdit";
 import FacilitySearchPage from "../pages/facility/FacilitySearchPage";
 import VideoDetailPage from "../pages/video/VideoDetailPage";
 import FacilityDetailPage from "../pages/facility/FacilityDetailPage";
+import ProgramDetailPage from "../pages/facility/ProgramDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -103,6 +104,12 @@ export const router = createBrowserRouter([
       },
 
       { path: "/facility/:facilityId", element: <FacilityDetailPage /> },
+
+
+      {
+        path: "/facility/:facilityId/programs",
+        element: <ProgramDetailPage />,
+      },
 
     ],
   },
