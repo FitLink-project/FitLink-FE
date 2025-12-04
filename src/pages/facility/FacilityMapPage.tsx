@@ -17,6 +17,7 @@ export default function FacilityMapPage() {
     lng: 126.978,
   });
 
+
   // GPS → 시설 API 호출
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -44,11 +45,17 @@ export default function FacilityMapPage() {
 
 
 
+   const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  };
+
+
   return (
     <div className="w-full h-screen flex flex-col">
       <div className="fixed top-0 left-0 w-full z-30">
-        <TopBar isLoggedIn={true} />
-      </div>
+      <TopBar isLoggedIn={true} onLogout={handleLogout} />
+    </div>
 
       <div className="flex-1 mt-[60px] mb-[70px] relative overflow-hidden">
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
@@ -60,7 +67,12 @@ export default function FacilityMapPage() {
         </div>
 
         <div className="absolute inset-0">
-          <MapContainer center={myLocation} facilities={facilities} />
+          <MapContainer
+            center={myLocation}
+            facilities={facilities}
+            selectedFacility={location.state?.selectedFacility || null}
+          />
+
         </div>
 
         <div className="absolute bottom-24 right-4 z-20">
