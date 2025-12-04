@@ -69,6 +69,81 @@ export default function ReportPage() {
     weight: fitnessData?.userInfo?.weight ?? 0,
   };
 
+  // 부족한 체력 요소 찾기 (fitnessData.standard.grade2 보다 못한 항목)
+  if (!fitnessData || !fitnessData.standard?.grade2) return ["유연성"]; // 기본값
+
+  const weakFactors: string[] = [];
+  const standard = fitnessData.standard.grade2;
+
+  if (fitnessData.testGeneral) {
+    // 간단 체력 검사 기준
+    if (
+      typeof fitnessData.testGeneral.sitUp === "number" &&
+      typeof standard.sitUp === "number" &&
+      fitnessData.testGeneral.sitUp < standard.sitUp
+    ) {
+      weakFactors.push("근지구력");
+    }
+    if (
+      typeof fitnessData.testGeneral.sitAndReach === "number" &&
+      typeof standard.sitAndReach === "number" &&
+      fitnessData.testGeneral.sitAndReach < standard.sitAndReach
+    ) {
+      weakFactors.push("유연성");
+    }
+    if (
+      typeof fitnessData.testGeneral.ymcaStepTest === "number" &&
+      typeof standard.shuttleRun === "number" &&
+      fitnessData.testGeneral.ymcaStepTest < standard.shuttleRun
+    ) {
+      weakFactors.push("심폐지구력");
+    }
+  } else {
+    // 국민체력100 기준 - `fitnessData.testKookmin` 필드 사용
+    if (
+      typeof fitnessData.testKookmin?.gripStrength === "number" &&
+      typeof standard.gripStrength === "number" &&
+      fitnessData.testKookmin!.gripStrength < standard.gripStrength
+    ) {
+      weakFactors.push("근력");
+    }
+    if (
+      typeof fitnessData.testKookmin?.sitUp === "number" &&
+      typeof standard.sitUp === "number" &&
+      fitnessData.testKookmin!.sitUp < standard.sitUp
+    ) {
+      weakFactors.push("근지구력");
+    }
+    if (
+      typeof fitnessData.testKookmin?.sitAndReach === "number" &&
+      typeof standard.sitAndReach === "number" &&
+      fitnessData.testKookmin!.sitAndReach < standard.sitAndReach
+    ) {
+      weakFactors.push("유연성");
+    }
+    if (
+      typeof fitnessData.testKookmin?.shuttleRun === "number" &&
+      typeof standard.shuttleRun === "number" &&
+      fitnessData.testKookmin!.shuttleRun < standard.shuttleRun
+    ) {
+      weakFactors.push("심폐지구력");
+    }
+    if (
+      typeof fitnessData.testKookmin?.sprint === "number" &&
+      typeof standard.sprint === "number" &&
+      fitnessData.testKookmin!.sprint < standard.sprint
+    ) {
+      weakFactors.push("민첩성");
+    }
+    if (
+      typeof fitnessData.testKookmin?.standingLongJump === "number" &&
+      typeof standard.standingLongJump === "number" &&
+      fitnessData.testKookmin!.standingLongJump < standard.standingLongJump
+    ) {
+      weakFactors.push("순발력");
+    }
+  }
+
   return (
     <>
       <PageHeader title="체력 리포트" />
@@ -77,9 +152,16 @@ export default function ReportPage() {
         <div className="w-full max-w-sm mb-32">
           {isLoggedIn && fitnessData && (
             <div className="flex flex-col gap-16 py-16">
-              <FitnessBalance data={fitnessData} age={Number(age)} />
+              <FitnessBalance
+                data={fitnessData}
+                age={Number(age)}
+                weakFactors={weakFactors}
+              />
               <AIContainer data={AIRequest} />
-              <QuickStartExercises data={fitnessData} />
+              <QuickStartExercises
+                data={fitnessData}
+                weakFactors={weakFactors}
+              />
             </div>
           )}
         </div>
