@@ -60,7 +60,12 @@ export default function FacilityMapPage() {
         </div>
 
         <div className="absolute inset-0">
-          <MapContainer center={myLocation} facilities={facilities} />
+          <MapContainer
+            center={myLocation}
+            facilities={facilities}
+            selectedFacility={location.state?.selectedFacility || null}
+          />
+
         </div>
 
         <div className="absolute bottom-24 right-4 z-20">

@@ -17,8 +17,13 @@ export default function FacilitySearchPage() {
 
     try {
       const data = await searchFacilities(keyword);
-      if (data.isSuccess) setResults(data.result.facilities);
-    } catch (e) {
+      console.log("🔥 검색 API 응답:", data);
+
+      if (data.isSuccess) {
+        setResults(data.result.facilities);
+        console.log("🔥 facilities:", data.result.facilities);
+    
+      }} catch (e) {
       console.error("검색 실패:", e);
     }
   }
@@ -30,6 +35,10 @@ export default function FacilitySearchPage() {
   }
 
   function handleSelect(item: any) {
+    console.log("클릭된 item:", item);
+    console.log("item.latitude:", item.latitude);
+    console.log("item.longitude:", item.longitude);
+    
     navigate("/facility", {
       state: {
         center: { lat: item.latitude, lng: item.longitude },
