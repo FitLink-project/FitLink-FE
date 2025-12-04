@@ -20,6 +20,7 @@ import FacilityMapPage from "../pages/facility/FacilityMapPage";
 import ProfileEdit from "../pages/mypage/ProfileEdit";
 import FacilitySearchPage from "../pages/facility/FacilitySearchPage";
 import VideoDetailPage from "../pages/video/VideoDetailPage";
+import FacilityDetailPage from "../pages/facility/FacilityDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -100,6 +101,9 @@ export const router = createBrowserRouter([
         path: "/video/:id",
         element: <VideoDetailPage />,
       },
+
+      { path: "/facility/:facilityId", element: <FacilityDetailPage /> },
+
     ],
   },
 ]);
