@@ -19,6 +19,8 @@ export default function ProgramDetailPage() {
             const res = await getFacilityPrograms(Number(facilityId));
             const data = res.result;
 
+            if (!data) return;
+
             setFacility(data);
 
             const categoryList = Array.from(
