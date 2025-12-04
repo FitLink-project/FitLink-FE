@@ -66,6 +66,7 @@ export default function Step4({ setCurrentStep, NEXT_STEP }: StepProps) {
           isError={showErrors && errors.ymcaStepTest}
           errorMessage="횟수를 입력해주세요"
           unit="회"
+          placeholder="0"
         />
 
         {/* 가이드 */}

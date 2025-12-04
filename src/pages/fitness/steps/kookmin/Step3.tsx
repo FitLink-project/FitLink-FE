@@ -39,6 +39,8 @@ export default function Step2() {
     }
 
     // 에러 없으면 초기화
+    formData.sitUp =
+      formData.sitUp === null ? formData.crossSitUp : formData.sitUp;
     console.log("보낼 데이터:", formData);
     setIsSubmitted(true);
 
@@ -81,6 +83,7 @@ export default function Step2() {
           isError={showError}
           unit="회"
           disabled={isSitUpDisabled}
+          placeholder="0"
         />
 
         <div className="grid gap-2">
@@ -91,6 +94,7 @@ export default function Step2() {
             onChange={handleChange("crossSitUp")}
             unit="회"
             disabled={isCrossSitUpDisabled}
+            placeholder="0"
           />
 
           {/* 에러 메시지 */}
