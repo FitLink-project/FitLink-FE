@@ -5,7 +5,8 @@ import HomePageLoggedIn from "./HomePageLoggedIn";
 import HomePageNotLoggedIn from "./HomePageNotLoggedIn";
 import LocationAgreementModal from "./LocationAgreementModal";
 import { editProfile, getProfile } from "../../api/user";
-import { useUser } from "../../contexts/UserContext"; 
+import { useUser } from "../../contexts/UserContext";
+import { getNearbyFacilities } from "../../api/facility";
 
 export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,6 +21,18 @@ export default function HomePage() {
     user.weight !== null &&
     user.birthDate !== null &&
     user.sex !== null;
+
+
+  //지도 관련 상태 추가
+  const [center, setCenter] = useState({
+    lat: 37.542197,
+    lng: 126.967426,
+  });
+
+  const [facilities, setFacilities] = useState([]);
+
+  const [selectedFacility, setSelectedFacility] = useState<any | null>(null);
+
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -75,38 +88,34 @@ export default function HomePage() {
   };
 
 
-const handleLocationAgree = async () => {
+  const handleLocationAgree = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
+
     if (!accessToken) {
-      // 비로그인 상태에서 동의만 로컬에 저장할지, 로그인 강제할지는 UX에 따라
       localStorage.setItem("locationAgreed", "true");
       setIsLocationAgreed(true);
       setShowLocationModal(false);
+
+      // ⭐ GPS 요청
+      requestGPSAndLoadFacilities();
       return;
     }
 
-    // 서버에 위치 동의(true)로 업데이트
     await editProfile(
-      {
-        agreements: {
-          location: true,
-          // 다른 동의 항목들(privacy, service, over14 등)을 서버가 필요로 하면 같이 넣기
-          // privacy: true,
-          // service: true,
-          // over14: true,
-        },
-      },
+      { agreements: { location: true } },
       accessToken
     );
 
-    // 서버 업데이트 성공하면 로컬도 동기화
     localStorage.setItem("locationAgreed", "true");
     setIsLocationAgreed(true);
     setShowLocationModal(false);
+
+    // ⭐ GPS 요청
+    requestGPSAndLoadFacilities();
+
   } catch (e) {
     console.error("위치 동의 업데이트 실패:", e);
-    // 필요하면 에러 토스트 / 알럿
   }
 };
 
@@ -119,6 +128,35 @@ const handleLocationAgree = async () => {
     setShowLocationModal(true); // 내위치 버튼 눌렀을 때 호출
   };
 
+  /** -----------------------------------
+   *  ⭐ 위치 권한 요청 → GPS → API 호출
+   ------------------------------------*/
+  const requestGPSAndLoadFacilities = () => {
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+
+      console.log("GPS 위치:", lat, lng);
+
+      setCenter({ lat, lng });
+
+      const res = await getNearbyFacilities(lat, lng);
+      if (!res.isSuccess) return;
+
+      const list = Array.isArray(res.result) ? res.result : [];
+
+      setFacilities(list);
+      setSelectedFacility(null);
+    },
+    (err) => {
+      console.error("GPS 오류:", err);
+      alert("GPS 권한을 허용해야 위치 기반 추천을 받을 수 있어요!");
+    }
+  );
+};
+
+
   return (
     <>
       <HomePageLayout
@@ -126,13 +164,19 @@ const handleLocationAgree = async () => {
         onLogout={handleLogout}
         showLocationButton={!isLocationAgreed} // 동의했으면 버튼 숨기기 등
         onLocationClick={openLocationModal}
+
+        center={center}
+        facilities={facilities}
+        selectedFacility={selectedFacility}
+        onSelectFacility={setSelectedFacility}
       >
         {isLoggedIn ? (
-          <HomePageLoggedIn  hasFitnessResult={hasFitnessResult}/>
+          <HomePageLoggedIn hasFitnessResult={hasFitnessResult} />
         ) : (
           <HomePageNotLoggedIn />
         )}
       </HomePageLayout>
+
 
       {showLocationModal && (
         <LocationAgreementModal

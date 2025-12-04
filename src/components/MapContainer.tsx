@@ -20,11 +20,16 @@ export default function MapContainer({
   onSelectFacility = () => {},
 }: MapContainerProps) {
   const mapRef = useRef<any>(null);
-  const markersRef = useRef<any[]>([]);
+
+  const userMarkerRef = useRef<any>(null);
+  const facilityMarkersRef = useRef<any[]>([]);
   const selectedMarkerRef = useRef<any>(null);
+
   const initializedRef = useRef(false);
 
-  /* 지도 초기화 */
+  /* -------------------------
+     지도 초기화
+  --------------------------*/
   useEffect(() => {
     if (initializedRef.current) return;
     initializedRef.current = true;
@@ -50,41 +55,53 @@ export default function MapContainer({
     waitForTmap();
   }, []);
 
-  /* 현재 위치 파란 마커 */
+  /* -------------------------
+     center 변경 시 지도 중심 이동 + 사용자 위치 마커 갱신
+  --------------------------*/
   useEffect(() => {
     if (!mapRef.current) return;
 
-    new window.Tmapv3.Marker({
+    mapRef.current.setCenter(new window.Tmapv3.LatLng(center.lat, center.lng));
+
+    // 기존 사용자 마커 제거
+    if (userMarkerRef.current) {
+      userMarkerRef.current.setMap(null);
+    }
+
+    // 새 사용자 위치 마커
+    userMarkerRef.current = new window.Tmapv3.Marker({
       position: new window.Tmapv3.LatLng(center.lat, center.lng),
       map: mapRef.current,
-      color: "#3C7DFF",
+      color: "#FF9B3D", // 🔶 사용자 현재 위치
     });
   }, [center]);
 
-  /* 시설 마커 표시 */
+  /* -------------------------
+     공공시설 마커
+  --------------------------*/
   useEffect(() => {
     if (!mapRef.current) return;
 
-    markersRef.current.forEach(m => m.setMap(null));
-    markersRef.current = [];
+    // 기존 마커 제거
+    facilityMarkersRef.current.forEach((m) => m.setMap(null));
+    facilityMarkersRef.current = [];
 
     facilities.forEach((f) => {
       const marker = new window.Tmapv3.Marker({
         position: new window.Tmapv3.LatLng(f.latitude, f.longitude),
         map: mapRef.current,
-        color: "#3C7DFF",
+        color: "#3C7DFF", // 🔵 체육시설
       });
 
-      // ⭐ 마커 클릭 이벤트 추가 → 클릭하면 selectedFacility 변경됨
-      marker.on("click", () => {
-        onSelectFacility(f);
-      });
+      marker.on("click", () => onSelectFacility(f));
 
-      markersRef.current.push(marker);
+      facilityMarkersRef.current.push(marker);
     });
   }, [facilities]);
 
-  /* 선택된 시설 빨간 마커 */
+  /* -------------------------
+     선택된 시설 마커
+  --------------------------*/
   useEffect(() => {
     if (!mapRef.current || !selectedFacility) return;
 
@@ -93,24 +110,18 @@ export default function MapContainer({
       selectedFacility.longitude
     );
 
-    // 기존 빨간 마커 제거
     if (selectedMarkerRef.current) {
       selectedMarkerRef.current.setMap(null);
     }
 
-    // 새 빨간 마커
-    const redMarker = new window.Tmapv3.Marker({
+    selectedMarkerRef.current = new window.Tmapv3.Marker({
       position: pos,
       map: mapRef.current,
-      color: "#EB4E48", // 빨간색
+      color: "#EB4E48", // 🔴 선택된 시설
     });
-
-    selectedMarkerRef.current = redMarker;
 
     mapRef.current.setCenter(pos);
   }, [selectedFacility]);
 
-  return (
-    <div id="mapDiv" style={{ width: "100%", height: "100%" }} />
-  );
+  return <div id="mapDiv" style={{ width: "100%", height: "100%" }} />;
 }

@@ -1,4 +1,4 @@
-import { useNavigate,useLocation  } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
 import BottomBar from "../../components/BottomBar";
@@ -33,7 +33,7 @@ export default function FacilityMapPage() {
     );
   }, []);
 
-// 검색 페이지에서 넘어온 위치(center) 처리
+  // 검색 페이지에서 넘어온 위치(center) 처리
   useEffect(() => {
     if (location.state?.center) {
       const { lat, lng } = location.state.center;
@@ -44,8 +44,23 @@ export default function FacilityMapPage() {
   }, [location.state]);
 
 
+  const moveToMyLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
 
-   const handleLogout = () => {
+        console.log("🚀 내 위치로 이동:", lat, lng);
+
+        setMyLocation({ lat, lng });
+        await fetchFacilities(lat, lng); // 주변 시설 다시 불러오기
+      },
+      () => alert("GPS 권한을 허용해야 내 위치를 사용할 수 있어요."),
+      { enableHighAccuracy: true }
+    );
+  };
+
+  const handleLogout = () => {
     localStorage.removeItem("accessToken");
     navigate("/login");
   };
@@ -54,11 +69,11 @@ export default function FacilityMapPage() {
   return (
     <div className="w-full h-screen flex flex-col">
       <div className="fixed top-0 left-0 w-full z-30">
-      <TopBar isLoggedIn={true} onLogout={handleLogout} />
-    </div>
+        <TopBar isLoggedIn={true} onLogout={handleLogout} />
+      </div>
 
       <div className="flex-1 mt-[60px] mb-[70px] relative overflow-hidden">
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 w-[90%] max-w-[360px]">
           <SearchBar
             type="default"
             placeholder="내 주변 체육시설 어디 있지?"
@@ -76,12 +91,7 @@ export default function FacilityMapPage() {
         </div>
 
         <div className="absolute bottom-24 right-4 z-20">
-          <CurrentLocationButton 
-            onClick={() => {
-                console.log("내 위치로 이동!");
-                // 이후 여기에 myLocation 업데이트 함수 넣을 예정
-            }} 
-            />
+          <CurrentLocationButton onClick={moveToMyLocation} />
         </div>
       </div>
 

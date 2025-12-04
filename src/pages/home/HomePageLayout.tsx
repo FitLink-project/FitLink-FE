@@ -3,20 +3,30 @@ import type { ReactNode } from "react";
 import logoBlue from "../../assets/Full_Logo/logo-blue.png";
 import HomeGauge from "../../assets/Gauge/home-guage.png";
 import BottomBar from "../../components/BottomBar";
+import MapContainer from "../../components/MapContainer";
 
 interface HomePageLayoutProps {
   children: ReactNode;
   isLoggedIn: boolean;
   onLogout?: () => void;
   showLocationButton?: boolean;
-  onLocationClick?: () => void;  
+  onLocationClick?: () => void;
+
+  center: { lat: number; lng: number };
+  facilities?: any[];
+  selectedFacility?: any | null;
+  onSelectFacility?: (facility: any) => void;
 }
 
 export default function HomePageLayout({
   children,
   isLoggedIn,
   onLogout,
-   onLocationClick,   
+  onLocationClick,
+  center,
+  facilities,
+  selectedFacility,
+  onSelectFacility,
 }: HomePageLayoutProps) {
   return (
     <div className="w-full min-h-screen bg-softWhite">
@@ -70,35 +80,29 @@ export default function HomePageLayout({
           </button>
 
 
-          {/* 지도 섹션 */}
-          <div className="w-full h-[253px] bg-softWhite rounded-[10px] p-[10px] shadow-[0px_0px_12px_0px_rgba(34,34,34,0.08)]">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-softBlack font-pretendard leading-[150%]">
-                FitLink가 찾은 주변 공공체육시설 🔥
-              </h3>
+           {/* 지도 섹션 */}
+          <div className="w-full h-[253px] bg-softWhite rounded-[10px] p-[10px] shadow">
+            <h3 className="text-base font-semibold mb-[10px]">FitLink가 찾은 주변 공공체육시설 🔥</h3>
+
+            <div className="flex justify-between items-center mb-[10px]">
+              <p className="text-xs text-gray">서울 용산구 한강대로 345</p>
+
+              <button
+                className="px-3 py-[6px] rounded-[30px] border border-lineGray text-xs"
+                onClick={onLocationClick}
+              >
+                내위치
+              </button>
             </div>
-            <div className="flex justify-between items-center">
-              <p className="text-xs font-medium text-gray font-pretendard leading-[1.193em] mb-[10px]">
-              서울 용산구 한강대로 345(여기 위치연결)
-            </p>
-            
-              <div className="flex justify-end mb-[10px]">
-                <button
-                  className="flex items-center gap-1 px-3 py-[6px] rounded-[30px] border border-lineGray"
-                  onClick={onLocationClick}
-                >
-                  <span className="text-xs font-medium text-darkGray font-pretendard leading-[1.193em]">
-                    내위치
-                  </span>
-                </button>
-              </div>
-            </div>
-            {/* 지도 영역 */}
-            <div className="w-full h-[175px] bg-backgroundGray rounded-[10px] relative">
-              {/* 지도 이미지 또는 지도 컴포넌트가 들어갈 자리 */}
-              <div className="absolute top-[60px] left-[112px] w-[44px] h-[44px] bg-main rounded-full flex items-center justify-center shadow-[0px_0px_8px_0px_rgba(60,125,255,1)]">
-                {/* 위치 마커 아이콘 */}
-              </div>
+
+            {/* 지도 실제 삽입 */}
+            <div className="w-full h-[175px] rounded-[10px] overflow-hidden bg-backgroundGray">
+              <MapContainer
+                center={center}
+                facilities={facilities}
+                selectedFacility={selectedFacility}
+                onSelectFacility={onSelectFacility}
+              />
             </div>
           </div>
 
