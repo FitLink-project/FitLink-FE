@@ -17,7 +17,7 @@ export const useFitnessKookminStore = create<FitnessKookminStore>((set) => ({
     sprint: null,
     standingLongJump: null,
     sitAndReach: null,
-    sitUp: 20,
+    sitUp: null,
     crossSitUp: null,
   },
   setFormData: (data) =>

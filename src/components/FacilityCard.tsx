@@ -44,7 +44,7 @@ export function FacilityCard({
           <span
             key={tag}
             className={`text-xs px-2 py-1 rounded-full font-mplus1 ${
-              prescription.includes(tag) ? "bg-pink-100 text-pink-600" : "none"
+              prescription.includes(tag) ? "bg-red-100 text-red-500" : "hidden"
             }`}
           >
             {tag}

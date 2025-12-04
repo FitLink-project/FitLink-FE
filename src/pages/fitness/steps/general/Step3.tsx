@@ -64,8 +64,8 @@ export default function Step3({ setCurrentStep, NEXT_STEP }: StepProps) {
           value={formData.sitAndReach}
           onChange={handleChange("sitAndReach")}
           isError={showErrors && errors.sitAndReach}
-          errorMessage="횟수를 입력해주세요"
-          unit="회"
+          errorMessage="앉아윗몸앞으로굽히기 결과를 입력해주세요"
+          unit="cm"
         />
 
         {/* 가이드 */}

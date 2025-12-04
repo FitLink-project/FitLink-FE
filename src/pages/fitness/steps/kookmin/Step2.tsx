@@ -73,6 +73,7 @@ export default function Step2({ setCurrentStep, NEXT_STEP }: StepProps) {
           isError={showErrors && errors.gripStrength}
           errorMessage="악력을 입력해주세요"
           unit="kg"
+          placeholder="00.0"
         />
 
         {/* 왕복오래달리기 */}
@@ -83,7 +84,7 @@ export default function Step2({ setCurrentStep, NEXT_STEP }: StepProps) {
           isError={showErrors && errors.shuttleRun}
           errorMessage="횟수를 입력해주세요"
           unit="회"
-          placeholder="00"
+          placeholder="0"
         />
 
         {/* 왕복달리기 */}
@@ -94,6 +95,7 @@ export default function Step2({ setCurrentStep, NEXT_STEP }: StepProps) {
           isError={showErrors && errors.sprint}
           errorMessage="시간을 입력해주세요"
           unit="초"
+          placeholder="00.00"
         />
 
         {/* 제자리멀리뛰기 */}
@@ -104,6 +106,7 @@ export default function Step2({ setCurrentStep, NEXT_STEP }: StepProps) {
           isError={showErrors && errors.standingLongJump}
           errorMessage="거리를 입력해주세요"
           unit="cm"
+          placeholder="0"
         />
 
         <div className="col-span-2">
@@ -115,6 +118,7 @@ export default function Step2({ setCurrentStep, NEXT_STEP }: StepProps) {
             isError={showErrors && errors.sitAndReach}
             errorMessage="거리를 입력해주세요"
             unit="cm"
+            placeholder="00.0"
           />
         </div>
 

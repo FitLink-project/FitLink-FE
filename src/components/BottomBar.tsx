@@ -14,12 +14,10 @@ export default function BottomBar() {
   const { pathname } = useLocation();
 
   const isActive = (path: string) =>
-    path === "/"
-      ? pathname === "/"
-      : pathname.startsWith(path);
+    path === "/" ? pathname === "/" : pathname.startsWith(path);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full h-[80px] bg-softWhite shadow-[0px_0px_6px_0px_rgba(34,34,34,0.18)]">
+    <div className="fixed bottom-0 left-0 right-0 w-full h-[80px] bg-softWhite shadow-[0px_0px_6px_0px_rgba(34,34,34,0.18)] z-50">
       <div className="w-full h-full flex items-center justify-center px-[35px]">
         <div className="w-full max-w-[323px] flex justify-between items-center">
           <Link to="/" className="flex flex-col items-center gap-[7px]">
@@ -54,7 +52,10 @@ export default function BottomBar() {
             </span>
           </Link>
 
-          <Link to="/fitness-landing" className="flex flex-col items-center gap-[7px]">
+          <Link
+            to="/fitness-landing"
+            className="flex flex-col items-center gap-[7px]"
+          >
             <img
               src={isActive("/fitness-landing") ? LinkClick : LinkDefault}
               alt="체력진단"
