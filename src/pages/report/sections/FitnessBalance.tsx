@@ -115,7 +115,7 @@ export default function FitnessBalance({
             <Card className="flex flex-col items-center justify-center">
               <div className="w-20 h-20 bg-orange-100 rounded-full mb-4">
                 <img
-                  src={defaultProfile}
+                  src={user?.profileUrl ? user.profileUrl : defaultProfile}
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
