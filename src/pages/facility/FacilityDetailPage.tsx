@@ -92,14 +92,23 @@ export default function FacilityDetailPage() {
             )}
           </div>
 
-          {/* 홈페이지 버튼 */}
+         {/* 홈페이지 버튼 */}
           {facility.homepageUrl && (
-            <button
-              onClick={() => window.open(facility.homepageUrl)}
-              className="mt-5 w-full py-3 bg-main rounded-lg text-white font-semibold"
-            >
-              홈페이지 바로가기
-            </button>
+            <div className="flex mt-5 gap-2">
+              <button
+                onClick={() => window.open(facility.homepageUrl)}
+                className="flex-1 py-3 bg-lightBlue rounded-lg text-main font-semibold"
+              >
+                홈페이지
+              </button>
+
+              <button
+                onClick={() => alert("프로그램 상세보기 기능은 추가 예정!")}
+                className="flex-1 py-3 bg-main rounded-lg text-white font-semibold"
+              >
+                프로그램 상세보기
+              </button>
+            </div>
           )}
         </div>
       </div>
