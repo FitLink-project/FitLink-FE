@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation  } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
 import BottomBar from "../../components/BottomBar";
@@ -9,6 +9,7 @@ import { useFacilityStore } from "../../stores/facilityStore";
 
 export default function FacilityMapPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { facilities, fetchFacilities } = useFacilityStore();
 
   const [myLocation, setMyLocation] = useState({
@@ -30,6 +31,18 @@ export default function FacilityMapPage() {
       { enableHighAccuracy: true }
     );
   }, []);
+
+// 검색 페이지에서 넘어온 위치(center) 처리
+  useEffect(() => {
+    if (location.state?.center) {
+      const { lat, lng } = location.state.center;
+
+      setMyLocation({ lat, lng });
+      fetchFacilities(lat, lng);
+    }
+  }, [location.state]);
+
+
 
   return (
     <div className="w-full h-screen flex flex-col">

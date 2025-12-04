@@ -1,4 +1,6 @@
-import type { TriangleGraphProps } from "../types/graphProps";
+export interface TriangleGraphProps {
+  data: Record<string, number>; // 위, 왼쪽 아래, 오른쪽 아래 순서대로
+}
 
 export default function TriangleGraph({
   data = { 체력: 80, 지력: 60, 매력: 90 },
@@ -40,7 +42,8 @@ export default function TriangleGraph({
   // 데이터 삼각형 좌표 계산
   const dataPoints = angles
     .map((angle, i) => {
-      const r = radius * (scores[i] / 100);
+      const score = Math.max(0, Math.min(scores[i] ?? 0, 100)); // clamp & null safety
+      const r = radius * (score / 100);
       const { x, y } = getCoordinate(angle, r);
       return `${x},${y}`;
     })

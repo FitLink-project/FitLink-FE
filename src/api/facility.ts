@@ -1,26 +1,33 @@
+/**
+ * Facility 관련 API 모듈 (Axios 기반)
+ * - 주변 체육시설 조회
+ * - 통합 검색 (지하철역 + 체육시설)
+ */
+
 import { axiosConfig } from "./axios.config";
 import type { ApiResponse } from "../types/api";
 import type { FacilityProgramsResponseDTO } from "../types/facilityTypes";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+/* -------------------------------
+   1. 주변 체육시설 조회 API
+-------------------------------- */
+export const getNearbyFacilities = async (
+  latitude: number,
+  longitude: number
+) => {
+  try {
+    const res = await axiosConfig.post("/api/facility/nearby", {
+      latitude,
+      longitude,
+    });
 
-/** 주변 체육시설 조회 API */
-export async function getNearbyFacilities(lat: number, lng: number) {
-  const response = await fetch(`${BASE_URL}/api/facility/nearby`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      latitude: lat,
-      longitude: lng,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error("체육시설 조회 실패");
+    return res.data; // { isSuccess, code, message, result }
+  } catch (err) {
+    console.error("주변 체육시설 조회 실패:", err);
+    throw err;
   }
+};
 
-  return response.json();
-}
 /* -------------------------------
    2. 통합 검색 API (지하철역 + 체육시설)
 -------------------------------- */
@@ -38,7 +45,15 @@ export const searchFacilities = async (keyword: string) => {
 };
 
 /* -------------------------------
-   3. 체육 시설 프로그램 가져오는 API
+   3. 시설 상세 조회 API
+-------------------------------- */
+export async function getFacilityDetail(facilityId: number) {
+  const res = await axiosConfig.get(`/api/facility/${facilityId}`);
+  return res.data.result;
+}
+
+/* -------------------------------
+   4. 체육 시설 프로그램 가져오는 API
 -------------------------------- */
 export const getFacilityPrograms = async (
   facilityId: number

@@ -1,4 +1,3 @@
-
 import { StrengthGraphItem } from "./StrengthGraphItem";
 
 export function StrengthGraphCard() {
@@ -19,15 +18,17 @@ export function StrengthGraphCard() {
         <div className="w-[320px] flex flex-col gap-3 mt-[0px]">
           <StrengthGraphItem
             label="근력"
-            valueText="??"
-            filledWidth={151}
+            valueText="151"
+            userScr={151}
+            avgScr={130}
             totalWidth={220}
             highlight
           />
           <StrengthGraphItem
             label="근지구력"
-            valueText="??"
-            filledWidth={191}
+            valueText="191"
+            userScr={191}
+            avgScr={210}
             totalWidth={220}
           />
         </div>

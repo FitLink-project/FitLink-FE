@@ -12,8 +12,10 @@ import kakaoIcon from "../../assets/SocialIcon/kakao-icon.png";
 import kakaoIconClicked from "../../assets/SocialIcon/kakao-icon-clicked.png";
 import googleIcon from "../../assets/SocialIcon/google-icon.png";
 import googleIconClicked from "../../assets/SocialIcon/google-icon-clicked.png";
+import { useUser } from "../../contexts/UserContext";
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://www.fitlink1207.store";
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,6 +30,7 @@ export default function LoginPage() {
   const [googleClicked, setGoogleClicked] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { setTokenAndLoadUser } = useUser();
 
   // URL 파라미터에서 에러 확인
   useEffect(() => {
@@ -83,41 +86,41 @@ export default function LoginPage() {
       const response = await login({ email, password });
       
       if (response.isSuccess && response.result) {
-        // accessToken 저장
-        localStorage.setItem('accessToken', response.result.accessToken);
+        // accessToken 저장 및 회원정보 저장
+        setTokenAndLoadUser(response.result.accessToken);
         // 홈으로 이동
         navigate("/");
       }
     } catch (err) {
       const apiError = err as ApiError;
-      let errorMessage = "① 이메일과 비밀번호를 정확히 입력해주세요";
+      let errorMessage = " 이메일과 비밀번호를 정확히 입력해주세요";
       
       // 에러 코드에 따라 다른 메시지 표시
       switch (apiError.code) {
         case ERROR_CODES.COMMON400:
-          errorMessage = "① 잘못된 요청입니다.";
+          errorMessage = " 잘못된 요청입니다.";
           break;
         case ERROR_CODES.USER4001:
-          errorMessage = "① 올바른 이메일 형식이 아닙니다.";
+          errorMessage = " 올바른 이메일 형식이 아닙니다.";
           setEmailError(true);
           break;
         case ERROR_CODES.USER4011:
-          errorMessage = "① 이메일 또는 비밀번호가 올바르지 않습니다.";
+          errorMessage = " 이메일 또는 비밀번호가 올바르지 않습니다.";
           setEmailError(true);
           setPasswordError(true);
           break;
         case ERROR_CODES.USER4032:
-          errorMessage = "① 비활성화된 사용자입니다.";
+          errorMessage = " 비활성화된 사용자입니다.";
           break;
         case ERROR_CODES.USER4041:
-          errorMessage = "① 사용자를 찾을 수 없습니다.";
+          errorMessage = " 사용자를 찾을 수 없습니다.";
           setEmailError(true);
           break;
         case ERROR_CODES.COMMON500:
-          errorMessage = "① 서버 에러, 관리자에게 문의 바랍니다.";
+          errorMessage = " 서버 에러, 관리자에게 문의 바랍니다.";
           break;
         default:
-          errorMessage = apiError.message || "① 로그인에 실패했습니다.";
+          errorMessage = apiError.message || " 로그인에 실패했습니다.";
       }
       
       setValidationError(errorMessage);

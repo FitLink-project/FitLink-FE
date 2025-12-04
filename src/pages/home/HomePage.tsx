@@ -4,25 +4,65 @@ import HomePageLayout from "./HomePageLayout";
 import HomePageLoggedIn from "./HomePageLoggedIn";
 import HomePageNotLoggedIn from "./HomePageNotLoggedIn";
 import LocationAgreementModal from "./LocationAgreementModal";
-import { editProfile } from "../../api/user";
+import { editProfile, getProfile } from "../../api/user";
+import { useUser } from "../../contexts/UserContext"; 
 
 export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isLocationAgreed, setIsLocationAgreed] = useState(false);
 
+  const { user } = useUser();  // ⬅ context에서 프로필 사용
+
+  const hasFitnessResult =
+    !!user &&
+    user.height !== null &&
+    user.weight !== null &&
+    user.birthDate !== null &&
+    user.sex !== null;
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    setIsLoggedIn(!!token);
+    const loggedIn = !!token;
+    setIsLoggedIn(loggedIn);
 
-    const locationAgreed = localStorage.getItem("locationAgreed") === "true";
-    setIsLocationAgreed(locationAgreed);
-
-    // 아직 동의 안 했으면 모달 띄우기 (로그인 여부 상관 없음)
-    if (!locationAgreed) {
-      setShowLocationModal(true);
+    // 1) 비로그인인 경우: localStorage만 사용
+    if (!loggedIn) {
+      const locationAgreedLocal = localStorage.getItem("locationAgreed") === "true";
+      setIsLocationAgreed(locationAgreedLocal);
+      setShowLocationModal(!locationAgreedLocal);
+      return;
     }
-  }, []);
+
+    // 2) 로그인 + user 이미 로드된 경우: context 우선
+    if (user) {
+      const locationAgreedServer = user.agreements.location === true;
+      setIsLocationAgreed(locationAgreedServer);
+      setShowLocationModal(!locationAgreedServer);
+      return;
+    }
+
+    // 3) 로그인인데 user가 아직 없으면: 직접 프로필 조회 후 판단
+    (async () => {
+      try {
+        if (!token) return;
+        const res = await getProfile(token);
+        if (res.isSuccess && res.result) {
+          const locationAgreedServer = res.result.agreements.location === true;
+          setIsLocationAgreed(locationAgreedServer);
+          setShowLocationModal(!locationAgreedServer);
+        } else {
+          // 프로필 못 가져오면 보수적으로 모달 띄우기
+          setIsLocationAgreed(false);
+          setShowLocationModal(true);
+        }
+      } catch (e) {
+        console.error("프로필 조회 실패:", e);
+        setIsLocationAgreed(false);
+        setShowLocationModal(true);
+      }
+    })();
+  }, [user]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -88,7 +128,7 @@ const handleLocationAgree = async () => {
         onLocationClick={openLocationModal}
       >
         {isLoggedIn ? (
-          <HomePageLoggedIn  hasFitnessResult={false}/>
+          <HomePageLoggedIn  hasFitnessResult={hasFitnessResult}/>
         ) : (
           <HomePageNotLoggedIn />
         )}

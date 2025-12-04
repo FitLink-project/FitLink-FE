@@ -7,19 +7,19 @@ import rainbowGauge from "../assets/Gauge/rainbow-gauge.png";
 
 export default function MeasurementOptionCards() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [isLoggedIn] = useState(() => !!localStorage.getItem("accessToken"));
+  const [showModal, setShowModal] = useState(!isLoggedIn);
 
   return (
     <div className="flex gap-4 items-center justify-center">
-      {/* 1. 측정 결과가 있는 경우 (O) */}
+      {/* 1. 국민체력 측정 결과가 있는 경우 (O) */}
       <Button
         variant="measurement"
         onClick={() => {
-          if (isLoggedIn) {
-            navigate("/");
-          } else {
+          if (!isLoggedIn) {
             setShowModal(true);
+          } else {
+            navigate("/fitness-kookmin");
           }
         }}
       >
@@ -61,15 +61,14 @@ export default function MeasurementOptionCards() {
         />
       </Button>
 
-      {/* 2. 측정 결과가 없는 경우 (X) */}
+      {/* 2. 국민체력 측정 결과가 없는 경우 (X) */}
       <Button
         variant="measurement"
         onClick={() => {
-          if (isLoggedIn) {
-            navigate("/");
-            setIsLoggedIn(false); // 그냥 부르는 거
-          } else {
+          if (!isLoggedIn) {
             setShowModal(true);
+          } else {
+            navigate("/fitness-general");
           }
         }}
       >
@@ -77,12 +76,12 @@ export default function MeasurementOptionCards() {
         <div className="px-2">
           <div className="font-mplus text-gray text-[0.7em] my-2">
             <p>국민체력 100</p>
-            <p>측정 결과가 있으신가요?</p>
+            <p>측정 결과가 없으신가요?</p>
           </div>
 
           <div className="flex items-center justify-center gap-1">
             <span className="font-mplus1 font-bold text-[0.8em]">
-              국민체력 100 결과 입력
+              간단 체력측정으로 시작
             </span>
             <svg
               width="0.375rem"

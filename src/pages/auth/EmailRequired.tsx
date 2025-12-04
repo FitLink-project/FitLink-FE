@@ -1,44 +1,51 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail } from "react-feather";
+import { useUser } from "../../contexts/UserContext";
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://www.fitlink1207.store";
+const BACKEND_URL =
+  import.meta.env.VITE_API_BASE_URL;
 
 export default function EmailRequired() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const navigate = useNavigate();
+  const { user, loading } = useUser();
 
   useEffect(() => {
-    // 토큰 확인
     const token = localStorage.getItem("accessToken");
     if (!token) {
       setError("토큰이 없습니다. 다시 로그인해주세요.");
       setTimeout(() => {
         navigate("/login");
       }, 2000);
+      return;
     }
-  }, [navigate]);
+
+    // 프로필 로딩이 끝난 뒤에만 분기
+    if (!loading && user && user.email) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, user, loading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
+    setLoadingSubmit(true);
 
     const token = localStorage.getItem("accessToken");
-    
+
     if (!token) {
       setError("토큰이 없습니다. 다시 로그인해주세요.");
-      setLoading(false);
+      setLoadingSubmit(false);
       navigate("/login");
       return;
     }
 
-    // 이메일 유효성 검사
     if (!email || !email.includes("@")) {
       setError("올바른 이메일 형식을 입력해주세요.");
-      setLoading(false);
+      setLoadingSubmit(false);
       return;
     }
 
@@ -59,15 +66,9 @@ export default function EmailRequired() {
         throw new Error(errorData.message || "이메일 업데이트 실패");
       }
 
-      // 응답 확인 (데이터는 사용하지 않음)
       await response.json();
-      
-      // 성공 메시지 표시
       alert("이메일이 성공적으로 업데이트되었습니다!");
-      
-      // 메인 페이지로 이동
-      navigate("/");
-      
+      navigate("/auth/social-terms");
     } catch (err) {
       console.error("이메일 업데이트 오류:", err);
       setError(
@@ -76,7 +77,7 @@ export default function EmailRequired() {
           : "이메일 업데이트 중 오류가 발생했습니다."
       );
     } finally {
-      setLoading(false);
+      setLoadingSubmit(false);
     }
   };
 
@@ -122,7 +123,7 @@ export default function EmailRequired() {
                   placeholder="example@email.com"
                   required
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                  disabled={loading}
+                  disabled={loadingSubmit}
                 />
               </div>
             </div>
@@ -130,10 +131,10 @@ export default function EmailRequired() {
             {/* 저장 버튼 */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loadingSubmit}
               className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-              {loading ? (
+              {loadingSubmit ? (
                 <span className="flex items-center justify-center">
                   <svg
                     className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
