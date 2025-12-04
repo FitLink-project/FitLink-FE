@@ -116,8 +116,8 @@ export default function FitnessBalance({
               <div className="w-20 h-20 bg-orange-100 rounded-full mb-4">
                 <img
                   src={user?.profileUrl ? user.profileUrl : defaultProfile}
-                  alt="profile"
-                  className="w-full h-full object-cover"
+                  alt="프로필 이미지"
+                  className="w-auto h-auto rounded-full object-cover"
                 />
               </div>
               <p className="font-mplus1 text-xs">
