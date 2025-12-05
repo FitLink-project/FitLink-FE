@@ -89,7 +89,7 @@ function StrengthGraphList({
       <div className="flex flex-col items-center gap-5">
         {/* 상단 문구 */}
         <div className="w-full flex flex-col items-center relative mb-4">
-          <div className="w-[101px] h-[10px] bg-red opacity-35 mb-3 absolute top-[10px] left-[100px]" />
+          <div className="w-[101px] h-[10px] bg-red opacity-35 mb-3 absolute top-[13px] left-[80px]" />
           <p className="text-base font-semibold text-softBlack font-pretendard leading-[150%] text-center">
             {ageRangeText} 평균에 비해
             <br />
@@ -138,12 +138,15 @@ function StrengthGraphList({
           }
           return (
             <StrengthGraphItem
-              key={key}
-              label={label}
-              valueText={typeof userScr === "number" ? `${userScr}` : "-"}
-              userScr={typeof userScr === "number" ? userScr : 0}
-              avgScr={typeof avgScr === "number" ? avgScr : 0}
-              maxScore={maxScoreValue}
+                key={key}
+                  label={label}
+                  valueText={typeof userScr === "number" ? `${userScr}` : "-"}
+                  userScr={typeof userScr === "number" ? userScr : 0}
+                  avgScr={typeof avgScr === "number" ? avgScr : 0}
+                  maxScore={maxScoreValue}
+                  highlight={typeof userScr === "number" && typeof avgScr === "number"
+                    ? userScr < avgScr
+                    : false}
             />
           );
         })}

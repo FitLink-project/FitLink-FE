@@ -67,7 +67,6 @@ export default function EmailRequired() {
       }
 
       await response.json();
-      alert("이메일이 성공적으로 업데이트되었습니다!");
       navigate("/auth/social-terms");
     } catch (err) {
       console.error("이메일 업데이트 오류:", err);

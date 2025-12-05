@@ -109,17 +109,15 @@ export default function FitnessBalance({
           description="체력 데이터를 바탕으로 분석한 결과예요"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-1 flex flex-col gap-4">
-            {/* 1. 프로필 카드 */}
-            <Card className="flex flex-col items-center justify-center">
-              <div className="w-20 h-20 bg-orange-100 rounded-full mb-4">
-                <img
+      <div className="grid grid-cols-3 gap-4">
+        {/* 왼쪽: 프로필 + 키·체중 (col 1) */}
+        <div className="col-span-1 flex flex-col gap-4">
+          <Card className="flex flex-col items-center justify-center h-[131px]">
+              <img
                   src={user?.profileUrl ? user.profileUrl : defaultProfile}
                   alt="프로필 이미지"
-                  className="w-auto h-auto rounded-full object-cover"
+                  className="w-[59px] h-[59px] rounded-[50%] object-cover"
                 />
-              </div>
               <p className="font-mplus1 text-xs">
                 {user?.name ?? "회원"} | {age}세
               </p>
@@ -139,15 +137,15 @@ export default function FitnessBalance({
           </div>
 
           {/* [오른쪽 영역] 그래프 및 분석 멘트 */}
-          <Card className="md:col-span-2 flex flex-col items-center justify-center">
-            <div className="w-full h-auto rounded-lg flex items-center justify-center">
-              {data.testKookmin && <HexagonGraph data={graphData} />}
-              {data.testGeneral && <TriangleGraph data={graphData} />}
-            </div>
+        <Card className="col-span-2 flex flex-col items-center justify-center py-6 px-4 h-[268px] relative">
+          <div className="w-full max-w-xs mx-auto">
+            {data.testKookmin && <HexagonGraph data={graphData} />}
+            {data.testGeneral && <TriangleGraph data={graphData} />}
+          </div>
 
             {/* 하단 텍스트 */}
-            <div className="font-mplus1 text-center text-sm">
-              {user?.name ?? "회원"} 님 은{" "}
+            <div className="font-mplus1 text-center text-sm absolute bottom-6 px-4 w-full">
+              {user?.name ?? "회원"}님은{" "}
               <span className="bg-[linear-gradient(transparent_60%,rgba(59,130,246,0.4)_60%)] px-1 font-bold">
                 {maxLabel}
               </span>

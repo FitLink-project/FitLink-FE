@@ -8,7 +8,7 @@ export default function TriangleGraph({
   const cx = 50; // SVG 중심 좌표
   const cy = 50;
   const radius = 30; // 삼각형 반지름
-  const textRadius = radius + 8; // 텍스트 위치
+  const textRadius = radius + 6; // 텍스트 위치
 
   // 각도 정의 (순서는 [Top, Left-Bottom, Right-Bottom] 고정)
   const angles = [-90, 150, 30];

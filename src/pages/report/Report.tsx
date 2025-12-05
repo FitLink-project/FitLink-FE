@@ -154,7 +154,7 @@ if (!fitnessData || !standard) {
       <PageHeader title="체력 리포트" />
 
       <div className="flex justify-center bg-white">
-        <div className="w-full max-w-sm mb-32">
+        <div className="w-full  mb-32 px-[20px]">
           {isLoggedIn && fitnessData && (
             <div className="flex flex-col gap-16 py-16">
               <FitnessBalance

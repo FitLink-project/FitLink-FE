@@ -9,7 +9,7 @@ export default function FitnessLandingPage() {
     <>
       <PageHeader title="체력 측정 방법 선택" />
       <div className="min-h-screen flex justify-center bg-white">
-        <div className="w-full max-w-sm">
+        <div className="w-full">
           {/* 파란 섹션 */}
           <section className="text-center bg-main py-16">
             <div className="space-y-2 font-mplus1 font-bold text-softWhite text-lg">
