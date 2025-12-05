@@ -16,13 +16,13 @@ export default function OnboardingStep2Page() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col px-4 pt-12 pb-8 bg-gradient-to-b from-[#F9FAFB] to-[#E3EFFF]">
-      <div className="flex justify-center mb-8">
-        <img src={step2Top} alt="onboarding indicator" className="w-[120px] h-auto" />
+    <div className="min-h-screen flex flex-col px-4 pt-12 pb-8 bg-gradient-to-b from-[#E3EFFF] to-[#F9FAFB]">
+      <div className="flex justify-center mb-[58px]">
+        <img src={step2Top} alt="onboarding indicator" className="w-[67px] h-[22px]" />
       </div>
 
-      <div className="flex justify-center mb-10">
-        <img src={step2Illust} alt="onboarding illust" className="w-[260px] h-auto" />
+      <div className="flex justify-center mb-[60px]">
+        <img src={step2Illust} alt="onboarding illust" className="w-[265px] h-[179px] mt-[60px] mb-[20px]" />
       </div>
 
       <div className="text-center px-4 mb-8">
@@ -36,7 +36,7 @@ export default function OnboardingStep2Page() {
         </p>
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-[20px] flex justify-center items-center">
         <Button onClick={() => navigate("/onboarding/3")}>다음</Button>
       </div>
     </div>
