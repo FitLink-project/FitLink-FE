@@ -26,7 +26,7 @@ import OnboardingPage from "../pages/onboard/OnboardingPage";
 import OnboardingStep1Page from "../pages/onboard/OnboardingStep1Page";
 import OnboardingStep2Page from "../pages/onboard/OnboardingStep2Page";
 import OnboardingStep3Page from "../pages/onboard/OnboardingStep3Page";
-import RoutePage from "../pages/Route/RoutePage";
+import RoutePage from "../pages/route/RoutePage";
 
 export const router = createBrowserRouter([
   {
