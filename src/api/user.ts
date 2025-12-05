@@ -201,7 +201,6 @@ export async function getAddressFromLocation(
 ): Promise<ApiResponse<{ fullAddress: string }>> {
 
   const url = `${BASE_URL}/api/maps/reverse?lat=${lat}&lon=${lon}`;
-  console.log("👉 reverse fetch URL =", url);
 
   const response = await fetch(url, {
     method: 'GET',
@@ -209,7 +208,6 @@ export async function getAddressFromLocation(
 
   if (!response.ok) {
     const raw = await response.text();
-    console.error("💥 주소 변환 API 실패 - 원본 응답:", raw);
 
     throw {
       isSuccess: false,
