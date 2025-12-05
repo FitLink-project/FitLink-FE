@@ -166,7 +166,7 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
           title="나의 체력에는 어떤 운동을 해야할까?"
           description={
             <>
-              FitLink가 {user?.name ?? "회원"} 님의 체력 밸런스를 바탕으로{" "}
+              FitLink가 {user?.name ?? "회원"} 님의 데이터를 바탕으로{" "}
               <br /> 맞춤 운동을 추천해 드려요
             </>
           }
