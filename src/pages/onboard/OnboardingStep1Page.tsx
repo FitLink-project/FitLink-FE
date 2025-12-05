@@ -18,18 +18,18 @@ export default function OnboardingStep1Page() {
 
   return (
     <motion.div
-      className="min-h-screen flex flex-col px-4 pt-12 pb-8 bg-gradient-to-b from-[#F9FAFB] to-[#E3EFFF]"
+      className="min-h-screen flex flex-col px-4 pt-12 pb-8 bg-gradient-to-b from-[#E3EFFF] to-[#F9FAFB]"
       initial={{ opacity: 0, y: 30 }}     // 🔽 아래에서
       animate={{ opacity: 1, y: 0 }}      // 중앙으로
       exit={{ opacity: 0, y: -30 }}       // 🔼 위로 사라지게 (원하면 유지)
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className="flex justify-center mb-8">
-        <img src={step1Top} alt="onboarding indicator" className="w-[120px] h-auto" />
+        <img src={step1Top} alt="onboarding indicator" className="w-[67px] h-[22px]" />
       </div>
 
       <div className="flex justify-center mb-10">
-        <img src={step1Illust} alt="onboarding illust" className="w-[260px] h-auto" />
+        <img src={step1Illust} alt="onboarding illust" className="w-[331px] h-[235px] mt-[20px] mb-[20px]" />
       </div>
 
       <div className="text-center px-4 mb-8">
@@ -43,7 +43,7 @@ export default function OnboardingStep1Page() {
         </p>
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-[20px] flex justify-center items-center">
         <Button onClick={() => navigate("/onboarding/2")}>다음</Button>
       </div>
     </motion.div>
