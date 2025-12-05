@@ -4,7 +4,7 @@ import HomePageLayout from "./HomePageLayout";
 import HomePageLoggedIn from "./HomePageLoggedIn";
 import HomePageNotLoggedIn from "./HomePageNotLoggedIn";
 import LocationAgreementModal from "./LocationAgreementModal";
-import { editProfile, getProfile } from "../../api/user";
+import { editProfile, getProfile, getAddressFromLocation } from "../../api/user";
 import { useUser } from "../../contexts/UserContext";
 import { getNearbyFacilities } from "../../api/facility";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ export default function HomePage() {
   const [isLocationAgreed, setIsLocationAgreed] = useState(false);
 
   const { user } = useUser();  // ⬅ context에서 프로필 사용
-  const navigate = useNavigate();     
+  const navigate = useNavigate();
   const hasFitnessResult =
     !!user &&
     user.height !== null &&
@@ -38,6 +38,7 @@ export default function HomePage() {
   const [facilities, setFacilities] = useState([]);
 
   const [selectedFacility, setSelectedFacility] = useState<any | null>(null);
+  const [userAddress, setUserAddress] = useState<string>("");
 
 
   useEffect(() => {
@@ -99,35 +100,35 @@ export default function HomePage() {
 
 
   const handleLocationAgree = async () => {
-  try {
-    const accessToken = localStorage.getItem("accessToken");
+    try {
+      const accessToken = localStorage.getItem("accessToken");
 
-    if (!accessToken) {
+      if (!accessToken) {
+        localStorage.setItem("locationAgreed", "true");
+        setIsLocationAgreed(true);
+        setShowLocationModal(false);
+
+        // ⭐ GPS 요청
+        requestGPSAndLoadFacilities();
+        return;
+      }
+
+      await editProfile(
+        { agreements: { location: true } },
+        accessToken
+      );
+
       localStorage.setItem("locationAgreed", "true");
       setIsLocationAgreed(true);
       setShowLocationModal(false);
 
       // ⭐ GPS 요청
       requestGPSAndLoadFacilities();
-      return;
+
+    } catch (e) {
+      console.error("위치 동의 업데이트 실패:", e);
     }
-
-    await editProfile(
-      { agreements: { location: true } },
-      accessToken
-    );
-
-    localStorage.setItem("locationAgreed", "true");
-    setIsLocationAgreed(true);
-    setShowLocationModal(false);
-
-    // ⭐ GPS 요청
-    requestGPSAndLoadFacilities();
-
-  } catch (e) {
-    console.error("위치 동의 업데이트 실패:", e);
-  }
-};
+  };
 
 
   const handleLocationLater = () => {
@@ -138,33 +139,57 @@ export default function HomePage() {
     setShowLocationModal(true); // 내위치 버튼 눌렀을 때 호출
   };
 
-  /** -----------------------------------
-   *  ⭐ 위치 권한 요청 → GPS → API 호출
-   ------------------------------------*/
   const requestGPSAndLoadFacilities = () => {
-  navigator.geolocation.getCurrentPosition(
-    async (pos) => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
 
-      console.log("GPS 위치:", lat, lng);
+        console.log("GPS 위치:", lat, lng);
 
-      setCenter({ lat, lng });
+        setCenter({ lat, lng });
 
-      const res = await getNearbyFacilities(lat, lng);
-      if (!res.isSuccess) return;
+        /** 주소 가져오기 추가 */
+        try {
+      
 
-      const list = Array.isArray(res.result) ? res.result : [];
+          const url = `${import.meta.env.VITE_API_BASE_URL}/api/maps/reverse?lat=${lat}&lon=${lng}`;
+       
+          const response = await fetch(url, { method: "GET" });
 
-      setFacilities(list);
-      setSelectedFacility(null);
-    },
-    (err) => {
-      console.error("GPS 오류:", err);
-      alert("GPS 권한을 허용해야 위치 기반 추천을 받을 수 있어요!");
-    }
-  );
-};
+          const rawText = await response.text();
+
+          // JSON으로 파싱
+          let parsed;
+          try {
+            parsed = JSON.parse(rawText);
+          } catch (jsonErr) {
+            console.error("JSON 파싱 실패 – HTML 가능성 높음:", jsonErr);
+            throw new Error("JSON parse fail (HTML 응답 가능)");
+          }
+
+          if (parsed.isSuccess && parsed.result) {
+            setUserAddress(parsed.result.fullAddress);
+          }
+        } catch (e) {
+          console.error("주소 변환 전체 실패 로그:", e);
+        }
+
+
+        /** 시설 로드 */
+        const res = await getNearbyFacilities(lat, lng);
+        if (!res.isSuccess) return;
+
+        const list = Array.isArray(res.result) ? res.result : [];
+        setFacilities(list);
+        setSelectedFacility(null);
+      },
+      (err) => {
+        console.error("GPS 오류:", err);
+        alert("GPS 권한을 허용해야 위치 기반 추천을 받을 수 있어요!");
+      }
+    );
+  };
 
 
   return (
@@ -179,6 +204,7 @@ export default function HomePage() {
         facilities={facilities}
         selectedFacility={selectedFacility}
         onSelectFacility={setSelectedFacility}
+        userAddress={userAddress}
       >
         {isLoggedIn ? (
           <HomePageLoggedIn hasFitnessResult={hasFitnessResult} />

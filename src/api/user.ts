@@ -189,3 +189,35 @@ export async function deleteUser(
 
   return response.json();
 }
+
+
+/**
+ * 사용자 좌표 → 주소 변환 API
+ * GET /api/maps/reverse?lat={lat}&lon={lon}
+ */
+export async function getAddressFromLocation(
+  lat: number,
+  lon: number
+): Promise<ApiResponse<{ fullAddress: string }>> {
+
+  const url = `${BASE_URL}/api/maps/reverse?lat=${lat}&lon=${lon}`;
+  console.log("👉 reverse fetch URL =", url);
+
+  const response = await fetch(url, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const raw = await response.text();
+    console.error("💥 주소 변환 API 실패 - 원본 응답:", raw);
+
+    throw {
+      isSuccess: false,
+      code: "COMMON500",
+      message: "Reverse API 오류",
+      result: raw
+    };
+  }
+
+  return response.json();
+}

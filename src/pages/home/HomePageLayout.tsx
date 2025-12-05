@@ -16,6 +16,7 @@ interface HomePageLayoutProps {
   facilities?: any[];
   selectedFacility?: any | null;
   onSelectFacility?: (facility: any) => void;
+  userAddress?: string;
 }
 
 export default function HomePageLayout({
@@ -27,6 +28,7 @@ export default function HomePageLayout({
   facilities,
   selectedFacility,
   onSelectFacility,
+  userAddress,
 }: HomePageLayoutProps) {
   return (
     <div className="w-full min-h-screen bg-softWhite">
@@ -80,12 +82,14 @@ export default function HomePageLayout({
           </button>
 
 
-           {/* 지도 섹션 */}
+          {/* 지도 섹션 */}
           <div className="w-full h-[253px] bg-softWhite rounded-[10px] p-[10px] shadow">
             <h3 className="text-base font-semibold mb-[10px]">FitLink가 찾은 주변 공공체육시설 🔥</h3>
 
             <div className="flex justify-between items-center mb-[10px]">
-              <p className="text-xs text-gray">서울 용산구 한강대로 345</p>
+              <p className="text-xs text-gray">
+                {userAddress || "주소 불러오는 중..."}
+              </p>
 
               <button
                 className="px-3 py-[6px] rounded-[30px] border border-lineGray text-xs"
