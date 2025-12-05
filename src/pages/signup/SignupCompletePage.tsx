@@ -7,7 +7,7 @@ export default function SignupCompletePage() {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   return (
