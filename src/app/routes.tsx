@@ -22,6 +22,10 @@ import FacilitySearchPage from "../pages/facility/FacilitySearchPage";
 import VideoDetailPage from "../pages/video/VideoDetailPage";
 import FacilityDetailPage from "../pages/facility/FacilityDetailPage";
 import ProgramDetailPage from "../pages/facility/ProgramDetailPage";
+import OnboardingPage from "../pages/onboard/OnboardingPage";
+import OnboardingStep1Page from "../pages/onboard/OnboardingStep1Page";
+import OnboardingStep2Page from "../pages/onboard/OnboardingStep2Page";
+import OnboardingStep3Page from "../pages/onboard/OnboardingStep3Page";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +34,22 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/onboarding",
+        element: <OnboardingPage />,
+      },
+            {
+        path: "/onboarding/1",
+        element: <OnboardingStep1Page />,
+      },
+      {
+        path: "/onboarding/2",
+        element: <OnboardingStep2Page />,
+      },
+      {
+        path: "/onboarding/3",
+        element: <OnboardingStep3Page />,
       },
       {
         path: "/login",
