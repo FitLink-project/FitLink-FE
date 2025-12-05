@@ -110,7 +110,7 @@ export default function LoginPage() {
           setPasswordError(true);
           break;
         case ERROR_CODES.USER4032:
-          errorMessage = " 탈퇴한 사용자입니다. draconist.official@gmail.com으로 문의바랍니다.";
+          errorMessage = " 탈퇴한 사용자입니다. 문의)draconist.official@gmail.com";
           break;
         case ERROR_CODES.USER4041:
           errorMessage = " 사용자를 찾을 수 없습니다.";
