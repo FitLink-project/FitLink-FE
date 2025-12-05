@@ -26,6 +26,7 @@ import OnboardingPage from "../pages/onboard/OnboardingPage";
 import OnboardingStep1Page from "../pages/onboard/OnboardingStep1Page";
 import OnboardingStep2Page from "../pages/onboard/OnboardingStep2Page";
 import OnboardingStep3Page from "../pages/onboard/OnboardingStep3Page";
+import RoutePage from "../pages/Route/RoutePage";
 
 export const router = createBrowserRouter([
   {
@@ -130,6 +131,8 @@ export const router = createBrowserRouter([
         path: "/facility/:facilityId/programs",
         element: <ProgramDetailPage />,
       },
+
+      { path: "/facility/:facilityId/route", element: <RoutePage /> },
 
     ],
   },

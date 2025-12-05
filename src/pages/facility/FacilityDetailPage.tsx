@@ -16,6 +16,20 @@ export default function FacilityDetailPage() {
     const [facility, setFacility] = useState<any>(null);
     const [copyHover, setCopyHover] = useState(false);
 
+
+    const [userLat, setUserLat] = useState<number | null>(null);
+    const [userLng, setUserLng] = useState<number | null>(null);
+
+
+    //현재 위치 가져오기 
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            setUserLat(pos.coords.latitude);
+            setUserLng(pos.coords.longitude);
+        });
+    }, []);
+
+
     useEffect(() => {
         async function load() {
             if (!facilityId) return;
@@ -33,10 +47,22 @@ export default function FacilityDetailPage() {
         alert("주소가 복사되었습니다!");
     };
 
-    // 길찾기 열기 (네이버맵 기준)
-    const handleDirection = () => {
-        const url = `https://map.naver.com/v5/directions/-/${facility.latitude},${facility.longitude}`;
-        window.open(url, "_blank");
+    // 길찾기 이동 
+    const handleRoute = () => {
+         if (!userLat || !userLng) {
+        alert("현재 위치 정보를 가져오는 중입니다. 잠시만 기다려주세요.");
+        return;
+    }
+        navigate(`/facility/${facilityId}/route`, {
+            state: {
+                originName: "내 위치",
+                destName: facility.facilityName,
+                userLat,
+                userLng,
+                destLat: facility.latitude,
+                destLng: facility.longitude,
+            },
+        });
     };
 
     return (
@@ -75,8 +101,8 @@ export default function FacilityDetailPage() {
 
                         {/* 길찾기 버튼 */}
                         <button
-                            onClick={handleDirection}
-                            className="text-sm bg-[#EDEDED] px-3 py-1 rounded-full text-gray font-medium"
+                            onClick={handleRoute}
+                            className="text-sm bg-[#EDEDED] px-3 py-1 rounded-full"
                         >
                             길찾기
                         </button>
