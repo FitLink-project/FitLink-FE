@@ -137,7 +137,7 @@ export default function FitnessBalance({
           </div>
 
           {/* [오른쪽 영역] 그래프 및 분석 멘트 */}
-        <Card className="col-span-2 flex flex-col items-center justify-center py-6 px-4 h-[268px] relative">
+        <Card className="col-span-2 flex flex-col items-center justify-start  px-4 h-[268px] relative py-0">
           <div className="w-full max-w-xs mx-auto">
             {data.testKookmin && <HexagonGraph data={graphData} />}
             {data.testGeneral && <TriangleGraph data={graphData} />}

@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BottomBar from "../../components/BottomBar";
 import BackIcon from "../../assets/Icon/Back-Default.png";
 import RouteMapContainer from "../../components/RouteMapContainer";
-import RouteDetailCard from "./RouteDetailCard";
 import { getRouteByType } from "../../api/facility";
 import RouteDefaultIcon from "../../assets/Icon/Route-Default.png";
 import RouteClickIcon from "../../assets/Icon/Route-Click.png";
 import ClickLocationIcon from "../../assets/Icon/Click-Location.png";
 import UserLocationIcon from "../../assets/Icon/User-Location.png";
+import RouteDetailCard from "./RouteDetailCard";
 
 export default function RoutePage() {
     const navigate = useNavigate();
@@ -55,8 +55,7 @@ export default function RoutePage() {
         if (!userLat || !userLng || !destLat || !destLng) return;
 
         async function loadAllRoutes() {
-            const types = ["walk", "car", "transit"];
-
+            const types = ["walk", "car", "transit"] as const;
             const results = await Promise.all(
                 types.map((t) =>
                     getRouteByType(userLat, userLng, destLat, destLng, t)
@@ -133,7 +132,7 @@ export default function RoutePage() {
 
             {/* ⭐ 최적 경로 버튼 */}
             <div className="flex gap-3 mx-4 mt-4">
-                {routes.map((r, idx) => {
+                {routes.map((_r, idx) => {
                     const isActive = selectedIndex === idx;
 
                     return (
