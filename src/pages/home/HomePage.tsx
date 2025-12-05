@@ -4,7 +4,7 @@ import HomePageLayout from "./HomePageLayout";
 import HomePageLoggedIn from "./HomePageLoggedIn";
 import HomePageNotLoggedIn from "./HomePageNotLoggedIn";
 import LocationAgreementModal from "./LocationAgreementModal";
-import { editProfile, getProfile } from "../../api/user";
+import { editProfile, getProfile,getAddressFromLocation } from "../../api/user";
 import { useUser } from "../../contexts/UserContext";
 import { getNearbyFacilities } from "../../api/facility";
 import { useNavigate } from "react-router-dom";
@@ -36,8 +36,8 @@ export default function HomePage() {
   });
 
   const [facilities, setFacilities] = useState([]);
-
   const [selectedFacility, setSelectedFacility] = useState<any | null>(null);
+  const [userAddress, setUserAddress] = useState("");
 
 
   useEffect(() => {
@@ -107,7 +107,7 @@ export default function HomePage() {
       setIsLocationAgreed(true);
       setShowLocationModal(false);
 
-      // ⭐ GPS 요청
+      // GPS 요청
       requestGPSAndLoadFacilities();
       return;
     }
@@ -121,7 +121,7 @@ export default function HomePage() {
     setIsLocationAgreed(true);
     setShowLocationModal(false);
 
-    // ⭐ GPS 요청
+    // GPS 요청
     requestGPSAndLoadFacilities();
 
   } catch (e) {
@@ -139,32 +139,44 @@ export default function HomePage() {
   };
 
   /** -----------------------------------
-   *  ⭐ 위치 권한 요청 → GPS → API 호출
+   *  위치 권한 요청 → GPS → API 호출
    ------------------------------------*/
   const requestGPSAndLoadFacilities = () => {
-  navigator.geolocation.getCurrentPosition(
-    async (pos) => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
 
-      console.log("GPS 위치:", lat, lng);
+        console.log("GPS 위치:", lat, lng);
 
-      setCenter({ lat, lng });
+        setCenter({ lat, lng });
 
-      const res = await getNearbyFacilities(lat, lng);
-      if (!res.isSuccess) return;
+        /** 주소 가져오기: getAddressFromLocation 사용 */
+        try {
+          const addrRes = await getAddressFromLocation(lat, lng);
+          console.log("주소 변환 API 응답:", addrRes);
 
-      const list = Array.isArray(res.result) ? res.result : [];
+          if (addrRes.isSuccess && addrRes.result) {
+            setUserAddress(addrRes.result.fullAddress);
+          }
+        } catch (e) {
+          console.error("주소 변환 실패 전체 로그:", e);
+        }
 
-      setFacilities(list);
-      setSelectedFacility(null);
-    },
-    (err) => {
-      console.error("GPS 오류:", err);
-      alert("GPS 권한을 허용해야 위치 기반 추천을 받을 수 있어요!");
-    }
-  );
-};
+        /** 주변 시설 조회 */
+        const res = await getNearbyFacilities(lat, lng);
+        if (!res.isSuccess) return;
+
+        const list = Array.isArray(res.result) ? res.result : [];
+        setFacilities(list);
+        setSelectedFacility(null);
+      },
+      (err) => {
+        console.error("GPS 오류:", err);
+        alert("GPS 권한을 허용해야 위치 기반 추천을 받을 수 있어요!");
+      }
+    );
+  };
 
 
   return (
@@ -179,6 +191,7 @@ export default function HomePage() {
         facilities={facilities}
         selectedFacility={selectedFacility}
         onSelectFacility={setSelectedFacility}
+        userAddress={userAddress}
       >
         {isLoggedIn ? (
           <HomePageLoggedIn hasFitnessResult={hasFitnessResult} />
