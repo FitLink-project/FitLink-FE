@@ -17,6 +17,12 @@ export default function OnboardingStep3Page() {
 
   const handleStart = () => {
     localStorage.setItem("hasOnboarded", "true");
+    navigate("/login");
+  };
+
+  const handleStartWithoutLogin = () => {
+    // 온보딩 여부는 그대로 true 처리할지, 안 할지는 기획에 맞게 선택
+    localStorage.setItem("hasOnboarded", "true");
     navigate("/");
   };
 
@@ -43,6 +49,14 @@ export default function OnboardingStep3Page() {
       <div className="mt-[20px] flex justify-center items-center">
         <Button onClick={handleStart}>시작하기</Button>
       </div>
+              <button
+          type="button"
+          onClick={handleStartWithoutLogin}
+          className="text-[14px] font-medium underline mt-[10px]"
+          style={{ color: "#888888" }}
+        >
+          로그인 없이 시작하기
+        </button>
     </div>
   );
 }
