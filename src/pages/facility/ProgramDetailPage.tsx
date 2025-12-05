@@ -9,6 +9,17 @@ export default function ProgramDetailPage() {
     const navigate = useNavigate();
     const [facility, setFacility] = useState<any>(null);
 
+    const [userLat, setUserLat] = useState<number | null>(null);
+    const [userLng, setUserLng] = useState<number | null>(null);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            setUserLat(pos.coords.latitude);
+            setUserLng(pos.coords.longitude);
+        });
+    }, []);
+
+
     const [selectedCategory, setSelectedCategory] = useState("전체");
     const [categories, setCategories] = useState<string[]>([]);
 
@@ -45,6 +56,21 @@ export default function ProgramDetailPage() {
         navigator.clipboard.writeText(facility.address);
     };
 
+    const handleRoute = () => {
+        navigate(`/facility/${facilityId}/route`, {
+            state: {
+                originName: "내 위치",
+                destName: facility.facilityName,
+                userLat,
+                userLng,
+                destLat: facility.latitude,
+                destLng: facility.longitude,
+            },
+        });
+    };
+
+
+
     return (
         <div className="w-full min-h-screen bg-softWhite flex flex-col">
 
@@ -68,15 +94,13 @@ export default function ProgramDetailPage() {
                         <div className="text-lg font-semibold">{facility.facilityName}</div>
 
                         {/* 길찾기 버튼 (피그마 스타일: 테두리 + 연한 글자) */}
-
                         <button
-                            onClick={() => {
-                                navigate(`/facility/${facilityId}/route`);
-                            }}
-                            className="px-3 py-1 rounded-full border border-lightGray text-[12px] text-gray-600"
+                            onClick={handleRoute}
+                            className="px-3 py-1 rounded-full border text-gray-600"
                         >
                             길찾기
                         </button>
+
                     </div>
 
                     {/* 주소 + 복사 */}
