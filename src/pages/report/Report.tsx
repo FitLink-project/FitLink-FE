@@ -70,11 +70,14 @@ export default function ReportPage() {
   };
 
   // 부족한 체력 요소 찾기 (fitnessData.standard.grade2 보다 못한 항목)
-  if (!fitnessData || !fitnessData.standard?.grade2) return ["유연성"]; // 기본값
+  // 부족한 체력 요소 찾기 (fitnessData.standard.grade2 보다 못한 항목)
+const weakFactors: string[] = [];
+const standard = fitnessData?.standard?.grade2;
 
-  const weakFactors: string[] = [];
-  const standard = fitnessData.standard.grade2;
-
+// fitnessData나 standard가 없으면 기본값만 사용하고, 아래 비교 로직은 건너뛰기
+if (!fitnessData || !standard) {
+  weakFactors.push("유연성");
+} else {
   if (fitnessData.testGeneral) {
     // 간단 체력 검사 기준
     if (
@@ -99,7 +102,7 @@ export default function ReportPage() {
       weakFactors.push("심폐지구력");
     }
   } else {
-    // 국민체력100 기준 - `fitnessData.testKookmin` 필드 사용
+    // 국민체력100 기준
     if (
       typeof fitnessData.testKookmin?.gripStrength === "number" &&
       typeof standard.gripStrength === "number" &&
@@ -143,6 +146,8 @@ export default function ReportPage() {
       weakFactors.push("순발력");
     }
   }
+}
+
 
   return (
     <>

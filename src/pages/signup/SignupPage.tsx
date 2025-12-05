@@ -51,6 +51,17 @@ export default function SignupPage() {
     }
   };
 
+  const syncAllAgree = (
+    nextPrivacy: boolean,
+    nextService: boolean,
+    nextOver14: boolean,
+    nextLocation: boolean
+  ) => {
+    const allChecked =
+      nextPrivacy && nextService && nextOver14 && nextLocation;
+    setAllAgree(allChecked);
+  };
+
   const handleAllAgreeChange = (checked: boolean) => {
     setAllAgree(checked);
     setPrivacyAgree(checked);
@@ -62,21 +73,25 @@ export default function SignupPage() {
 
   const handlePrivacyAgreeChange = (checked: boolean) => {
     setPrivacyAgree(checked);
+    syncAllAgree(checked, serviceAgree, over14Agree, locationAgree); 
     if (termsError) setTermsError(false);
   };
 
   const handleServiceAgreeChange = (checked: boolean) => {
     setServiceAgree(checked);
+    syncAllAgree(privacyAgree, checked, over14Agree, locationAgree);
     if (termsError) setTermsError(false);
   };
 
   const handleOver14AgreeChange = (checked: boolean) => {
     setOver14Agree(checked);
+    syncAllAgree(privacyAgree, serviceAgree, checked, locationAgree); 
     if (termsError) setTermsError(false);
   };
 
   const handleLocationAgreeChange = (checked: boolean) => {
     setLocationAgree(checked);
+    syncAllAgree(privacyAgree, serviceAgree, over14Agree, checked); 
     if (termsError) setTermsError(false);
   };
 

@@ -7,6 +7,7 @@ import LocationAgreementModal from "./LocationAgreementModal";
 import { editProfile, getProfile } from "../../api/user";
 import { useUser } from "../../contexts/UserContext";
 import { getNearbyFacilities } from "../../api/facility";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,13 +15,18 @@ export default function HomePage() {
   const [isLocationAgreed, setIsLocationAgreed] = useState(false);
 
   const { user } = useUser();  // ⬅ context에서 프로필 사용
-
+  const navigate = useNavigate();     
   const hasFitnessResult =
     !!user &&
     user.height !== null &&
     user.weight !== null &&
     user.birthDate !== null &&
     user.sex !== null;
+
+  // ⭐ 온보딩 완료 여부 localStorage 플래그
+  const hasOnboardedLS =
+    typeof window !== "undefined" &&
+    localStorage.getItem("hasOnboarded") === "true";
 
 
   //지도 관련 상태 추가
@@ -39,6 +45,10 @@ export default function HomePage() {
     const loggedIn = !!token;
     setIsLoggedIn(loggedIn);
 
+    if (!loggedIn && !hasOnboardedLS) {
+      navigate("/onboarding");                                // ✅ 추가 위치 1
+      return;
+    }
     // 1) 비로그인인 경우: localStorage만 사용
     if (!loggedIn) {
       const locationAgreedLocal = localStorage.getItem("locationAgreed") === "true";
