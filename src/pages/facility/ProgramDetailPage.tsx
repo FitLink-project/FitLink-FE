@@ -1,17 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getFacilityPrograms } from "../../api/facility";
+import { getFacilityPrograms, getFacilityDetail } from "../../api/facility";
 import BackIcon from "../../assets/Icon/Back-Default.png";
-import CopyIcon from "../../assets/Icon/Copy-Default.png"; // 복사 아이콘(너가 가진 경로 맞춰 수정)
+import CopyIcon from "../../assets/Icon/Copy-Default.png";
 
 export default function ProgramDetailPage() {
     const { facilityId } = useParams();
     const navigate = useNavigate();
+
     const [facility, setFacility] = useState<any>(null);
 
     const [userLat, setUserLat] = useState<number | null>(null);
     const [userLng, setUserLng] = useState<number | null>(null);
 
+    // 현재 위치 가져오기
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((pos) => {
             setUserLat(pos.coords.latitude);
@@ -19,25 +21,33 @@ export default function ProgramDetailPage() {
         });
     }, []);
 
-
     const [selectedCategory, setSelectedCategory] = useState("전체");
     const [categories, setCategories] = useState<string[]>([]);
 
+    // 프로그램 정보 + 시설 상세(좌표 포함) 한번에 병합하여 저장
     useEffect(() => {
         async function loadData() {
             if (!facilityId) return;
 
+            // 프로그램 API
             const res = await getFacilityPrograms(Number(facilityId));
-            const data = res.result;
+            const programData = res.result;
+            if (!programData) return;
 
-            if (!data) return;
+            // 좌표가 없는 문제 때문에 → 시설 상세 API에서 좌표 가져오기
+            const detail = await getFacilityDetail(Number(facilityId));
 
-            setFacility(data);
+            // 두 데이터 병합해서 하나의 facility로 저장
+            setFacility({
+                ...programData,
+                latitude: detail.latitude,
+                longitude: detail.longitude,
+            });
 
+            // 카테고리 추출
             const categoryList = Array.from(
-                new Set(data.programs.map((p: any) => p.name))
+                new Set(programData.programs.map((p: any) => p.name))
             );
-
             setCategories(["전체", ...categoryList]);
         }
 
@@ -46,6 +56,7 @@ export default function ProgramDetailPage() {
 
     if (!facility) return <div className="p-4 text-gray">불러오는 중...</div>;
 
+    // 필터링된 프로그램 목록
     const filteredPrograms =
         selectedCategory === "전체"
             ? facility.programs
@@ -56,7 +67,13 @@ export default function ProgramDetailPage() {
         navigator.clipboard.writeText(facility.address);
     };
 
+    // 길찾기 이동 — 좌표 undefined 문제 해결됨
     const handleRoute = () => {
+        if (!userLat || !userLng) {
+            alert("현재 위치를 불러오는 중입니다. 잠시만 기다려주세요.");
+            return;
+        }
+
         navigate(`/facility/${facilityId}/route`, {
             state: {
                 originName: "내 위치",
@@ -68,8 +85,6 @@ export default function ProgramDetailPage() {
             },
         });
     };
-
-
 
     return (
         <div className="w-full min-h-screen bg-softWhite flex flex-col">
@@ -89,31 +104,28 @@ export default function ProgramDetailPage() {
                 {/* 시설 카드 */}
                 <div className="bg-white rounded-xl px-4 py-4 mb-4 shadow">
 
-                    {/* 헤더 영역: 시설명 + 길찾기 */}
+                    {/* 시설명 + 길찾기 */}
                     <div className="flex justify-between items-start">
                         <div className="text-lg font-semibold">{facility.facilityName}</div>
 
-                        {/* 길찾기 버튼 (피그마 스타일: 테두리 + 연한 글자) */}
                         <button
                             onClick={handleRoute}
                             className="px-3 py-1 rounded-full border text-gray-600"
                         >
                             길찾기
                         </button>
-
                     </div>
 
                     {/* 주소 + 복사 */}
                     <div className="flex items-center gap-1 mt-1">
                         <div className="text-sm text-gray">{facility.address}</div>
 
-                        {/* 복사 아이콘 */}
                         <button onClick={copyAddress} className="p-1">
                             <img src={CopyIcon} alt="copy" className="w-4 h-4 opacity-50" />
                         </button>
                     </div>
 
-                    {/* 아래 크게 있는 홈페이지 버튼 (피그마 스타일) */}
+                    {/* 홈페이지 버튼 */}
                     {facility.homepage && (
                         <button
                             onClick={() => window.open(facility.homepage)}
@@ -134,10 +146,11 @@ export default function ProgramDetailPage() {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-4 py-2 rounded-full border text-sm whitespace-nowrap
-                ${selectedCategory === cat
+                            ${
+                                selectedCategory === cat
                                     ? "bg-main text-white border-main"
                                     : "bg-white text-gray border-lightGray"
-                                }`}
+                            }`}
                         >
                             {cat}
                         </button>
@@ -152,13 +165,10 @@ export default function ProgramDetailPage() {
                             className="bg-white p-4 rounded-xl mb-4 shadow-sm"
                         >
                             <div className="flex justify-between items-start">
-
-                                {/* 왼쪽: 프로그램명 */}
                                 <h3 className="text-main font-semibold text-[15px] w-[35%] leading-[20px]">
                                     {p.name}
                                 </h3>
 
-                                {/* 오른쪽: 상세정보 */}
                                 <div className="w-[30%] space-y-2 text-[13px]">
 
                                     <div className="flex">
@@ -191,7 +201,6 @@ export default function ProgramDetailPage() {
                                     </div>
 
                                 </div>
-
                             </div>
                         </div>
                     ))

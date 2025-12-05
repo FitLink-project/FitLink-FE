@@ -49,6 +49,10 @@ export default function FacilityDetailPage() {
 
     // 길찾기 이동 
     const handleRoute = () => {
+         if (!userLat || !userLng) {
+        alert("현재 위치 정보를 가져오는 중입니다. 잠시만 기다려주세요.");
+        return;
+    }
         navigate(`/facility/${facilityId}/route`, {
             state: {
                 originName: "내 위치",
