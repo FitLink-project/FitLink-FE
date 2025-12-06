@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
-import BottomBar from "../../components/BottomBar";
 import Modal from "../../components/Modal";
 import { getFitnessResult } from "../../api/fitness";
 import FitnessBalance from "./sections/FitnessBalance";
 import type { AIPrescriptionRequest } from "../../types/aiPrescription";
 import AIContainer from "./sections/AIContainer";
 import QuickStartExercises from "./sections/QuickStartExercises";
+import Button from "../../components/Button";
 
 export default function ReportPage() {
   const location = useLocation();
@@ -71,87 +71,86 @@ export default function ReportPage() {
 
   // 부족한 체력 요소 찾기 (fitnessData.standard.grade2 보다 못한 항목)
   // 부족한 체력 요소 찾기 (fitnessData.standard.grade2 보다 못한 항목)
-const weakFactors: string[] = [];
-const standard = fitnessData?.standard?.grade2;
+  const weakFactors: string[] = [];
+  const standard = fitnessData?.standard?.grade2;
 
-// fitnessData나 standard가 없으면 기본값만 사용하고, 아래 비교 로직은 건너뛰기
-if (!fitnessData || !standard) {
-  weakFactors.push("유연성");
-} else {
-  if (fitnessData.testGeneral) {
-    // 간단 체력 검사 기준
-    if (
-      typeof fitnessData.testGeneral.sitUp === "number" &&
-      typeof standard.sitUp === "number" &&
-      fitnessData.testGeneral.sitUp < standard.sitUp
-    ) {
-      weakFactors.push("근지구력");
-    }
-    if (
-      typeof fitnessData.testGeneral.sitAndReach === "number" &&
-      typeof standard.sitAndReach === "number" &&
-      fitnessData.testGeneral.sitAndReach < standard.sitAndReach
-    ) {
-      weakFactors.push("유연성");
-    }
-    if (
-      typeof fitnessData.testGeneral.ymcaStepTest === "number" &&
-      typeof standard.shuttleRun === "number" &&
-      fitnessData.testGeneral.ymcaStepTest < standard.shuttleRun
-    ) {
-      weakFactors.push("심폐지구력");
-    }
+  // fitnessData나 standard가 없으면 기본값만 사용하고, 아래 비교 로직은 건너뛰기
+  if (!fitnessData || !standard) {
+    weakFactors.push("유연성");
   } else {
-    // 국민체력100 기준
-    if (
-      typeof fitnessData.testKookmin?.gripStrength === "number" &&
-      typeof standard.gripStrength === "number" &&
-      fitnessData.testKookmin!.gripStrength < standard.gripStrength
-    ) {
-      weakFactors.push("근력");
-    }
-    if (
-      typeof fitnessData.testKookmin?.sitUp === "number" &&
-      typeof standard.sitUp === "number" &&
-      fitnessData.testKookmin!.sitUp < standard.sitUp
-    ) {
-      weakFactors.push("근지구력");
-    }
-    if (
-      typeof fitnessData.testKookmin?.sitAndReach === "number" &&
-      typeof standard.sitAndReach === "number" &&
-      fitnessData.testKookmin!.sitAndReach < standard.sitAndReach
-    ) {
-      weakFactors.push("유연성");
-    }
-    if (
-      typeof fitnessData.testKookmin?.shuttleRun === "number" &&
-      typeof standard.shuttleRun === "number" &&
-      fitnessData.testKookmin!.shuttleRun < standard.shuttleRun
-    ) {
-      weakFactors.push("심폐지구력");
-    }
-    if (
-      typeof fitnessData.testKookmin?.sprint === "number" &&
-      typeof standard.sprint === "number" &&
-      fitnessData.testKookmin!.sprint < standard.sprint
-    ) {
-      weakFactors.push("민첩성");
-    }
-    if (
-      typeof fitnessData.testKookmin?.standingLongJump === "number" &&
-      typeof standard.standingLongJump === "number" &&
-      fitnessData.testKookmin!.standingLongJump < standard.standingLongJump
-    ) {
-      weakFactors.push("순발력");
+    if (fitnessData.testGeneral) {
+      // 간단 체력 검사 기준
+      if (
+        typeof fitnessData.testGeneral.sitUp === "number" &&
+        typeof standard.sitUp === "number" &&
+        fitnessData.testGeneral.sitUp < standard.sitUp
+      ) {
+        weakFactors.push("근지구력");
+      }
+      if (
+        typeof fitnessData.testGeneral.sitAndReach === "number" &&
+        typeof standard.sitAndReach === "number" &&
+        fitnessData.testGeneral.sitAndReach < standard.sitAndReach
+      ) {
+        weakFactors.push("유연성");
+      }
+      if (
+        typeof fitnessData.testGeneral.ymcaStepTest === "number" &&
+        typeof standard.shuttleRun === "number" &&
+        fitnessData.testGeneral.ymcaStepTest < standard.shuttleRun
+      ) {
+        weakFactors.push("심폐지구력");
+      }
+    } else {
+      // 국민체력100 기준
+      if (
+        typeof fitnessData.testKookmin?.gripStrength === "number" &&
+        typeof standard.gripStrength === "number" &&
+        fitnessData.testKookmin!.gripStrength < standard.gripStrength
+      ) {
+        weakFactors.push("근력");
+      }
+      if (
+        typeof fitnessData.testKookmin?.sitUp === "number" &&
+        typeof standard.sitUp === "number" &&
+        fitnessData.testKookmin!.sitUp < standard.sitUp
+      ) {
+        weakFactors.push("근지구력");
+      }
+      if (
+        typeof fitnessData.testKookmin?.sitAndReach === "number" &&
+        typeof standard.sitAndReach === "number" &&
+        fitnessData.testKookmin!.sitAndReach < standard.sitAndReach
+      ) {
+        weakFactors.push("유연성");
+      }
+      if (
+        typeof fitnessData.testKookmin?.shuttleRun === "number" &&
+        typeof standard.shuttleRun === "number" &&
+        fitnessData.testKookmin!.shuttleRun < standard.shuttleRun
+      ) {
+        weakFactors.push("심폐지구력");
+      }
+      if (
+        typeof fitnessData.testKookmin?.sprint === "number" &&
+        typeof standard.sprint === "number" &&
+        fitnessData.testKookmin!.sprint < standard.sprint
+      ) {
+        weakFactors.push("민첩성");
+      }
+      if (
+        typeof fitnessData.testKookmin?.standingLongJump === "number" &&
+        typeof standard.standingLongJump === "number" &&
+        fitnessData.testKookmin!.standingLongJump < standard.standingLongJump
+      ) {
+        weakFactors.push("순발력");
+      }
     }
   }
-}
-
 
   return (
     <>
-      <PageHeader title="체력 리포트" />
+      <PageHeader title=" " />
 
       <div className="flex justify-center bg-white">
         <div className="w-full  mb-32 px-[20px]">
@@ -167,13 +166,19 @@ if (!fitnessData || !standard) {
                 data={fitnessData}
                 weakFactors={weakFactors}
               />
+              <Button
+                onClick={() => {
+                  navigate("/");
+                }}
+                className={"w-full"}
+              >
+                {" "}
+                완료{" "}
+              </Button>
             </div>
           )}
         </div>
       </div>
-
-      {/* 하단 바 */}
-      <BottomBar />
 
       {/* 로그인 모달 */}
       <Modal

@@ -166,8 +166,8 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
           title="나의 체력에는 어떤 운동을 해야할까?"
           description={
             <>
-              FitLink가 {user?.name ?? "회원"} 님의 데이터를 바탕으로{" "}
-              <br /> 맞춤 운동을 추천해 드려요
+              FitLink가 {user?.name ?? "회원"} 님의 데이터를 바탕으로 <br />{" "}
+              맞춤 운동을 추천해 드려요
             </>
           }
         />
@@ -185,9 +185,15 @@ export default function AIContainer({ data }: { data: AIPrescriptionRequest }) {
             체육시설을 불러오는 중...
           </div>
         ) : facilities.length === 0 ? (
-          <div className="text-center py-8 text-gray font-mplus1">
-            주변 체육시설 정보를 찾을 수 없습니다.
-          </div>
+          <NoMatchingWarning
+            description={
+              <>
+                현재 {user?.name ?? "회원"}님의 주변에 적합한 시설이 없어요{" "}
+                <br />
+                맞춤 운동을 참고해 간단한 운동부터 시작해 보세요!
+              </>
+            }
+          />
         ) : (
           (() => {
             const filteredFacilities = facilities.filter((facility) => {

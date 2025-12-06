@@ -163,10 +163,16 @@ export default function ProfileEdit() {
       hasError = true;
     }
 
+    // 🔴 필수 약관(privacy, service, over14) 체크 확인
+    if (!privacyAgree || !serviceAgree || !over14Agree) {
+      setTermsError(true);
+      setTermsErrorMessage("필수 약관에 모두 동의해 주세요");
+      hasError = true;
+    }
+
     if (hasError) return;
 
     setIsLoading(true);
-
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
