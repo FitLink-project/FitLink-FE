@@ -5,6 +5,7 @@ import Select from "../../../../components/Select";
 import MeasurementInput from "../../../../components/Fitness/MeasurementInput";
 import { useFitnessGeneralStore } from "../../../../stores/FitnessGeneralStore";
 import { useState, useEffect } from "react";
+import { useUser } from "../../../../contexts/UserContext";
 
 interface StepProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -13,6 +14,7 @@ interface StepProps {
 
 export default function Step1({ setCurrentStep, NEXT_STEP }: StepProps) {
   const { formData, setFormData } = useFitnessGeneralStore();
+  const { user } = useUser();
 
   const [year, setYear] = useState(formData.birthDate.slice(0, 4));
   const [month, setMonth] = useState(formData.birthDate.slice(4, 6));
@@ -88,11 +90,13 @@ export default function Step1({ setCurrentStep, NEXT_STEP }: StepProps) {
       if (!isNaN(value)) setFormData({ [key]: value });
     };
 
+  const username = user?.name ?? "게스트";
+
   return (
     <>
       <section className="my-8 px-4">
         <FormTitle
-          title="OO 님에 대해 알려주세요!"
+          title={`${username} 님에 대해 알려주세요!`}
           description="모두 입력해주세요"
         />
       </section>
