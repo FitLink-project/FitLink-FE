@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
-import BottomBar from "../../components/BottomBar";
 import Modal from "../../components/Modal";
 import { getFitnessResult } from "../../api/fitness";
 import FitnessBalance from "./sections/FitnessBalance";
