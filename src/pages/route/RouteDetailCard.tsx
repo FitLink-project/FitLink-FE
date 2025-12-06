@@ -19,7 +19,19 @@ interface RouteDetailProps {
   };
 }
 
+// --- 최대 4개 스텝으로 축약하는 함수 ---
+function getCompactSteps(steps: RouteStep[]) {
+  if (steps.length <= 4) return steps;
+
+  const firstTwo = steps.slice(0, 2);
+  const lastTwo = steps.slice(steps.length - 2);
+
+  return [...firstTwo, ...lastTwo];
+}
+
+
 export default function RouteDetailCard({ startName, endName, route }: RouteDetailProps) {
+   const compactSteps = getCompactSteps(route.routes);
   const lastIdx = route.routes.length - 1;
 
   return (
@@ -47,18 +59,17 @@ export default function RouteDetailCard({ startName, endName, route }: RouteDeta
 
         {/* 중간 경로 상세 설명 */}
         <div className="flex flex-col">
-          {route.routes.map((step, idx) => {
+          {compactSteps.map((step, idx) => {
             const isMiddle = idx !== 0 && idx !== lastIdx;
 
             return (
               <Fragment key={idx}>
                 <div className="flex gap-3 items-start relative">
 
-                  {/* Timeline 왼쪽 라인 + 점 */}
+                  {/* Timeline 라인 + 점 */}
                   <div className="flex flex-col items-center">
                     <div className="w-[2px] h-4 bg-gray-300"></div>
 
-                    {/* 중간 스텝 점 */}
                     <div
                       className={`w-3 h-3 rounded-full ${
                         isMiddle ? "bg-blue-500" : "bg-gray-400"
@@ -68,7 +79,7 @@ export default function RouteDetailCard({ startName, endName, route }: RouteDeta
                     <div className="w-[2px] h-6 bg-gray-300"></div>
                   </div>
 
-                  {/* 경로 안내 텍스트 */}
+                  {/* 텍스트 */}
                   <div className="pb-4">
                     <p className="text-sm font-medium text-gray-700">{step.instruction}</p>
                     <p className="text-xs text-gray-500 mt-1">{step.duration}분</p>
@@ -78,7 +89,7 @@ export default function RouteDetailCard({ startName, endName, route }: RouteDeta
             );
           })}
         </div>
-
+        
         {/* 도착지 */}
         <div className="flex gap-2 items-center mt-1">
 
