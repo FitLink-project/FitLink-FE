@@ -150,7 +150,7 @@ export default function ReportPage() {
 
   return (
     <>
-      <PageHeader title="체력 리포트" />
+      <PageHeader title=" " />
 
       <div className="flex justify-center bg-white">
         <div className="w-full  mb-32 px-[20px]">
