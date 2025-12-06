@@ -146,11 +146,10 @@ export default function ProgramDetailPage() {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-4 py-2 rounded-full border text-sm whitespace-nowrap
-                            ${
-                                selectedCategory === cat
+                            ${selectedCategory === cat
                                     ? "bg-main text-white border-main"
                                     : "bg-white text-gray border-lightGray"
-                            }`}
+                                }`}
                         >
                             {cat}
                         </button>
@@ -164,45 +163,53 @@ export default function ProgramDetailPage() {
                             key={p.programId}
                             className="bg-white p-4 rounded-xl mb-4 shadow-sm"
                         >
-                            <div className="flex justify-between items-start">
-                                <h3 className="text-main font-semibold text-[15px] w-[35%] leading-[20px]">
-                                    {p.name}
-                                </h3>
+                            <h3 className="text-main font-semibold text-[15px] mb-3">
+                                {p.name}
+                            </h3>
 
-                                <div className="w-[30%] space-y-2 text-[13px]">
+                            {/* 👉 2열 그리드 구조 (절대 안 벌어지게 고정!) */}
+                            {/* 2열 고정 레이아웃 */}
+                            {/* 2열 정보 */}
+                            <div className="flex flex-col items-end w-full text-[13px] mt-2">
 
-                                    <div className="flex">
-                                        <span className="text-gray-400 w-14">대상</span>
-                                        <span className="text-softBlack ml-12">{p.target}</span>
-                                    </div>
-
-                                    <div className="flex">
-                                        <span className="text-gray-400 w-14">요일</span>
-                                        <span className="text-softBlack ml-12">
-                                            {p.days.replace(/\|/g, " / ")}
-                                        </span>
-                                    </div>
-
-                                    <div className="flex">
-                                        <span className="text-gray-400 w-14">시간대</span>
-                                        <span className="text-softBlack ml-12">{p.time}</span>
-                                    </div>
-
-                                    <div className="flex">
-                                        <span className="text-gray-400 w-14">모집인원</span>
-                                        <span className="text-softBlack ml-12">{p.capacity}</span>
-                                    </div>
-
-                                    <div className="flex font-semibold">
-                                        <span className="text-gray-400 w-14">가격</span>
-                                        <span className="text-softBlack ml-12">
-                                            {p.price.toLocaleString()}원
-                                        </span>
-                                    </div>
-
+                                {/* 대상 */}
+                                <div className="flex justify-between w-[180px]">
+                                    <span className="text-gray-400">대상</span>
+                                    <span className="text-softBlack">{p.target}</span>
                                 </div>
+
+                                {/* 요일 */}
+                                <div className="flex justify-between w-[180px]">
+                                    <span className="text-gray-400">요일</span>
+                                    <span className="text-softBlack">
+                                        {p.days.replace(/\|/g, " / ")}
+                                    </span>
+                                </div>
+
+                                {/* 시간대 */}
+                                <div className="flex justify-between w-[180px]">
+                                    <span className="text-gray-400">시간대</span>
+                                    <span className="text-softBlack">{p.time}</span>
+                                </div>
+
+                                {/* 모집인원 */}
+                                <div className="flex justify-between w-[180px]">
+                                    <span className="text-gray-400">모집인원</span>
+                                    <span className="text-softBlack">{p.capacity}</span>
+                                </div>
+
+                                {/* 가격 */}
+                                <div className="flex justify-between w-[180px] font-semibold">
+                                    <span className="text-gray-400">가격</span>
+                                    <span className="text-main">{p.price.toLocaleString()}원</span>
+                                </div>
+
                             </div>
+
+
+
                         </div>
+
                     ))
                 ) : (
                     <div className="text-gray text-sm">등록된 프로그램이 없습니다.</div>
