@@ -2,6 +2,10 @@
 
 공공데이터 활용 경진대회 - FitLink 프론트엔드 레포지토리
 
+<a href="https://www.instagram.com/reel/DScyT4JjMyC/?utm_source=ig_web_button_share_sheet&igsh=MzRlODBiNWFlZA==" target="_blank">
+<img width="1920" height="1080" alt="FitLink" src="https://github.com/user-attachments/assets/6a0ef39e-2cc2-45fb-943f-04473398b5b8" />
+
+</a>
 ## 🚀 시작하기
 
 ### 설치 및 실행
